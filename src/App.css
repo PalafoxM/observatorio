@@ -1,0 +1,13 @@
+/* Asegura que el contenido no interfiera con el parallax */
+.content-section, .charts-section {
+  position: relative;
+  z-index: 10;
+}
+
+/* Espacio para el parallax */
+.charts-section {
+  margin-top: 100vh;
+  background: #2D112B;
+  color: white;
+  padding: 2rem;
+}
