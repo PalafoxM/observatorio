@@ -10,6 +10,11 @@ const ChartsSection = () => {
   const [municipioOption, setMunicipioOption] = useState(null);
   const [selectedMunicipio, setSelectedMunicipio] = useState(null);
   const [municipioGeoData, setMunicipioGeoData] = useState({});
+  const [isMobile, setIsMobile] = useState(false);
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
   
   // Refs para los gráficos
   const chartRef = useRef(null);
@@ -17,6 +22,63 @@ const ChartsSection = () => {
   const intervalRef = useRef(null);
   const mapOptionRef = useRef(null);
   const barOptionRef = useRef(null);
+
+  // Detectar cambios en el tamaño de la ventana
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Inicializar
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Función para obtener dimensiones responsivas
+  const getResponsiveDimensions = useCallback(() => {
+    if (windowSize.width < 576) { // Mobile pequeño
+      return {
+        chartHeight: 400,
+        pieRadius: 8,
+        fontSize: 10,
+        legendFontSize: 9,
+        titleFontSize: 16,
+        labelFontSize: 9
+      };
+    } else if (windowSize.width < 768) { // Mobile/Tablet
+      return {
+        chartHeight: 450,
+        pieRadius: 10,
+        fontSize: 11,
+        legendFontSize: 10,
+        titleFontSize: 18,
+        labelFontSize: 10
+      };
+    } else if (windowSize.width < 992) { // Tablet
+      return {
+        chartHeight: 500,
+        pieRadius: 12,
+        fontSize: 12,
+        legendFontSize: 11,
+        titleFontSize: 20,
+        labelFontSize: 11
+      };
+    } else { // Desktop
+      return {
+        chartHeight: 550,
+        pieRadius: 15,
+        fontSize: 14,
+        legendFontSize: 12,
+        titleFontSize: 22,
+        labelFontSize: 12
+      };
+    }
+  }, [windowSize.width]);
 
   // Procesar el GeoJSON para extraer municipios individuales
   useEffect(() => {
@@ -58,7 +120,6 @@ const ChartsSection = () => {
       });
       
       setMunicipioGeoData(municipiosData);
-      console.log('Municipios procesados:', Object.keys(municipiosData).length);
     }
   }, []);
 
@@ -80,6 +141,9 @@ const ChartsSection = () => {
 
   // Función para crear gráficos de tarta sobre el mapa
   const createPieSeries = useCallback((center, radius = 20) => {
+    const dimensions = getResponsiveDimensions();
+    const actualRadius = radius * (dimensions.pieRadius / 15); // Ajuste proporcional
+    
     const categories = ['Agricultura', 'Industria', 'Comercio', 'Servicios'];
     const pieData = categories.map((category, index) => ({
       value: Math.round(Math.random() * 100),
@@ -90,7 +154,10 @@ const ChartsSection = () => {
       type: 'pie',
       coordinateSystem: 'geo',
       tooltip: {
-        formatter: '{b}: {c} ({d}%)'
+        formatter: '{b}: {c} ({d}%)',
+        textStyle: {
+          fontSize: dimensions.fontSize
+        }
       },
       label: {
         show: false
@@ -99,7 +166,7 @@ const ChartsSection = () => {
         show: false
       },
       animationDuration: 300,
-      radius: radius,
+      radius: actualRadius,
       center: center,
       data: pieData,
       itemStyle: {
@@ -115,43 +182,40 @@ const ChartsSection = () => {
         }
       }
     };
-  }, []);
+  }, [getResponsiveDimensions]);
 
   // Manejar clic en municipio del primer mapa
   const handleMunicipioClick = useCallback((params) => {
     if (params.componentType === 'series' && params.seriesType === 'map') {
       const municipioName = params.name;
-      console.log('Municipio seleccionado:', municipioName);
       
       if (municipioGeoData[municipioName]) {
         setSelectedMunicipio(municipioName);
         
         const municipioMapName = `municipio_${municipioName.replace(/\s+/g, '_')}`;
+        const dimensions = getResponsiveDimensions();
         
         try {
-          // Registrar el mapa del municipio individual
           echarts.registerMap(municipioMapName, municipioGeoData[municipioName]);
         } catch (error) {
           console.warn('Error registrando mapa:', error);
         }
         
-        // Obtener centro y ajustar zoom
         const center = municipioGeoData[municipioName]?.center || [-101.0, 20.8];
-        const bounds = municipioGeoData[municipioName]?.bounds;
         
-        // Crear opción para mostrar solo el municipio
+        // Crear opción para mostrar solo el municipio con ajustes responsivos
         const municipioChartOption = {
           title: {
             text: municipioName,
             left: 'center',
             textStyle: {
-              fontSize: 22,
+              fontSize: dimensions.titleFontSize,
               fontWeight: 'bold',
               color: '#2c3e50'
             },
             subtext: 'Municipio - Distribución por Sectores',
             subtextStyle: {
-              fontSize: 14,
+              fontSize: Math.max(dimensions.fontSize - 2, 10),
               color: '#7f8c8d',
               fontWeight: 'normal'
             }
@@ -162,11 +226,12 @@ const ChartsSection = () => {
             borderColor: '#3498db',
             borderWidth: 1,
             textStyle: {
-              color: '#fff'
+              color: '#fff',
+              fontSize: dimensions.fontSize
             },
             formatter: function(params) {
               if (params.seriesType === 'pie') {
-                return `<div style="padding: 5px;">
+                return `<div style="padding: 5px; font-size: ${dimensions.fontSize}px;">
                   <strong>${params.name}</strong><br/>
                   Valor: ${params.value}<br/>
                   Porcentaje: ${params.percent}%
@@ -177,13 +242,13 @@ const ChartsSection = () => {
           },
           geo: {
             map: municipioMapName,
-            roam: true,
-            zoom: 1.2, // Zoom para que ocupe más espacio
+            roam: !isMobile, // Deshabilitar roam en móvil para mejor UX
+            zoom: isMobile ? 1.5 : 1.2,
             center: center,
             label: {
-              show: true,
+              show: !isMobile, // Ocultar etiquetas en móvil
               color: '#2c3e50',
-              fontSize: 14,
+              fontSize: dimensions.labelFontSize,
               fontWeight: 'bold',
               formatter: '{b}'
             },
@@ -206,7 +271,7 @@ const ChartsSection = () => {
                 show: true,
                 color: '#2c3e50',
                 fontWeight: 'bold',
-                fontSize: 16
+                fontSize: Math.min(dimensions.labelFontSize + 2, 16)
               }
             },
             select: {
@@ -216,19 +281,19 @@ const ChartsSection = () => {
             }
           },
           legend: {
-            type: 'scroll',
-            orient: 'vertical',
-            right: 20,
-            top: 'middle',
+            type: isMobile ? 'plain' : 'scroll',
+            orient: isMobile ? 'horizontal' : 'vertical',
+            right: isMobile ? 'auto' : 20,
+            top: isMobile ? 40 : 'middle',
+            bottom: isMobile ? 10 : 'auto',
             textStyle: {
               color: '#2c3e50',
-              fontSize: 12
+              fontSize: dimensions.legendFontSize
             },
             data: ['Agricultura', 'Industria', 'Comercio', 'Servicios'],
             selectedMode: false
           },
           series: [
-            // Agregar gráficos de tarta en diferentes posiciones del municipio
             createPieSeries([center[0] - 0.005, center[1] + 0.005], 15),
             createPieSeries([center[0] + 0.005, center[1] - 0.005], 15),
             createPieSeries([center[0] - 0.01, center[1] - 0.01], 12),
@@ -249,14 +314,13 @@ const ChartsSection = () => {
         }
       }
     }
-  }, [municipioGeoData, createPieSeries]);
+  }, [municipioGeoData, createPieSeries, getResponsiveDimensions, isMobile]);
 
   // Resetear a vista inicial
   const resetToInitialView = useCallback(() => {
     setSelectedMunicipio(null);
     setMunicipioOption(null);
     
-    // Deseleccionar en el primer gráfico
     const echartsInstance = chartRef.current?.getEchartsInstance();
     if (echartsInstance) {
       echartsInstance.dispatchAction({
@@ -268,42 +332,49 @@ const ChartsSection = () => {
 
   // Efecto principal - Configurar primer gráfico
   useEffect(() => {
+    const dimensions = getResponsiveDimensions();
+    
     // Registrar mapa completo de Guanajuato
     echarts.registerMap('Guanajuato', guanajuatoJson);
     
     // Ordenar datos
     const sortedData = [...populationData].sort((a, b) => a.value - b.value);
 
-    // Configuración del mapa
+    // Configuración del mapa responsivo
     mapOptionRef.current = {
       title: {
         text: '12 - Proyectos Integrales',
         left: 'center',
         textStyle: {
-          fontSize: 20,
+          fontSize: dimensions.titleFontSize,
           fontWeight: 'bold',
           color: '#2c3e50'
         },
         subtext: 'Haz clic en un municipio para ver detalles',
         subtextStyle: {
-          fontSize: 13,
+          fontSize: Math.max(dimensions.fontSize - 2, 10),
           color: '#7f8c8d'
         }
       },
       tooltip: {
         trigger: 'item',
+        textStyle: {
+          fontSize: dimensions.fontSize
+        },
         formatter: function(params) {
           const city = populationData.find(c => c.name === params.name);
           const population = city ? city.value.toLocaleString() : 'N/A';
-          return `<div style="padding: 10px; border-radius: 4px;">
-            <strong style="color: #3498db; font-size: 14px;">${params.name}</strong><br/>
+          return `<div style="padding: 10px; border-radius: 4px; font-size: ${dimensions.fontSize}px;">
+            <strong style="color: #3498db;">${params.name}</strong><br/>
             <span style="color: #2c3e50;">Población: ${population}</span><br/>
             <small style="color: #95a5a6;">Click para ver detalles</small>
           </div>`;
         }
       },
       visualMap: {
-        left: 'right',
+        left: isMobile ? 'center' : 'right',
+        top: isMobile ? 20 : 'center',
+        bottom: isMobile ? 'auto' : 'center',
         min: 80000,
         max: 1650000,
         inRange: {
@@ -311,23 +382,30 @@ const ChartsSection = () => {
         },
         text: ['ALTA', 'BAJA'],
         textStyle: {
-          color: '#2c3e50'
+          color: '#2c3e50',
+          fontSize: dimensions.legendFontSize
         },
         calculable: true,
-        orient: 'vertical',
+        orient: isMobile ? 'horizontal' : 'vertical',
         backgroundColor: 'rgba(255, 255, 255, 0.9)',
         borderColor: '#bdc3c7',
         borderWidth: 1,
-        padding: [10, 10]
+        padding: 10,
+        itemWidth: 20,
+        itemHeight: 150
       },
       series: [{
         id: 'population',
         type: 'map',
-        roam: true,
+        roam: !isMobile, // Solo permitir roam en desktop
         map: 'Guanajuato',
         animationDurationUpdate: 1000,
         universalTransition: true,
         data: populationData,
+        label: {
+          show: !isMobile, // Ocultar etiquetas en móvil
+          fontSize: dimensions.labelFontSize
+        },
         emphasis: {
           itemStyle: {
             areaColor: '#3498db',
@@ -337,7 +415,8 @@ const ChartsSection = () => {
           label: {
             show: true,
             color: '#2c3e50',
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            fontSize: Math.min(dimensions.labelFontSize + 2, 14)
           }
         },
         select: {
@@ -350,29 +429,29 @@ const ChartsSection = () => {
             show: true,
             color: '#c0392b',
             fontWeight: 'bold',
-            fontSize: 14
+            fontSize: Math.min(dimensions.labelFontSize + 2, 14)
           }
         },
         selectedMode: 'single'
       }]
     };
 
-    // Configuración de barras
+    // Configuración de barras responsiva
     barOptionRef.current = {
       title: {
         text: 'Población por Municipio',
         left: 'center',
         textStyle: {
-          fontSize: 20,
+          fontSize: dimensions.titleFontSize,
           fontWeight: 'bold',
           color: '#2c3e50'
         }
       },
       grid: {
-        left: '3%',
-        right: '8%',
-        bottom: '3%',
-        top: '15%',
+        left: isMobile ? '8%' : '3%',
+        right: isMobile ? '5%' : '8%',
+        bottom: isMobile ? '15%' : '3%',
+        top: isMobile ? '20%' : '15%',
         containLabel: true
       },
       xAxis: {
@@ -380,10 +459,11 @@ const ChartsSection = () => {
         name: 'Población',
         nameTextStyle: {
           color: '#2c3e50',
-          fontSize: 12
+          fontSize: dimensions.fontSize
         },
         axisLabel: {
           color: '#2c3e50',
+          fontSize: dimensions.labelFontSize,
           formatter: (value) => {
             if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
             if (value >= 1000) return `${(value / 1000).toFixed(0)}k`;
@@ -399,9 +479,10 @@ const ChartsSection = () => {
       yAxis: {
         type: 'category',
         axisLabel: { 
-          rotate: 30,
-          fontSize: 12,
-          color: '#2c3e50'
+          rotate: isMobile ? 45 : 30,
+          fontSize: dimensions.labelFontSize,
+          color: '#2c3e50',
+          interval: 0
         },
         data: sortedData.map(d => d.name)
       },
@@ -433,8 +514,9 @@ const ChartsSection = () => {
           }
         },
         label: {
-          show: true,
+          show: !isMobile, // Ocultar labels en móvil para evitar sobrecarga
           position: 'right',
+          fontSize: dimensions.labelFontSize,
           formatter: function(params) {
             if (params.value >= 1000000) return `${(params.value / 1000000).toFixed(1)}M`;
             if (params.value >= 1000) return `${(params.value / 1000).toFixed(0)}k`;
@@ -446,6 +528,9 @@ const ChartsSection = () => {
       }],
       tooltip: {
         trigger: 'axis',
+        textStyle: {
+          fontSize: dimensions.fontSize
+        },
         axisPointer: {
           type: 'shadow',
           shadowStyle: {
@@ -459,7 +544,7 @@ const ChartsSection = () => {
             : value >= 1000 
               ? `${(value / 1000).toFixed(0)} mil`
               : value.toLocaleString();
-          return `<div style="padding: 10px; border-radius: 4px;">
+          return `<div style="padding: 10px; border-radius: 4px; font-size: ${dimensions.fontSize}px;">
             <strong style="color: #3498db;">${params[0].name}</strong><br/>
             <span style="color: #2c3e50;">Población: ${formattedValue}</span>
           </div>`;
@@ -470,37 +555,38 @@ const ChartsSection = () => {
     // Inicializar primer gráfico
     setMapOption(mapOptionRef.current);
 
-    // Configurar intervalo para alternar entre mapa y barras
-    let isMap = true;
-    intervalRef.current = setInterval(() => {
-      isMap = !isMap;
-      const echartsInstance = chartRef.current?.getEchartsInstance();
-      if (echartsInstance) {
-        try {
-          echartsInstance.setOption(
-            isMap ? mapOptionRef.current : barOptionRef.current,
-            true
-          );
-        } catch (err) {
-          console.error('Error al actualizar gráfico:', err);
+    // Solo iniciar intervalo en desktop
+    if (windowSize.width >= 768) {
+      let isMap = true;
+      intervalRef.current = setInterval(() => {
+        isMap = !isMap;
+        const echartsInstance = chartRef.current?.getEchartsInstance();
+        if (echartsInstance) {
+          try {
+            echartsInstance.setOption(
+              isMap ? mapOptionRef.current : barOptionRef.current,
+              true
+            );
+          } catch (err) {
+            console.error('Error al actualizar gráfico:', err);
+          }
         }
-      }
-    }, 5000);
+      }, 5000);
+    }
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, []);
+  }, [windowSize.width, isMobile, getResponsiveDimensions]);
+
   // Configurar eventos del primer gráfico
   useEffect(() => {
     const echartsInstance = chartRef.current?.getEchartsInstance();
     if (!echartsInstance) return;
 
     echartsInstance.off('click');
-    console.log('clcik');
-
     echartsInstance.on('click', handleMunicipioClick);
 
     return () => {
@@ -510,30 +596,48 @@ const ChartsSection = () => {
     };
   }, [handleMunicipioClick]);
 
+  // Función para redimensionar gráficos cuando cambia el tamaño de ventana
+  useEffect(() => {
+    const resizeCharts = () => {
+      if (chartRef.current) {
+        const echartsInstance = chartRef.current.getEchartsInstance();
+        echartsInstance.resize();
+      }
+      if (municipioChartRef.current) {
+        const echartsInstance = municipioChartRef.current.getEchartsInstance();
+        echartsInstance.resize();
+      }
+    };
+
+    window.addEventListener('resize', resizeCharts);
+    return () => window.removeEventListener('resize', resizeCharts);
+  }, []);
+
+  const dimensions = getResponsiveDimensions();
+
   return (
     <div className="chart-container">
       <div className="chart-section1">
         {mapOption && (
-          <>
-            <ReactECharts
-              ref={chartRef}
-              option={mapOption}
-              notMerge={true}
-              lazyUpdate={false}
-              style={{ height: '550px', width: '100%' }}
-              theme="light"
-              opts={{ 
-                renderer: 'canvas',
-                devicePixelRatio: window.devicePixelRatio || 1
-              }}
-              onChartReady={(echartsInstance) => {
-                if (!echarts.getMap('Guanajuato')) {
-                  echarts.registerMap('Guanajuato', guanajuatoJson);
-                }
-              }}
-            />
-         
-          </>
+          <ReactECharts
+            ref={chartRef}
+            option={mapOption}
+            notMerge={false}
+            lazyUpdate={true}
+            style={{ 
+              height: `${dimensions.chartHeight}px`, 
+              width: '100%',
+              minHeight: '300px'
+            }}
+            theme="light"
+            opts={{ 
+              renderer: 'canvas',
+              devicePixelRatio: window.devicePixelRatio || 1
+            }}
+            onEvents={{
+              'click': handleMunicipioClick
+            }}
+          />
         )}
       </div>
       
@@ -543,9 +647,13 @@ const ChartsSection = () => {
             <ReactECharts
               ref={municipioChartRef}
               option={municipioOption}
-              notMerge={true}
-              lazyUpdate={false}
-              style={{ height: '550px', width: '100%' }}
+              notMerge={false}
+              lazyUpdate={true}
+              style={{ 
+                height: `${dimensions.chartHeight}px`, 
+                width: '100%',
+                minHeight: '300px'
+              }}
               theme="light"
               opts={{ 
                 renderer: 'canvas',
@@ -554,7 +662,6 @@ const ChartsSection = () => {
             />
             {selectedMunicipio && (
               <div className="municipio-details">
-              
                 <div className="municipio-info">
                   <h3>Municipio: {selectedMunicipio}</h3>
                   <p>Se está mostrando el polígono específico del municipio con distribución sectorial.</p>
@@ -563,7 +670,7 @@ const ChartsSection = () => {
                     <ul>
                       <li>Mapa individual del municipio</li>
                       <li>Gráficos de tarta por sectores económicos</li>
-                      <li>Zoom y navegación independiente</li>
+                      <li>{isMobile ? 'Toque para interactuar' : 'Zoom y navegación'}</li>
                       <li>Información detallada en tooltips</li>
                     </ul>
                   </div>
@@ -575,14 +682,14 @@ const ChartsSection = () => {
           <div className="no-selection">
             <div className="placeholder-message">
               <h3>🌎 Selecciona un Municipio</h3>
-              <p>Haz clic en cualquier municipio del mapa superior para ver su representación individual aquí.</p>
+              <p>Haz {isMobile ? 'toque' : 'clic'} en cualquier municipio del mapa superior para ver su representación individual aquí.</p>
               <p>Podrás ver el polígono exacto del municipio seleccionado con gráficos de distribución sectorial.</p>
               <div className="placeholder-features">
                 <p><strong>Funcionalidades disponibles:</strong></p>
                 <ul>
                   <li>Visualización individual de cada municipio</li>
                   <li>Gráficos de tarta por sectores económicos</li>
-                  <li>Zoom y navegación independiente</li>
+                  <li>{isMobile ? 'Toque para interactuar' : 'Zoom y navegación'}</li>
                   <li>Información detallada interactiva</li>
                 </ul>
               </div>

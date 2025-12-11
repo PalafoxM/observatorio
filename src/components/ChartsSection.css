@@ -1,39 +1,187 @@
 .chart-container {
-  height: 80vh;
-  min-height: 200px;
-  width: 100%;
-  margin: 0 auto;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  position: absolute;
-  top: 100%;
-  z-index: 9;
-  left:0%;
-}
-
-.chart-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
-
-  min-height: 100vh;
+  padding: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: auto;
+  position: relative;
+  z-index: 9;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  top: 100%;
+  left: 0;
 }
+
 
 .chart-section1,
 .chart-section2 {
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.5); /* blanco transparente */
+  border: 1px solid rgba(52, 152, 219, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.12); /* 92% opaco */
+  backdrop-filter: blur(8px);
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
+.chart-section1:hover,
+.chart-section2:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  border-color: rgba(52, 152, 219, 0.5);
+}
 
-/* Para pantallas más grandes, puedes mostrar los gráficos lado a lado */
-@media (min-width: 1200px) {
+.municipio-details {
+  margin-top: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 10px;
+  border-left: 4px solid #3498db;
+  animation: slideIn 0.3s ease-out;
+}
+
+.municipio-info h3 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+}
+
+.municipio-info p {
+  color: #34495e;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.municipio-features ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.municipio-features li {
+  padding: 8px 0;
+  padding-left: 25px;
+  position: relative;
+  color: #2c3e50;
+}
+
+.municipio-features li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.no-selection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+}
+
+.placeholder-message {
+  max-width: 500px;
+  padding: 30px;
+}
+
+.placeholder-message h3 {
+  color: #3498db;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+}
+
+.placeholder-message p {
+  color: #7f8c8d;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.placeholder-features {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.placeholder-features ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.placeholder-features li {
+  padding: 6px 0;
+  padding-left: 25px;
+  position: relative;
+  color: #2c3e50;
+}
+
+.placeholder-features li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #3498db;
+  font-weight: bold;
+}
+
+/* Animación */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+/* Pantallas muy pequeñas (móviles) */
+@media (max-width: 576px) {
+  .chart-container {
+    padding: 10px;
+    gap: 15px;
+  }
+  
+  .chart-section1,
+  .chart-section2 {
+    padding: 12px;
+    border-radius: 8px;
+  }
+  
+  .municipio-details {
+    padding: 15px;
+    margin-top: 15px;
+  }
+  
+  .municipio-info h3 {
+    font-size: 1.2rem;
+  }
+  
+  .placeholder-message {
+    padding: 20px;
+  }
+  
+  .placeholder-message h3 {
+    font-size: 1.3rem;
+  }
+}
+
+/* Tablets y móviles en landscape */
+@media (min-width: 577px) and (max-width: 991px) {
+  .chart-container {
+    padding: 20px;
+    gap: 25px;
+  }
+  
+  .chart-section1,
+  .chart-section2 {
+    padding: 20px;
+  }
+  
   .chart-container {
     flex-direction: row;
     flex-wrap: wrap;
@@ -41,15 +189,101 @@
   
   .chart-section1,
   .chart-section2 {
-    flex: 1;
-    min-width: 600px;
+    flex: 1 1 100%;
+    min-width: 0;
   }
 }
 
-
-@media (max-width: 768px) {
+/* Desktop y laptops pequeñas */
+@media (min-width: 992px) and (max-width: 1199px) {
   .chart-container {
-    height: 60vh;
-    min-height: 300px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 25px;
+  }
+  
+  .chart-section1,
+  .chart-section2 {
+    flex: 1 1 calc(50% - 25px);
+    min-width: 450px;
+  }
+}
+
+/* Desktop grandes */
+@media (min-width: 1200px) {
+  .chart-container {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 30px;
+  }
+  
+  .chart-section1,
+  .chart-section2 {
+    flex: 1;
+    min-width: 0;
+    max-width: 50%;
+  }
+}
+
+/* Para pantallas muy grandes */
+@media (min-width: 1400px) {
+  .chart-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}
+
+/* Ajustes para modo retrato en móviles */
+@media (max-height: 600px) and (orientation: portrait) {
+  .chart-container {
+    min-height: 100vh;
+  }
+  
+  .chart-section1,
+  .chart-section2 {
+    min-height: 250px;
+  }
+}
+
+/* Ajustes para modo landscape en móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+  .chart-container {
+    flex-direction: row;
+  }
+  
+  .chart-section1,
+  .chart-section2 {
+    height: 80vh;
+  }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .chart-section1,
+  .chart-section2,
+  .municipio-details {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Modo oscuro (opcional) */
+@media (prefers-color-scheme: dark) {
+  .chart-section1,
+  .chart-section2 {
+    background-color: rgba(30, 30, 30, 0.95);
+    border-color: rgba(52, 152, 219, 0.2);
+  }
+  
+  .municipio-details {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  }
+  
+  .municipio-info h3,
+  .municipio-info p,
+  .municipio-features li,
+  .placeholder-message p,
+  .placeholder-features li {
+    color: #ecf0f1;
   }
 }

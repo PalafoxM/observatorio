@@ -73,7 +73,7 @@ html, body {
 
 /* Tablet and Small Laptop */
 @media (max-width: 1199px) and (min-width: 768px) {
-  .parallax__layer__6 img { width: 100%; left: 0%; top: -50%; height: 100vh; }
+  .parallax__layer__6 img { width: 100%; left: 0%; top: 0%; height: 100vh; }
   .parallax__layer__5 img { width: 37%; left: 65%; top: 8%; }
   .parallax__layer__4 img { width: 35%; left: 35%; top: 8%; }
   .parallax__layer__3 img { width: 35%; left: 0%; top: 8%; }
@@ -89,8 +89,8 @@ html, body {
     height: 100vh;
   }
 
-  .parallax__layer__6 img { width: 100%; left: 0%; top: 22vh; height: 100vh; }
-  .parallax__layer__5 img { width: 100%; left: -5%; top: -35%; }
+  .parallax__layer__6 img { width: 100%; left: 0%; top: 0vh; height: 100vh; }
+  .parallax__layer__5 img { width: 100%; left: -5%; top: -15%; }
   .parallax__layer__4 img { width: 100%; left: 40%; top: -25%; }
   .parallax__layer__3 img { width: 100%; left: 100%; top: -45%; }
   .parallax__layer__2 img { width: 20%; left: 67%; top: 0%; }
