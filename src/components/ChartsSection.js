@@ -144,7 +144,7 @@ const ChartsSection = () => {
     const dimensions = getResponsiveDimensions();
     const actualRadius = radius * (dimensions.pieRadius / 15); // Ajuste proporcional
     
-    const categories = ['Agricultura', 'Industria', 'Comercio', 'Servicios'];
+    const categories = ['Proyectos', 'Region', 'Comercio', 'Servicios'];
     const pieData = categories.map((category, index) => ({
       value: Math.round(Math.random() * 100),
       name: category
@@ -439,7 +439,7 @@ const ChartsSection = () => {
     // Configuración de barras responsiva
     barOptionRef.current = {
       title: {
-        text: 'Población por Municipio',
+        text: 'Monto total programado $154,055,937.59',
         left: 'center',
         textStyle: {
           fontSize: dimensions.titleFontSize,
