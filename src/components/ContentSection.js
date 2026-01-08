@@ -27,7 +27,7 @@ const ContentSection = () => {
         </div>
       </div>
 
-      <a className="btn-entrar" href='http://localhost/cofotur' >
+      <a className="btn-entrar" href='http://localhost/cofotu' >
             Entrar
         </a>
       
