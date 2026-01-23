@@ -1,0 +1,69 @@
+.rotate-prompt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(45, 17, 43, 0.98); /* Using app's theme color */
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+  text-align: center;
+  backdrop-filter: blur(5px);
+}
+
+.rotate-prompt-content {
+  padding: 2rem;
+  max-width: 80%;
+}
+
+.rotate-prompt-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.rotate-prompt-content p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Animated Phone Icon */
+.phone-icon {
+  width: 60px;
+  height: 100px;
+  border: 4px solid white;
+  border-radius: 10px;
+  margin: 0 auto 2rem;
+  animation: rotate-animation 2s infinite ease-in-out;
+  position: relative;
+}
+
+/* Screen line inside the phone */
+.phone-icon::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  right: 5px;
+  bottom: 10px;
+  border-top: 2px solid rgba(255,255,255,0.3);
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+}
+
+@keyframes rotate-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(90deg);
+  }
+  70% {
+    transform: rotate(90deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}

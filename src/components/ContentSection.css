@@ -1,104 +1,180 @@
-.content-section {
+/* Base container for all content sections to manage layout better */
+.content-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* Allow clicking through to parallax if needed */
+}
+
+/* Common styles for sections */
+.content-section,
+.content-section1,
+.content-section2,
+.content-section3 {
   position: absolute;
-  top: 10%;
-  left: 10%;
-  transform: translate(-50%, -50%);
-  max-width: 160px;
   z-index: 10;
   text-align: center;
+  pointer-events: auto;
 }
+
+/* Top Left Logo Section */
 .content-section1 {
-  position: absolute;
-  top: 10%;
-  left: 10%;
-  transform: translate(-50%, -50%);
-  max-width: 46%;
-  z-index: 10;
-  text-align: center;
-
+  top: 5%;
+  left: 5%;
+  transform: none;
+  /* Removed center transform for easier positioning */
+  max-width: 250px;
+  width: 20%;
 }
 
-/* Estilos sugeridos para el botón Entrar */
+.content-box1 img {
+  width: 100%;
+  height: auto;
+  max-width: 150px;
+}
+
+/* Main Center Content Section */
+.content-section2 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Keep centered */
+  width: 80%;
+  max-width: 600px;
+
+  /* Glassmorphism */
+  color: white;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-box h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.content-box {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Bottom Left Logo Section */
+.content-section3 {
+  bottom: 5%;
+  left: 5%;
+  top: auto;
+  /* Override previous top */
+  transform: none;
+  max-width: 250px;
+  width: 25%;
+}
+
+.content-box3 img {
+  width: 100%;
+  height: auto;
+  max-width: 180px;
+}
+
+/* Enter Button */
 .btn-entrar {
-    /* Diseño */
-    background-color: black; /* Color primario de ejemplo */
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    border: 2px solid white;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 20px; /* Separación del texto superior */
-    transition: background-color 0.3s ease;
-    position: absolute;
-    /* Para centrarlo si el content-box lo permite */
-    display: block; 
-    margin-left: auto;
-    margin-right: auto;
-    left: 90%;;
+  background-color: transparent;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 30px;
+  border: 2px solid white;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
+  left: auto;
+  margin: 0;
+  z-index: 20;
 }
 
 .btn-entrar:hover {
-    background-color: white;
-    color: black;
+  background-color: white;
+  color: #2D112B;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.content-section2 {
-  position: absolute;
-  top: 15%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  max-width: 30%;
-  z-index: 10;
-  text-align: center;
-  color: white;
-  background-color: rgba(255, 255, 255, 0.2); /* blanco translúcido */
-  backdrop-filter: blur(6px);                /* efecto glassmorphism */
-  border-radius: 16px;                        /* bordes redondeados */
-  padding: 1rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* sombra suave */
-}
-.content-section3 {
-  position: absolute;
-  top: 90%;
-  left: 10%;
-  transform: translate(-50%, -50%);
-  max-width: 46%;
-  z-index: 10;
-  text-align: center;
+/* --- Responsive Adjustments --- */
 
+/* Tablet & Mobile Landscape */
+@media (max-width: 1024px) {
+  .content-section2 {
+    width: 70%;
+    padding: 1.5rem;
+  }
 }
 
-.content-box1 {
-  padding: 1rem;
-  border-radius: 15px;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(5px);
-  color:white;
-  font-size: 18px;
-}
-.content-box4 {
-  padding: 1rem;
-  border-radius: 15px;
-  font-size: 18px;
+/* Mobile Portrait & Landscape Small */
+@media (max-width: 768px) {
+  .content-section1 {
+    top: 20px;
+    left: 20px;
+    width: 30%;
+  }
+
+  .content-section3 {
+    bottom: 20px;
+    left: 20px;
+    width: 35%;
+  }
+
+  .content-section2 {
+    width: 85%;
+    padding: 1.2rem;
+  }
+
+  .content-box h3 {
+    font-size: 1.5rem;
+  }
+
+  .content-box {
+    font-size: 1rem;
+  }
+
+  .btn-entrar {
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
 }
 
-.cta-button {
-  margin-top: 1rem;
-  padding: 0.8rem 2rem;
-  background: #2D112B;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
+/* Very Small Mobile / Landscape specific adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+  .content-section2 {
+    top: 55%;
+    /* Slightly lower to clear top logos if needed */
+    padding: 0.8rem;
+    max-width: 500px;
+  }
 
-.cta-button:hover {
-  background: #4a1d48;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  .content-box h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .content-box {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  /* Make logos smaller in landscape to save space */
+  .content-section1,
+  .content-section3 {
+    width: 15%;
+    max-width: 100px;
+  }
 }

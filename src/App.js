@@ -9,9 +9,13 @@ import Pipila from './assets/pipila_color.webp';
 import Bufa from './assets/bufa.png';
 import Casas from './assets/casas_color2.webp';
 import Casas2 from './assets/casa_color2.webp';
+import RotatePrompt from './components/RotatePrompt';
+import LoadingScreen from './components/LoadingScreen';
 
 const Parallax = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const layers = [
     { id: 0, src: Bufa, mobileDepth: 0 },
     { id: 1, src: Bufa, mobileDepth: 0 },
@@ -22,23 +26,53 @@ const Parallax = () => {
     { id: 6, src: Teatro, mobileDepth: 0 }
   ];
 
+  /* Preload Images */
+  useEffect(() => {
+    const preloadImages = async () => {
+      const promises = layers.map(layer => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.src = layer.src;
+          img.onload = resolve;
+          img.onerror = resolve; // Continue even if one fails
+        });
+      });
+
+      // Also preload the cover image if possible, though it's CSS
+      // We'll just wait for the layers for now
+
+      try {
+        await Promise.all(promises);
+        // Add a small delay for smoothness
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
+      } catch (error) {
+        console.error("Error loading images", error);
+        setIsLoading(false);
+      }
+    };
+
+    preloadImages();
+  }, []);
+
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
+
     checkIfMobile();
     window.addEventListener('resize', checkIfMobile);
-    
+
     const handleScroll = () => {
       if (isMobile) return;
-      
+
       const scrollPosition = window.pageYOffset;
       const layers = document.querySelectorAll('.parallax__layer');
-      
+
       layers.forEach(layer => {
-        const depth = isMobile 
-          ? layer.getAttribute('data-mobile-depth') || 0 
+        const depth = isMobile
+          ? layer.getAttribute('data-mobile-depth') || 0
           : layer.getAttribute('data-depth') || 0;
         const movement = -(scrollPosition * depth);
         const transform = `translate3d(0, ${movement}px, 0)`;
@@ -55,11 +89,13 @@ const Parallax = () => {
 
   return (
     <div className="main-container">
+      {isLoading && <LoadingScreen />}
+      <RotatePrompt />
       {/* Sección Parallax */}
-      <div className="parallax">
+      <div className="parallax" style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s ease-in' }}>
         {layers.map((layer) => (
-          <div 
-            key={layer.id} 
+          <div
+            key={layer.id}
             className={`parallax__layer parallax__layer__${layer.id}`}
             data-depth={layer.id * 0.1}
             data-mobile-depth={layer.mobileDepth}
@@ -67,13 +103,13 @@ const Parallax = () => {
             <img src={layer.src} alt={`Parallax layer ${layer.id}`} />
           </div>
         ))}
-           
-        <ContentSection/>
-   
-           <ChartsSection/>
+
+        <ContentSection />
+
+        <ChartsSection />
         <div className="parallax__cover"></div>
       </div>
-   
+
     </div>
   );
 };

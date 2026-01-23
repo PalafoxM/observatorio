@@ -2,7 +2,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   background-color: black;
   margin: 0;
   padding: 0;
@@ -52,34 +53,124 @@ html, body {
 }
 
 /* Depth layers */
-.parallax__layer__0 { transform: translateZ(-300px) scale(4);}
-.parallax__layer__1 { transform: translateZ(-250px) scale(3.5); }
-.parallax__layer__2 { transform: translateZ(-200px) scale(3); }
-.parallax__layer__3 { transform: translateZ(-150px) scale(2.5); }
-.parallax__layer__4 { transform: translateZ(-100px) scale(2); }
-.parallax__layer__5 { transform: translateZ(-50px) scale(1.5); }
-.parallax__layer__6 { transform: translateZ(0px) scale(1); }
+.parallax__layer__0 {
+  transform: translateZ(-300px) scale(4);
+}
+
+.parallax__layer__1 {
+  transform: translateZ(-250px) scale(3.5);
+}
+
+.parallax__layer__2 {
+  transform: translateZ(-200px) scale(3);
+}
+
+.parallax__layer__3 {
+  transform: translateZ(-150px) scale(2.5);
+}
+
+.parallax__layer__4 {
+  transform: translateZ(-100px) scale(2);
+}
+
+.parallax__layer__5 {
+  transform: translateZ(-50px) scale(1.5);
+}
+
+.parallax__layer__6 {
+  transform: translateZ(0px) scale(1);
+}
 
 /* Desktop XL */
 @media (min-width: 1200px) {
-  .parallax__layer__6 img { width: 100%; left: 0%; top: 19vh; height:100%; }
-  .parallax__layer__5 img { width: 60%; left: 0%; top: -15%; }
-  .parallax__layer__4 img { width: 60%; left: 40%; top: -18%; }
-  .parallax__layer__3 img { width: 30%; left: 30%; top: 5%; }
-  .parallax__layer__2 img { width: 20%; left: 67%; top: -5%; }
-  .parallax__layer__1 img { width: 30%; left: 0%; top: -7%; }
-  .parallax__layer__0 img { width: 30%; left: 75%; top: -12%; }
+  .parallax__layer__6 img {
+    width: 100%;
+    left: 0%;
+    top: 19vh;
+    height: 100%;
+  }
+
+  .parallax__layer__5 img {
+    width: 60%;
+    left: 0%;
+    top: -15%;
+  }
+
+  .parallax__layer__4 img {
+    width: 60%;
+    left: 40%;
+    top: -18%;
+  }
+
+  .parallax__layer__3 img {
+    width: 30%;
+    left: 30%;
+    top: 5%;
+  }
+
+  .parallax__layer__2 img {
+    width: 20%;
+    left: 67%;
+    top: -5%;
+  }
+
+  .parallax__layer__1 img {
+    width: 30%;
+    left: 0%;
+    top: -7%;
+  }
+
+  .parallax__layer__0 img {
+    width: 30%;
+    left: 75%;
+    top: -12%;
+  }
 }
 
 /* Tablet and Small Laptop */
 @media (max-width: 1199px) and (min-width: 768px) {
-  .parallax__layer__6 img { width: 100%; left: 0%; top: 0%; height: 100vh; }
-  .parallax__layer__5 img { width: 37%; left: 65%; top: 8%; }
-  .parallax__layer__4 img { width: 35%; left: 35%; top: 8%; }
-  .parallax__layer__3 img { width: 35%; left: 0%; top: 8%; }
-  .parallax__layer__2 img { width: 12%; left: 65%; top: 10%; }
-  .parallax__layer__1 img { width: 30%; left: 70%; top: -5%; }
-  .parallax__layer__0 img { width: 35%; left: 30%; top: -10%; }
+  .parallax__layer__6 img {
+    width: 100%;
+    left: 0%;
+    top: 0%;
+    height: 100vh;
+  }
+
+  .parallax__layer__5 img {
+    width: 37%;
+    left: 65%;
+    top: 8%;
+  }
+
+  .parallax__layer__4 img {
+    width: 35%;
+    left: 35%;
+    top: 8%;
+  }
+
+  .parallax__layer__3 img {
+    width: 35%;
+    left: 0%;
+    top: 8%;
+  }
+
+  .parallax__layer__2 img {
+    width: 12%;
+    left: 65%;
+    top: 10%;
+  }
+
+  .parallax__layer__1 img {
+    width: 30%;
+    left: 70%;
+    top: -5%;
+  }
+
+  .parallax__layer__0 img {
+    width: 35%;
+    left: 30%;
+    top: -10%;
+  }
 }
 
 /* Universal Mobile */
@@ -89,21 +180,76 @@ html, body {
     height: 100vh;
   }
 
-  .parallax__layer__6 img { width: 100%; left: 0%; top: 0vh; height: 100vh; }
-  .parallax__layer__5 img { width: 100%; left: -5%; top: -15%; }
-  .parallax__layer__4 img { width: 100%; left: 40%; top: -25%; }
-  .parallax__layer__3 img { width: 100%; left: 100%; top: -45%; }
-  .parallax__layer__2 img { width: 20%; left: 67%; top: 0%; }
-  .parallax__layer__1 img { width: 30%; left: -10%; top: 0%; }
-  .parallax__layer__0 img { width: 30%; left: 75%; top: 0%; }
+  .parallax__layer__6 img {
+    width: 100%;
+    left: 0%;
+    top: 0vh;
+    height: 100vh;
+  }
 
-  .parallax__layer__0 { transform: translateZ(-200px) scale(3); }
-  .parallax__layer__1 { transform: translateZ(-150px) scale(2.5); }
-  .parallax__layer__2 { transform: translateZ(-100px) scale(2); }
-  .parallax__layer__3 { transform: translateZ(-50px) scale(1.5); }
-  .parallax__layer__4 { transform: translateZ(-25px) scale(1.25); }
-  .parallax__layer__5 { transform: translateZ(-10px) scale(1.1); }
-  .parallax__layer__6 { transform: translateZ(0px) scale(1); }
+  .parallax__layer__5 img {
+    width: 100%;
+    left: -5%;
+    top: -15%;
+  }
+
+  .parallax__layer__4 img {
+    width: 100%;
+    left: 40%;
+    top: -25%;
+  }
+
+  .parallax__layer__3 img {
+    width: 100%;
+    left: 100%;
+    top: -45%;
+  }
+
+  .parallax__layer__2 img {
+    width: 20%;
+    left: 67%;
+    top: 0%;
+  }
+
+  .parallax__layer__1 img {
+    width: 30%;
+    left: -10%;
+    top: 0%;
+  }
+
+  .parallax__layer__0 img {
+    width: 30%;
+    left: 75%;
+    top: 0%;
+  }
+
+  .parallax__layer__0 {
+    transform: translateZ(-200px) scale(3);
+  }
+
+  .parallax__layer__1 {
+    transform: translateZ(-150px) scale(2.5);
+  }
+
+  .parallax__layer__2 {
+    transform: translateZ(-100px) scale(2);
+  }
+
+  .parallax__layer__3 {
+    transform: translateZ(-50px) scale(1.5);
+  }
+
+  .parallax__layer__4 {
+    transform: translateZ(-25px) scale(1.25);
+  }
+
+  .parallax__layer__5 {
+    transform: translateZ(-10px) scale(1.1);
+  }
+
+  .parallax__layer__6 {
+    transform: translateZ(0px) scale(1);
+  }
 }
 
 /* iPhone 14 Pro Max or similar */
@@ -114,20 +260,75 @@ html, body {
     min-height: -webkit-fill-available;
   }
 
-  .parallax__layer__6 img { width: 110%; left: -5%; top: 15vh; height: 110vh; }
-  .parallax__layer__5 img { width: 110%; left: -5%; top: 15vh; height: 110vh; }
-  .parallax__layer__4 img { width: 110%; left: 25%; top: 15vh; height: 110vh; }
-  .parallax__layer__3 img { width: 85%; left: 85%; top: 15vh; height: 110vh; }
-  .parallax__layer__2 img { width: 33%; left: 55%; top: 32vh; }
-  .parallax__layer__1 img { width: 100%; left: -37%; top: 6vh; }
-  .parallax__layer__0 img { width: 35%; left: 85%; top: 33vh; }
+  .parallax__layer__6 img {
+    width: 110%;
+    left: -5%;
+    top: 15vh;
+    height: 110vh;
+  }
 
-  .parallax__layer__0 { transform: translateZ(-150px) scale(2.5); }
-  .parallax__layer__1 { transform: translateZ(-100px) scale(2); }
-  .parallax__layer__2 { transform: translateZ(-60px) scale(1.6); }
-  .parallax__layer__3 { transform: translateZ(-30px) scale(1.3); }
-  .parallax__layer__4 { transform: translateZ(-15px) scale(1.15); }
-  .parallax__layer__5 { transform: translateZ(-5px) scale(1.05); }
+  .parallax__layer__5 img {
+    width: 110%;
+    left: -5%;
+    top: 15vh;
+    height: 110vh;
+  }
+
+  .parallax__layer__4 img {
+    width: 110%;
+    left: 25%;
+    top: 15vh;
+    height: 110vh;
+  }
+
+  .parallax__layer__3 img {
+    width: 85%;
+    left: 85%;
+    top: 15vh;
+    height: 110vh;
+  }
+
+  .parallax__layer__2 img {
+    width: 33%;
+    left: 55%;
+    top: 32vh;
+  }
+
+  .parallax__layer__1 img {
+    width: 100%;
+    left: -37%;
+    top: 6vh;
+  }
+
+  .parallax__layer__0 img {
+    width: 35%;
+    left: 85%;
+    top: 33vh;
+  }
+
+  .parallax__layer__0 {
+    transform: translateZ(-150px) scale(2.5);
+  }
+
+  .parallax__layer__1 {
+    transform: translateZ(-100px) scale(2);
+  }
+
+  .parallax__layer__2 {
+    transform: translateZ(-60px) scale(1.6);
+  }
+
+  .parallax__layer__3 {
+    transform: translateZ(-30px) scale(1.3);
+  }
+
+  .parallax__layer__4 {
+    transform: translateZ(-15px) scale(1.15);
+  }
+
+  .parallax__layer__5 {
+    transform: translateZ(-5px) scale(1.05);
+  }
 }
 
 /* Cover section */
@@ -143,8 +344,10 @@ html, body {
   left: 0;
   right: 0;
 
-  min-height: 100vh;   /* mínimo = una pantalla */
-  height: auto;        /* crece si el contenido lo requiere */
+  min-height: 100vh;
+  /* mínimo = una pantalla */
+  height: auto;
+  /* crece si el contenido lo requiere */
 
   z-index: 2;
 }
@@ -152,14 +355,50 @@ html, body {
 
 
 @media (min-width: 768px) and (max-width: 834px) and (orientation: portrait) {
-  .parallax__layer__6 img { width: 100%; top: 22vh; height: 100vh; left: 0; }
-  .parallax__layer__5 img { width: 100%; top: 10vh; left: 0%; }
-  .parallax__layer__4 img { width: 100%; top: 12vh; left: 20%; }
-  .parallax__layer__3 img { width: 60%; top: 20vh; left: 40%; }
-  .parallax__layer__2 img { width: 30%; top: 15vh; left: 50%; }
-  .parallax__layer__1 img { width: 40%; top: 18vh; left: 0%; }
-  .parallax__layer__0 img { width: 35%; top: 30vh; left: 65%; }
+  .parallax__layer__6 img {
+    width: 100%;
+    top: 22vh;
+    height: 100vh;
+    left: 0;
+  }
+
+  .parallax__layer__5 img {
+    width: 100%;
+    top: 10vh;
+    left: 0%;
+  }
+
+  .parallax__layer__4 img {
+    width: 100%;
+    top: 12vh;
+    left: 20%;
+  }
+
+  .parallax__layer__3 img {
+    width: 60%;
+    top: 20vh;
+    left: 40%;
+  }
+
+  .parallax__layer__2 img {
+    width: 30%;
+    top: 15vh;
+    left: 50%;
+  }
+
+  .parallax__layer__1 img {
+    width: 40%;
+    top: 18vh;
+    left: 0%;
+  }
+
+  .parallax__layer__0 img {
+    width: 35%;
+    top: 30vh;
+    left: 65%;
+  }
 }
+
 @media (max-width: 400px) {
   .parallax {
     perspective: 40px;
@@ -170,12 +409,85 @@ html, body {
     height: auto;
   }
 
-  .parallax__layer__6 img { top: 20vh; width: 100%; }
-  .parallax__layer__5 img { top: 10vh; width: 100%; }
-  .parallax__layer__4 img { top: 15vh; width: 100%; }
-  .parallax__layer__3 img { top: 20vh; width: 90%; }
-  .parallax__layer__2 img { top: 30vh; width: 30%; }
-  .parallax__layer__1 img { top: 10vh; width: 80%; }
-  .parallax__layer__0 img { top: 35vh; width: 30%; }
+  .parallax__layer__6 img {
+    top: 20vh;
+    width: 100%;
+  }
+
+  .parallax__layer__5 img {
+    top: 10vh;
+    width: 100%;
+  }
+
+  .parallax__layer__4 img {
+    top: 15vh;
+    width: 100%;
+  }
+
+  .parallax__layer__3 img {
+    top: 20vh;
+    width: 90%;
+  }
+
+  .parallax__layer__2 img {
+    top: 30vh;
+    width: 30%;
+  }
+
+  .parallax__layer__1 img {
+    top: 10vh;
+    width: 80%;
+  }
+
+  .parallax__layer__0 img {
+    top: 35vh;
+    width: 30%;
+  }
 }
 
+/* Mobile Landscape Tweaks */
+@media (max-height: 500px) and (orientation: landscape) {
+  .parallax__layer__6 img {
+    width: 100%;
+    height: 120vh;
+    /* Extra height to cover bounce/scroll */
+    top: -10vh;
+    object-fit: cover;
+  }
+
+  .parallax__layer__5 img {
+    width: 50%;
+    top: 5%;
+    left: 5%;
+  }
+
+  .parallax__layer__4 img {
+    width: 50%;
+    top: 5%;
+    left: 45%;
+  }
+
+  .parallax__layer__3 img {
+    width: 40%;
+    top: 15%;
+    left: 60%;
+  }
+
+  .parallax__layer__2 img {
+    width: 15%;
+    top: 20%;
+    left: 70%;
+  }
+
+  .parallax__layer__1 img {
+    width: 25%;
+    top: 10%;
+    left: 5%;
+  }
+
+  .parallax__layer__0 img {
+    width: 20%;
+    top: 15%;
+    left: 75%;
+  }
+}
