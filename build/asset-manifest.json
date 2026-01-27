@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/cofotur/static/css/main.40dfdae6.css",
-    "main.js": "/cofotur/static/js/main.69049e79.js",
+    "main.js": "/cofotur/static/js/main.b5d04cd8.js",
     "static/js/453.97b4d6b3.chunk.js": "/cofotur/static/js/453.97b4d6b3.chunk.js",
     "static/media/IMG18.jpg": "/cofotur/static/media/IMG18.a4083ae86dfd322ffca3.jpg",
     "static/media/TEATRO_JUAREZ.png": "/cofotur/static/media/TEATRO_JUAREZ.03bc3bd3ac690fdb2642.png",
@@ -13,11 +13,11 @@
     "static/media/logo-guanajuato.png": "/cofotur/static/media/logo-guanajuato.08f6befcca159d14210e.png",
     "index.html": "/cofotur/index.html",
     "main.40dfdae6.css.map": "/cofotur/static/css/main.40dfdae6.css.map",
-    "main.69049e79.js.map": "/cofotur/static/js/main.69049e79.js.map",
+    "main.b5d04cd8.js.map": "/cofotur/static/js/main.b5d04cd8.js.map",
     "453.97b4d6b3.chunk.js.map": "/cofotur/static/js/453.97b4d6b3.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.40dfdae6.css",
-    "static/js/main.69049e79.js"
+    "static/js/main.b5d04cd8.js"
   ]
 }
