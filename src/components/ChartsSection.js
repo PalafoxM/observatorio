@@ -1,702 +1,705 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React from 'react';
 import ReactECharts from 'echarts-for-react';
-import * as echarts from 'echarts';
 import './ChartsSection.css';
-import guanajuatoJson from '../assets/edo_guanajuato.geo.json';
 
 const ChartsSection = () => {
-  // Estados para los dos gráficos
-  const [mapOption, setMapOption] = useState(null);
-  const [municipioOption, setMunicipioOption] = useState(null);
-  const [selectedMunicipio, setSelectedMunicipio] = useState(null);
-  const [municipioGeoData, setMunicipioGeoData] = useState({});
-  const [isMobile, setIsMobile] = useState(false);
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight
-  });
-  
-  // Refs para los gráficos
-  const chartRef = useRef(null);
-  const municipioChartRef = useRef(null);
-  const intervalRef = useRef(null);
-  const mapOptionRef = useRef(null);
-  const barOptionRef = useRef(null);
-
-  // Detectar cambios en el tamaño de la ventana
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Inicializar
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Función para obtener dimensiones responsivas
-  const getResponsiveDimensions = useCallback(() => {
-    if (windowSize.width < 576) { // Mobile pequeño
-      return {
-        chartHeight: 400,
-        pieRadius: 8,
-        fontSize: 10,
-        legendFontSize: 9,
-        titleFontSize: 16,
-        labelFontSize: 9
-      };
-    } else if (windowSize.width < 768) { // Mobile/Tablet
-      return {
-        chartHeight: 450,
-        pieRadius: 10,
-        fontSize: 11,
-        legendFontSize: 10,
-        titleFontSize: 18,
-        labelFontSize: 10
-      };
-    } else if (windowSize.width < 992) { // Tablet
-      return {
-        chartHeight: 500,
-        pieRadius: 12,
-        fontSize: 12,
-        legendFontSize: 11,
-        titleFontSize: 20,
-        labelFontSize: 11
-      };
-    } else { // Desktop
-      return {
-        chartHeight: 550,
-        pieRadius: 15,
-        fontSize: 14,
-        legendFontSize: 12,
-        titleFontSize: 22,
-        labelFontSize: 12
-      };
-    }
-  }, [windowSize.width]);
-
-  // Procesar el GeoJSON para extraer municipios individuales
-  useEffect(() => {
-    if (guanajuatoJson && guanajuatoJson.features) {
-      const municipiosData = {};
-      
-      guanajuatoJson.features.forEach(feature => {
-        const municipioName = feature.properties?.name;
-        if (municipioName) {
-          // Crear un FeatureCollection con solo este municipio
-          municipiosData[municipioName] = {
-            type: "FeatureCollection",
-            features: [feature]
-          };
-          
-          // Calcular el centro del polígono para posicionar gráficos
-          if (feature.geometry.type === 'Polygon' && feature.geometry.coordinates[0]) {
-            const coordinates = feature.geometry.coordinates[0];
-            let minX = Infinity, maxX = -Infinity;
-            let minY = Infinity, maxY = -Infinity;
-            
-            // Encontrar los límites del polígono
-            coordinates.forEach(coord => {
-              const [x, y] = coord;
-              if (x < minX) minX = x;
-              if (x > maxX) maxX = x;
-              if (y < minY) minY = y;
-              if (y > maxY) maxY = y;
-            });
-            
-            // Calcular centro aproximado
-            const centerX = (minX + maxX) / 2;
-            const centerY = (minY + maxY) / 2;
-            
-            municipiosData[municipioName].center = [centerX, centerY];
-            municipiosData[municipioName].bounds = { minX, maxX, minY, maxY };
+  const data = {
+    "name": "Sesiones Ordinarias 2025",
+    "children": [
+      {
+        "name": "PRIMERA ORDINARIA",
+        "children": [
+          {
+            "name": "Forever Wedding Summit",
+            "value": 486939.44
+          },
+          {
+            "name": "Congreso Nacional de la Industria de Reuniones",
+            "value": 728346.3
+          },
+          {
+            "name": "Meeting Place León",
+            "value": 2936419.5
+          },
+          {
+            "name": "Congreso MPI",
+            "value": 117594.48
+          },
+          {
+            "name": "Congreso De Bodas y Eventos Sustentables LAT",
+            "value": 321219.2
+          },
+          {
+            "name": "PCMA Advisory Client Roadshow",
+            "value": 941824
+          },
+          {
+            "name": "Neextt Unique Hotels & Destinations SMA 2025",
+            "value": 458200
+          },
+          {
+            "name": "Plan de Medios SECTURI 2025",
+            "value": 4292267.77
+          },
+          {
+            "name": "Alianza comercial Expedia 2025",
+            "value": 2000000
+          },
+          {
+            "name": "Alianza comercial Planet IFE 2025",
+            "value": 2691199
+          },
+          {
+            "name": "Festival Endémico 2025",
+            "value": 4000000
+          },
+          {
+            "name": "13° Encuentro de Cocina Tradicional Guanajuato ¡Sí Sabe!",
+            "value": 3205500
           }
-        }
-      });
-      
-      setMunicipioGeoData(municipiosData);
-    }
-  }, []);
-
-  // Datos de población
-  const populationData = [
-    { name: 'Celaya', value: 1650000 },
-    { name: 'León', value: 580000 },
-    { name: 'Irapuato', value: 500000 },
-    { name: 'Guanajuato', value: 270000 },
-    { name: 'Silao', value: 200000 },
-    { name: 'Yuriria', value: 120000 },
-    { name: 'San Luis de la Paz', value: 90000 },
-    { name: 'Dolores Hidalgo', value: 130000 },
-    { name: 'Salamanca', value: 130000 },
-    { name: 'San Miguel de Allende', value: 130000 },
-    { name: 'Comonfort', value: 130000 },
-    { name: 'San Felipe', value: 130000 },
-  ];
-
-  // Función para crear gráficos de tarta sobre el mapa
-  const createPieSeries = useCallback((center, radius = 20) => {
-    const dimensions = getResponsiveDimensions();
-    const actualRadius = radius * (dimensions.pieRadius / 15); // Ajuste proporcional
-    
-    const categories = ['Proyectos', 'Region', 'Comercio', 'Servicios'];
-    const pieData = categories.map((category, index) => ({
-      value: Math.round(Math.random() * 100),
-      name: category
-    }));
-
-    return {
-      type: 'pie',
-      coordinateSystem: 'geo',
-      tooltip: {
-        formatter: '{b}: {c} ({d}%)',
-        textStyle: {
-          fontSize: dimensions.fontSize
-        }
+        ]
       },
-      label: {
-        show: false
+      {
+        "name": "SEGUNDA ORDINARIA",
+        "children": [
+          {
+            "name": "Red Bull Guanajuato Cerro Abajo",
+            "value": 1200000
+          },
+          {
+            "name": "La Carrera Panamericana 2025",
+            "value": 700000
+          },
+          {
+            "name": "Copa Ave Fénix 2025",
+            "value": 150000
+          },
+          {
+            "name": "Open International 2025",
+            "value": 500000
+          },
+          {
+            "name": "Maratón Capital",
+            "value": 450000
+          },
+          {
+            "name": "3er. Festival Internacional la Mujer a Caballo",
+            "value": 400000
+          },
+          {
+            "name": "ULTRA GUANAJUATO",
+            "value": 200000
+          },
+          {
+            "name": "COPA SULTANES 3ERA EDICIÓN",
+            "value": 200000
+          },
+          {
+            "name": "Candelabrum Metal Fest IV",
+            "value": 800000
+          },
+          {
+            "name": "Festival Estatal Pride León Ofarrell",
+            "value": 250000
+          },
+          {
+            "name": "Salva Rock Festival Multicultural VII 2025",
+            "value": 100000
+          },
+          {
+            "name": "Festival del día de muertos \"Camino al Mictlán\"",
+            "value": 300000
+          },
+          {
+            "name": "Senda del Arriero del Camino Real Tierra Adentro",
+            "value": 300000
+          },
+          {
+            "name": "Fermentes y Vino Natural",
+            "value": 200000
+          },
+          {
+            "name": "MILLESIME GNP WEEKEND",
+            "value": 850000
+          },
+          {
+            "name": "Tinto Bajío Festival de Vino Mexicano",
+            "value": 400000
+          },
+          {
+            "name": "DÉCIMO QUINTA EDICIÓN DE LA FERIA DE LA PANIFICACIÓN ACÁMBARO 2025",
+            "value": 200000
+          },
+          {
+            "name": "Octava Edición de – CAMBIANDO MIRADAS- Simposium Internacional de Síndrome de Down y Otras Neurodivergencias",
+            "value": 250000
+          },
+          {
+            "name": "LXXIV Congreso Nacional de la SMORLCCC",
+            "value": 300000
+          },
+          {
+            "name": "CREDIEXPO",
+            "value": 200000
+          },
+          {
+            "name": "Expo Guanajuato Provee 5ta edición",
+            "value": 100000
+          },
+          {
+            "name": "México Assembly Wire Expo",
+            "value": 400000
+          },
+          {
+            "name": "Participación en el 49 Tianguis Turístico de México de Baja California",
+            "value": 8769116.45
+          },
+          {
+            "name": "IBTM AMÉRICAS",
+            "value": 2251086.66
+          },
+          {
+            "name": "Socios comerciales (CONEXSTUR y PRIMERA PLUS)",
+            "value": 800000
+          },
+          {
+            "name": "Participación en el Tianguis Nacional de Pueblos Mágicos",
+            "value": 800000
+          },
+          {
+            "name": "Caravana de Identidad y Pertenencia",
+            "value": 1500000
+          }
+        ]
       },
-      labelLine: {
-        show: false
+      {
+        "name": "TERCERA ORDINARIA",
+        "children": [
+          {
+            "name": "FORO WELLNESS yourself",
+            "value": 150000
+          },
+          {
+            "name": "Festival el Caballo y su Mundo",
+            "value": 150000
+          },
+          {
+            "name": "Festival De La Salud Saberes Ancestrales",
+            "value": 100000
+          },
+          {
+            "name": "5° Festival del Mango 2025",
+            "value": 350000
+          },
+          {
+            "name": "Apaseo en Corto",
+            "value": 100000
+          },
+          {
+            "name": "Festival Internacional de Papalotes y Cometas",
+            "value": 250000
+          },
+          {
+            "name": "7mo. Festival Internacional  Cala de Caballo 2025",
+            "value": 500000
+          },
+          {
+            "name": "Expo Mecánico Automotriz Internacional León 2025",
+            "value": 300000
+          },
+          {
+            "name": "Festival Internacional de Violoncello León Novena Edición",
+            "value": 100000
+          },
+          {
+            "name": "VIVE EL VINO",
+            "value": 350000
+          },
+          {
+            "name": "Feria de la poesía, vino y queso",
+            "value": 300000
+          },
+          {
+            "name": "Congreso Dento León UNAM",
+            "value": 200000
+          },
+          {
+            "name": "Congreso Veterinario de León",
+            "value": 1999999
+          },
+          {
+            "name": "5° Congreso anual “Anestesiología pediátrica a la vanguardia: Inteligencia artificial y nuevas realidades”",
+            "value": 120000
+          },
+          {
+            "name": "Expo Nopal 2025",
+            "value": 300000
+          },
+          {
+            "name": "Viva Guanajuato; sabor, música y folclor 2025",
+            "value": 800000
+          },
+          {
+            "name": "FESTIVAL PRIDE GUANAJUATO",
+            "value": 150000
+          },
+          {
+            "name": "VENDIMIA BRAVA 2025",
+            "value": 300000
+          },
+          {
+            "name": "Fiexpo Latin America",
+            "value": 278300
+          }
+        ]
       },
-      animationDuration: 300,
-      radius: actualRadius,
-      center: center,
-      data: pieData,
-      itemStyle: {
-        borderColor: '#fff',
-        borderWidth: 2
+      {
+        "name": "CUARTA ORDINARIA",
+        "children": [
+          {
+            "name": "Promoción de  experiencias de turismo de naturaleza en el Estado de Guanajuato",
+            "value": 2091997.8
+          },
+          {
+            "name": "YURIRIA, Estrategia Integral de Promoción",
+            "value": 1716000
+          },
+          {
+            "name": "Ultimate Urban Enduro",
+            "value": 200000
+          },
+          {
+            "name": "5° Torneo Internacional Veritas 2025",
+            "value": 400000
+          },
+          {
+            "name": "Copa Amistad Internacional 2025",
+            "value": 600000
+          },
+          {
+            "name": "1ER CONCURSO NACIONAL ARTESANAL DEL GABAN CORONEO, GUANAJUATO 2025",
+            "value": 250000
+          },
+          {
+            "name": "XXI Festival Medieval Guanajuato 2025",
+            "value": 100000
+          },
+          {
+            "name": "BANDAFEST 2025 VILLAGRÁN",
+            "value": 1300000
+          },
+          {
+            "name": "“Mátur’é, Camino al Mictlán”",
+            "value": 1000000
+          },
+          {
+            "name": "ETSKUNI",
+            "value": 70000
+          },
+          {
+            "name": "LEYENDAS GTO",
+            "value": 1000000
+          },
+          {
+            "name": "THE LEGACY Congreso Internacional de Danza Jazz 2a Edición",
+            "value": 200000
+          },
+          {
+            "name": "TASTE! Concurso y Reality Internacional en Diseño de Coctelería de Autor",
+            "value": 300000
+          },
+          {
+            "name": "SAN MIGUEL Y SUS SABORES",
+            "value": 772637.68
+          },
+          {
+            "name": "MICHEFEST, VILLAGRÁN 2025",
+            "value": 500000
+          },
+          {
+            "name": "Shaker Room 2025",
+            "value": 120000
+          },
+          {
+            "name": "Congreso Internacional de Diseño Guerra Grafica 2025",
+            "value": 100000
+          },
+          {
+            "name": "CONVENCION KONECTA LEON GTO VII",
+            "value": 500000
+          },
+          {
+            "name": "Congreso Nacional de Enfermería en Medicina Crítica",
+            "value": 150000
+          },
+          {
+            "name": "3er Congreso Internacional de mujeres y Líderes Empresariales",
+            "value": 1500000
+          },
+          {
+            "name": "XIV Seminario Iberoamericano de las Artesanías",
+            "value": 100000
+          },
+          {
+            "name": "Convención Anual y Expo ANEAS 2025 XXXVII",
+            "value": 1999999
+          },
+          {
+            "name": "Concierto de Carmina Burana con la Sinfónica de Minería",
+            "value": 500000
+          },
+          {
+            "name": "Festival De La Salud Saberes Ancestrales",
+            "value": 293270
+          },
+          {
+            "name": "Promoción y Difusión Turística del Estado de Guanajuato mediante Estrategia de Relaciones Públicas para el Fortalecimiento de la Oferta e Integración Municipal a través de FAM Trips Nacionales.",
+            "value": 2759548.99
+          },
+          {
+            "name": "MEETING PLACE GUANAJUATO",
+            "value": 3290146
+          },
+          {
+            "name": "Alianza comercial Mexitours 2025",
+            "value": 300000
+          }
+        ]
       },
-      emphasis: {
-        scale: true,
-        scaleSize: 5,
-        itemStyle: {
-          shadowBlur: 10,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
-        }
+      {
+        "name": "QUINTA ORDINARIA",
+        "children": [
+          {
+            "name": "Proyecto Integral de Promoción Turística: Silao el destino emergente  para el Turismo de Reuniones",
+            "value": 325000
+          },
+          {
+            "name": "Proyecto Integral de Promoción de Destino Salamanca Otoño/Invierno 2025",
+            "value": 1114873.02
+          },
+          {
+            "name": "GIRA Tourism EXPO Japan",
+            "value": 382974
+          },
+          {
+            "name": "Roadshow Colombia",
+            "value": 69798
+          },
+          {
+            "name": "XXXI Festival Internacional de Jazz y Blues de San Miguel de Allende",
+            "value": 70000
+          },
+          {
+            "name": "Feria de Arte Popular Raíces y Colores",
+            "value": 400000
+          },
+          {
+            "name": "Magia en Guanajuato",
+            "value": 1000000
+          },
+          {
+            "name": "Hole & Wine 2025",
+            "value": 250000
+          },
+          {
+            "name": "TINTO APARTAMENTO",
+            "value": 250000
+          },
+          {
+            "name": "LXXII Congreso de Pediatría y XXXV Jornadas de Estomatología",
+            "value": 250000
+          },
+          {
+            "name": "CONGRESO Y 50 REUNION NACIONAL FEDERACIÓN MEXICANA DE  COLEGIOS  DE INGENIEROS CIVILES A.C.",
+            "value": 600000
+          },
+          {
+            "name": "4° Summit de la Industria de Reuniones León y Día Educativo PCOMM",
+            "value": 376000
+          },
+          {
+            "name": "Catando México, festival de  vinos mexicanos",
+            "value": 200000
+          },
+          {
+            "name": "Contratación de Banners en internet - Food & Wine en Español",
+            "value": 417600
+          },
+          {
+            "name": "Fortalecimiento a municipios de Guanajuato en Redes Sociales 2025",
+            "value": 2000000
+          }
+        ]
       }
-    };
-  }, [getResponsiveDimensions]);
+    ]
+  };
 
-  // Manejar clic en municipio del primer mapa
-  const handleMunicipioClick = useCallback((params) => {
-    if (params.componentType === 'series' && params.seriesType === 'map') {
-      const municipioName = params.name;
-      
-      if (municipioGeoData[municipioName]) {
-        setSelectedMunicipio(municipioName);
-        
-        const municipioMapName = `municipio_${municipioName.replace(/\s+/g, '_')}`;
-        const dimensions = getResponsiveDimensions();
-        
-        try {
-          echarts.registerMap(municipioMapName, municipioGeoData[municipioName]);
-        } catch (error) {
-          console.warn('Error registrando mapa:', error);
-        }
-        
-        const center = municipioGeoData[municipioName]?.center || [-101.0, 20.8];
-        
-        // Crear opción para mostrar solo el municipio con ajustes responsivos
-        const municipioChartOption = {
-          title: {
-            text: municipioName,
-            left: 'center',
-            textStyle: {
-              fontSize: dimensions.titleFontSize,
-              fontWeight: 'bold',
-              color: '#2c3e50'
-            },
-            subtext: 'Municipio - Distribución por Sectores',
-            subtextStyle: {
-              fontSize: Math.max(dimensions.fontSize - 2, 10),
-              color: '#7f8c8d',
-              fontWeight: 'normal'
-            }
+  const data2 = {
+    "name": "Sesiones Extraordinarias 2025",
+    "children": [
+      {
+        "name": "PRIMERA EXTRAORDINARIA",
+        "children": [
+          {
+            "name": "VISITA DOLORES 2025",
+            "value": 2358286
           },
-          tooltip: {
-            trigger: 'item',
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            borderColor: '#3498db',
-            borderWidth: 1,
-            textStyle: {
-              color: '#fff',
-              fontSize: dimensions.fontSize
-            },
-            formatter: function(params) {
-              if (params.seriesType === 'pie') {
-                return `<div style="padding: 5px; font-size: ${dimensions.fontSize}px;">
-                  <strong>${params.name}</strong><br/>
-                  Valor: ${params.value}<br/>
-                  Porcentaje: ${params.percent}%
-                </div>`;
-              }
-              return params.name;
-            }
+          {
+            "name": "Proyecto Integral de Promoción del Destino Guanajuato Capital",
+            "value": 6484440
           },
-          geo: {
-            map: municipioMapName,
-            roam: !isMobile, // Deshabilitar roam en móvil para mejor UX
-            zoom: isMobile ? 1.5 : 1.2,
-            center: center,
-            label: {
-              show: !isMobile, // Ocultar etiquetas en móvil
-              color: '#2c3e50',
-              fontSize: dimensions.labelFontSize,
-              fontWeight: 'bold',
-              formatter: '{b}'
-            },
-            itemStyle: {
-              areaColor: '#f8f9fa',
-              borderColor: '#3498db',
-              borderWidth: 2,
-              shadowColor: 'rgba(0, 0, 0, 0.3)',
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowOffsetY: 0
-            },
-            emphasis: {
-              itemStyle: {
-                areaColor: '#3498db',
-                borderColor: '#2980b9',
-                borderWidth: 3
-              },
-              label: {
-                show: true,
-                color: '#2c3e50',
-                fontWeight: 'bold',
-                fontSize: Math.min(dimensions.labelFontSize + 2, 16)
-              }
-            },
-            select: {
-              itemStyle: {
-                areaColor: '#e74c3c'
-              }
-            }
+          {
+            "name": "Celaya: identidad viva, tradición que inspira",
+            "value": 2700000
           },
-          legend: {
-            type: isMobile ? 'plain' : 'scroll',
-            orient: isMobile ? 'horizontal' : 'vertical',
-            right: isMobile ? 'auto' : 20,
-            top: isMobile ? 40 : 'middle',
-            bottom: isMobile ? 10 : 'auto',
-            textStyle: {
-              color: '#2c3e50',
-              fontSize: dimensions.legendFontSize
-            },
-            data: ['Agricultura', 'Industria', 'Comercio', 'Servicios'],
-            selectedMode: false
+          {
+            "name": "Proyecto Integral de Promoción de Destino San Luis de La Paz 2025",
+            "value": 967360
           },
-          series: [
-            createPieSeries([center[0] - 0.005, center[1] + 0.005], 15),
-            createPieSeries([center[0] + 0.005, center[1] - 0.005], 15),
-            createPieSeries([center[0] - 0.01, center[1] - 0.01], 12),
-            createPieSeries([center[0] + 0.01, center[1] + 0.01], 12),
-          ]
-        };
-
-        setMunicipioOption(municipioChartOption);
-        
-        // Resaltar municipio en el primer gráfico
-        const echartsInstance = chartRef.current?.getEchartsInstance();
-        if (echartsInstance) {
-          echartsInstance.dispatchAction({
-            type: 'select',
-            seriesIndex: 0,
-            name: municipioName
-          });
-        }
+          {
+            "name": "Guia México Desconocido 2025 - Edición Especial Guanajuato",
+            "value": 1160000
+          },
+          {
+            "name": "Roadshow Guanajuato por Estados Unidos y Colombia 2025",
+            "value": 6485099.17
+          },
+          {
+            "name": "Fiexpo Latin America",
+            "value": 650000
+          },
+          {
+            "name": "Alianza comercial CATAI VIAJES 2025",
+            "value": 1296021.32
+          },
+          {
+            "name": "Alianza comercial Planet IFE 2025",
+            "value": 1131872
+          }
+        ]
+      },
+      {
+        "name": "SEGUNDA EXTRAORDINARIA",
+        "children": [
+          {
+            "name": "Proyecto Integral Viva León",
+            "value": 12877000
+          },
+          {
+            "name": "Proyecto Integral de promoción, comercialización y producto turístico de Irapuato",
+            "value": 1325000
+          },
+          {
+            "name": "Guanajuato, ruta del vino con identidad: turismo, cultura y desarrollo comunitario",
+            "value": 1066874
+          },
+          {
+            "name": "Publicidad en exteriores Aeropuerto Internacional de Querétaro AIQ",
+            "value": 414999.96
+          },
+          {
+            "name": "Servicio integral de promoción y difusión turística del estado de Guanajuato mediante un módulo físico instalado en el Aeropuerto Internacional del Bajío (BJX)",
+            "value": 2976560
+          },
+          {
+            "name": "13° Encuentro de Cocina Tradicional Guanajuato ¡Sí Sabe!",
+            "value": 116000
+          }
+        ]
+      },
+      {
+        "name": "TERCERA EXTRAORDINARIA",
+        "children": [
+          {
+            "name": "Festival de Verano Vive León 2025",
+            "value": 1000000
+          },
+          {
+            "name": "WORLD MEETINGS FORUM GLOBAL CARIBE",
+            "value": 473018.36
+          }
+        ]
+      },
+      {
+        "name": "QUINTA EXTRAORDINARIA",
+        "children": [
+          {
+            "name": "Campaña de Promoción Asociación de Hoteles de Guanajuato",
+            "value": 347200
+          },
+          {
+            "name": "“Campaña de Promoción del Distintivo Empresarial – Celaya: Una Vía al Futuro”, a desarrollarse en el marco del Primer Congreso Ferroviario y de Logística Celaya 2025",
+            "value": 1231040
+          },
+          {
+            "name": "NOCHE MÍSTICA",
+            "value": 96850
+          },
+          {
+            "name": "7° Festival del Día de los Muertos Guanajuato",
+            "value": 2500000
+          },
+          {
+            "name": "XVIII Muestra Internacional de Arte Efímero \"El Tapete de la Muerte\"",
+            "value": 600000
+          },
+          {
+            "name": "Turismo educativo y enoturismo en Guanajuato: una estrategia de atracción internacional",
+            "value": 296700
+          },
+          {
+            "name": "HERRAMIENTAS DE PROMOCIÓN Y DIFUSIÓN",
+            "value": 155469
+          },
+          {
+            "name": "4to. Festival de Paseo por Apaseo, Tierra de Sabor y Tradición",
+            "value": 200000
+          },
+          {
+            "name": "GREEN JOBS FOR YOUTH ACADEMY",
+            "value": 200000
+          },
+          {
+            "name": "Foro de Construcción 5.0",
+            "value": 700000
+          },
+          {
+            "name": "4ta Cumbre Nacional de Marchas LGBT+",
+            "value": 350000
+          },
+          {
+            "name": "Proyecto Integral de promoción, comercialización y producto turístico de Irapuato",
+            "value": 2445093
+          },
+          {
+            "name": " 7ma. Edición Vinum Guanajuato 2025",
+            "value": 1999840
+          },
+          {
+            "name": "Guanajuato Inexplorado",
+            "value": 2598400
+          },
+          {
+            "name": "FOOD AND TRAVEL MÉXICO,  CAMPAÑA DIGITAL",
+            "value": 835200
+          }
+        ]
+      },
+      {
+        "name": "SEXTA EXTRAORDINARIA",
+        "children": [
+          {
+            "name": "Promoción y difusión de la oferta turística del estado de Guanajuato en espacios del metro, autobús y aeropuerto en Madrid, España.",
+            "value": 2433587.5
+          },
+          {
+            "name": "Promoción y difusión de la oferta turística del estado de Guanajuato, a través de branding en pared en IFEMA en el marco de la Feria Internacional de Turismo (FITUR).",
+            "value": 700000
+          },
+          {
+            "name": "Participación FITUR 2026",
+            "value": 4200000
+          }
+        ]
       }
-    }
-  }, [municipioGeoData, createPieSeries, getResponsiveDimensions, isMobile]);
+    ]
+  };
 
-  // Resetear a vista inicial
-  const resetToInitialView = useCallback(() => {
-    setSelectedMunicipio(null);
-    setMunicipioOption(null);
-    
-    const echartsInstance = chartRef.current?.getEchartsInstance();
-    if (echartsInstance) {
-      echartsInstance.dispatchAction({
-        type: 'unselect',
-        seriesIndex: 0
-      });
-    }
-  }, []);
-
-  // Efecto principal - Configurar primer gráfico
-  useEffect(() => {
-    const dimensions = getResponsiveDimensions();
-    
-    // Registrar mapa completo de Guanajuato
-    echarts.registerMap('Guanajuato', guanajuatoJson);
-    
-    // Ordenar datos
-    const sortedData = [...populationData].sort((a, b) => a.value - b.value);
-
-    // Configuración del mapa responsivo
-    mapOptionRef.current = {
-      title: {
-        text: '12 - Proyectos Integrales',
-        left: 'center',
-        textStyle: {
-          fontSize: dimensions.titleFontSize,
-          fontWeight: 'bold',
-          color: '#2c3e50'
+  const option = {
+    tooltip: {
+      trigger: 'item',
+      triggerOn: 'mousemove'
+    },
+    legend: {
+      top: '2%',
+      left: '3%',
+      orient: 'vertical',
+      data: [
+        {
+          name: 'ORDINARIAS',
+          icon: 'rectangle'
         },
-        subtext: 'Haz clic en un municipio para ver detalles',
-        subtextStyle: {
-          fontSize: Math.max(dimensions.fontSize - 2, 10),
-          color: '#7f8c8d'
+        {
+          name: 'EXTRAORDINARIAS',
+          icon: 'rectangle'
         }
-      },
-      tooltip: {
-        trigger: 'item',
-        textStyle: {
-          fontSize: dimensions.fontSize
-        },
-        formatter: function(params) {
-          const city = populationData.find(c => c.name === params.name);
-          const population = city ? city.value.toLocaleString() : 'N/A';
-          return `<div style="padding: 10px; border-radius: 4px; font-size: ${dimensions.fontSize}px;">
-            <strong style="color: #3498db;">${params.name}</strong><br/>
-            <span style="color: #2c3e50;">Población: ${population}</span><br/>
-            <small style="color: #95a5a6;">Click para ver detalles</small>
-          </div>`;
-        }
-      },
-      visualMap: {
-        left: isMobile ? 'center' : 'right',
-        top: isMobile ? 20 : 'center',
-        bottom: isMobile ? 'auto' : 'center',
-        min: 80000,
-        max: 1650000,
-        inRange: {
-          color: ['#d6eaf8', '#3498db', '#21618c']
-        },
-        text: ['ALTA', 'BAJA'],
-        textStyle: {
-          color: '#2c3e50',
-          fontSize: dimensions.legendFontSize
-        },
-        calculable: true,
-        orient: isMobile ? 'horizontal' : 'vertical',
-        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-        borderColor: '#bdc3c7',
-        borderWidth: 1,
-        padding: 10,
-        itemWidth: 20,
-        itemHeight: 150
-      },
-      series: [{
-        id: 'population',
-        type: 'map',
-        roam: !isMobile, // Solo permitir roam en desktop
-        map: 'Guanajuato',
-        animationDurationUpdate: 1000,
-        universalTransition: true,
-        data: populationData,
+      ],
+      borderColor: '#fff',
+      textStyle: {
+        color: '#fff'
+      }
+    },
+    series: [
+      {
+        type: 'tree',
+        name: 'ORDINARIAS',
+        data: [data],
+        top: '5%',
+        left: '7%',
+        bottom: '2%',
+        right: '60%',
+        symbolSize: 7,
         label: {
-          show: !isMobile, // Ocultar etiquetas en móvil
-          fontSize: dimensions.labelFontSize
+          position: 'left',
+          verticalAlign: 'middle',
+          align: 'right',
+          color: '#fff'
+        },
+        leaves: {
+          label: {
+            position: 'right',
+            verticalAlign: 'middle',
+            align: 'left',
+            color: '#fff'
+          }
         },
         emphasis: {
-          itemStyle: {
-            areaColor: '#3498db',
-            borderColor: '#2980b9',
-            borderWidth: 2
-          },
-          label: {
-            show: true,
-            color: '#2c3e50',
-            fontWeight: 'bold',
-            fontSize: Math.min(dimensions.labelFontSize + 2, 14)
-          }
+          focus: 'descendant'
         },
-        select: {
-          itemStyle: {
-            areaColor: '#e74c3c',
-            borderColor: '#c0392b',
-            borderWidth: 3
-          },
-          label: {
-            show: true,
-            color: '#c0392b',
-            fontWeight: 'bold',
-            fontSize: Math.min(dimensions.labelFontSize + 2, 14)
-          }
-        },
-        selectedMode: 'single'
-      }]
-    };
-
-    // Configuración de barras responsiva
-    barOptionRef.current = {
-      title: {
-        text: 'Monto total programado $154,055,937.59',
-        left: 'center',
-        textStyle: {
-          fontSize: dimensions.titleFontSize,
-          fontWeight: 'bold',
-          color: '#2c3e50'
-        }
+        expandAndCollapse: true,
+        animationDuration: 550,
+        animationDurationUpdate: 750
       },
-      grid: {
-        left: isMobile ? '8%' : '3%',
-        right: isMobile ? '5%' : '8%',
-        bottom: isMobile ? '15%' : '3%',
-        top: isMobile ? '20%' : '15%',
-        containLabel: true
-      },
-      xAxis: {
-        type: 'value',
-        name: 'Población',
-        nameTextStyle: {
-          color: '#2c3e50',
-          fontSize: dimensions.fontSize
-        },
-        axisLabel: {
-          color: '#2c3e50',
-          fontSize: dimensions.labelFontSize,
-          formatter: (value) => {
-            if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
-            if (value >= 1000) return `${(value / 1000).toFixed(0)}k`;
-            return value.toLocaleString();
-          }
-        },
-        splitLine: {
-          lineStyle: {
-            color: '#ecf0f1'
-          }
-        }
-      },
-      yAxis: {
-        type: 'category',
-        axisLabel: { 
-          rotate: isMobile ? 45 : 30,
-          fontSize: dimensions.labelFontSize,
-          color: '#2c3e50',
-          interval: 0
-        },
-        data: sortedData.map(d => d.name)
-      },
-      series: [{
-        id: 'population',
-        type: 'bar',
-        data: sortedData.map(d => d.value),
-        universalTransition: true,
-        itemStyle: {
-          color: {
-            type: 'linear',
-            x: 0,
-            y: 0,
-            x2: 1,
-            y2: 0,
-            colorStops: [{
-              offset: 0, color: '#3498db'
-            }, {
-              offset: 1, color: '#2c3e50'
-            }]
-          },
-          borderRadius: [0, 8, 8, 0]
-        },
-        emphasis: {
-          itemStyle: {
-            color: '#e74c3c',
-            shadowBlur: 10,
-            shadowColor: 'rgba(0, 0, 0, 0.3)'
-          }
-        },
+      {
+        type: 'tree',
+        name: 'EXTRAORDINARIAS',
+        data: [data2],
+        top: '20%',
+        left: '60%',
+        bottom: '22%',
+        right: '18%',
+        symbolSize: 7,
         label: {
-          show: !isMobile, // Ocultar labels en móvil para evitar sobrecarga
-          position: 'right',
-          fontSize: dimensions.labelFontSize,
-          formatter: function(params) {
-            if (params.value >= 1000000) return `${(params.value / 1000000).toFixed(1)}M`;
-            if (params.value >= 1000) return `${(params.value / 1000).toFixed(0)}k`;
-            return params.value.toLocaleString();
-          },
-          color: '#2c3e50',
-          fontWeight: 'bold'
-        }
-      }],
-      tooltip: {
-        trigger: 'axis',
-        textStyle: {
-          fontSize: dimensions.fontSize
+          position: 'left',
+          verticalAlign: 'middle',
+          align: 'right',
+          color: '#fff'
         },
-        axisPointer: {
-          type: 'shadow',
-          shadowStyle: {
-            color: 'rgba(52, 152, 219, 0.3)'
+        leaves: {
+          label: {
+            position: 'right',
+            verticalAlign: 'middle',
+            align: 'left',
+            color: '#fff'
           }
         },
-        formatter: function(params) {
-          const value = params[0].value;
-          const formattedValue = value >= 1000000 
-            ? `${(value / 1000000).toFixed(1)} millones`
-            : value >= 1000 
-              ? `${(value / 1000).toFixed(0)} mil`
-              : value.toLocaleString();
-          return `<div style="padding: 10px; border-radius: 4px; font-size: ${dimensions.fontSize}px;">
-            <strong style="color: #3498db;">${params[0].name}</strong><br/>
-            <span style="color: #2c3e50;">Población: ${formattedValue}</span>
-          </div>`;
-        }
+        expandAndCollapse: true,
+        emphasis: {
+          focus: 'descendant'
+        },
+        animationDuration: 550,
+        animationDurationUpdate: 750
       }
-    };
-
-    // Inicializar primer gráfico
-    setMapOption(mapOptionRef.current);
-
-    // Solo iniciar intervalo en desktop
-    if (windowSize.width >= 768) {
-      let isMap = true;
-      intervalRef.current = setInterval(() => {
-        isMap = !isMap;
-        const echartsInstance = chartRef.current?.getEchartsInstance();
-        if (echartsInstance) {
-          try {
-            echartsInstance.setOption(
-              isMap ? mapOptionRef.current : barOptionRef.current,
-              true
-            );
-          } catch (err) {
-            console.error('Error al actualizar gráfico:', err);
-          }
-        }
-      }, 5000);
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [windowSize.width, isMobile, getResponsiveDimensions]);
-
-  // Configurar eventos del primer gráfico
-  useEffect(() => {
-    const echartsInstance = chartRef.current?.getEchartsInstance();
-    if (!echartsInstance) return;
-
-    echartsInstance.off('click');
-    echartsInstance.on('click', handleMunicipioClick);
-
-    return () => {
-      if (echartsInstance) {
-        echartsInstance.off('click');
-      }
-    };
-  }, [handleMunicipioClick]);
-
-  // Función para redimensionar gráficos cuando cambia el tamaño de ventana
-  useEffect(() => {
-    const resizeCharts = () => {
-      if (chartRef.current) {
-        const echartsInstance = chartRef.current.getEchartsInstance();
-        echartsInstance.resize();
-      }
-      if (municipioChartRef.current) {
-        const echartsInstance = municipioChartRef.current.getEchartsInstance();
-        echartsInstance.resize();
-      }
-    };
-
-    window.addEventListener('resize', resizeCharts);
-    return () => window.removeEventListener('resize', resizeCharts);
-  }, []);
-
-  const dimensions = getResponsiveDimensions();
+    ]
+  };
 
   return (
-    <div className="chart-container">
-      <div className="chart-section1">
-        {mapOption && (
-          <ReactECharts
-            ref={chartRef}
-            option={mapOption}
-            notMerge={false}
-            lazyUpdate={true}
-            style={{ 
-              height: `${dimensions.chartHeight}px`, 
-              width: '100%',
-              minHeight: '300px'
-            }}
-            theme="light"
-            opts={{ 
-              renderer: 'canvas',
-              devicePixelRatio: window.devicePixelRatio || 1
-            }}
-            onEvents={{
-              'click': handleMunicipioClick
-            }}
-          />
-        )}
-      </div>
-      
-      <div className="chart-section2">
-        {municipioOption ? (
-          <>
-            <ReactECharts
-              ref={municipioChartRef}
-              option={municipioOption}
-              notMerge={false}
-              lazyUpdate={true}
-              style={{ 
-                height: `${dimensions.chartHeight}px`, 
-                width: '100%',
-                minHeight: '300px'
-              }}
-              theme="light"
-              opts={{ 
-                renderer: 'canvas',
-                devicePixelRatio: window.devicePixelRatio || 1
-              }}
-            />
-            {selectedMunicipio && (
-              <div className="municipio-details">
-                <div className="municipio-info">
-                  <h3>Municipio: {selectedMunicipio}</h3>
-                  <p>Se está mostrando el polígono específico del municipio con distribución sectorial.</p>
-                  <div className="municipio-features">
-                    <p><strong>Características:</strong></p>
-                    <ul>
-                      <li>Mapa individual del municipio</li>
-                      <li>Gráficos de tarta por sectores económicos</li>
-                      <li>{isMobile ? 'Toque para interactuar' : 'Zoom y navegación'}</li>
-                      <li>Información detallada en tooltips</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="no-selection">
-            <div className="placeholder-message">
-              <h3>🌎 Selecciona un Municipio</h3>
-              <p>Haz {isMobile ? 'toque' : 'clic'} en cualquier municipio del mapa superior para ver su representación individual aquí.</p>
-              <p>Podrás ver el polígono exacto del municipio seleccionado con gráficos de distribución sectorial.</p>
-              <div className="placeholder-features">
-                <p><strong>Funcionalidades disponibles:</strong></p>
-                <ul>
-                  <li>Visualización individual de cada municipio</li>
-                  <li>Gráficos de tarta por sectores económicos</li>
-                  <li>{isMobile ? 'Toque para interactuar' : 'Zoom y navegación'}</li>
-                  <li>Información detallada interactiva</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+    <div className="chart-container" style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', borderRadius: '15px', padding: '20px' }}>
+      <ReactECharts
+        option={option}
+        style={{ height: '700px', width: '100%' }}
+        theme="light"
+      />
     </div>
   );
 };

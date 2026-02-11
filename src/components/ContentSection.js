@@ -1,14 +1,14 @@
 import React from 'react';
 import './ContentSection.css';
-import logo from '../assets/logo_cofotur.png'
-import logo2 from '../assets/logo-guanajuato.png'
+import logo from '../assets/new_logo.png'
+import logo2 from '../assets/logo.png'
 
 const ContentSection = () => {
   return (
     <>
       <div className="content-section1">
         <div className="content-box1">
-          <img src={logo} width={150} height={150} title='COFOTUR' />
+          <img src={logo} width={250} height={250} title='COFOTUR' />
         </div>
       </div>
 
