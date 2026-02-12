@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/cofotur/static/css/main.155860bc.css",
+    "main.js": "/cofotur/static/js/main.41fd7f3e.js",
+    "static/js/453.97b4d6b3.chunk.js": "/cofotur/static/js/453.97b4d6b3.chunk.js",
+    "static/media/IMG18.jpg": "/cofotur/static/media/IMG18.a4083ae86dfd322ffca3.jpg",
+    "static/media/TEATRO_JUAREZ.png": "/cofotur/static/media/TEATRO_JUAREZ.03bc3bd3ac690fdb2642.png",
+    "static/media/bufa.png": "/cofotur/static/media/bufa.13669ea792421fcb1f07.png",
+    "static/media/casas_color2.webp": "/cofotur/static/media/casas_color2.512140d1140c4599b434.webp",
+    "static/media/casa_color2.webp": "/cofotur/static/media/casa_color2.14598db0fd7ed1d2d137.webp",
+    "static/media/pipila_color.webp": "/cofotur/static/media/pipila_color.4526f02d640a29a1cdb8.webp",
+    "static/media/logo.png": "/cofotur/static/media/logo.4c3a110c4f8278c8aae3.png",
+    "static/media/new_logo.png": "/cofotur/static/media/new_logo.f2ee153974a64adc13c4.png",
+    "index.html": "/cofotur/index.html",
+    "main.155860bc.css.map": "/cofotur/static/css/main.155860bc.css.map",
+    "main.41fd7f3e.js.map": "/cofotur/static/js/main.41fd7f3e.js.map",
+    "453.97b4d6b3.chunk.js.map": "/cofotur/static/js/453.97b4d6b3.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.155860bc.css",
+    "static/js/main.41fd7f3e.js"
+  ]
+}
