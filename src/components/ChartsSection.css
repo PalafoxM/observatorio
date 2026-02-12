@@ -177,30 +177,21 @@
   .chart-container {
     padding: 20px;
     gap: 25px;
+    /* Maintain column to keep logo at bottom */
+    flex-direction: column;
   }
 
   .chart-section1,
   .chart-section2 {
     padding: 20px;
   }
-
-  .chart-container {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .chart-section1,
-  .chart-section2 {
-    flex: 1 1 100%;
-    min-width: 0;
-  }
 }
 
 /* Desktop y laptops pequeñas */
 @media (min-width: 992px) and (max-width: 1199px) {
   .chart-container {
-    flex-direction: row;
-    flex-wrap: wrap;
+    /* Maintain column to keep logo at bottom */
+    flex-direction: column;
     gap: 25px;
   }
 
@@ -214,8 +205,8 @@
 /* Desktop grandes */
 @media (min-width: 1200px) {
   .chart-container {
-    flex-direction: row;
-    flex-wrap: nowrap;
+    /* Maintain column to keep logo at bottom */
+    flex-direction: column;
     gap: 30px;
   }
 
@@ -232,6 +223,7 @@
   .chart-container {
     max-width: 1400px;
     margin: 0 auto;
+    flex-direction: column;
   }
 }
 
@@ -239,6 +231,7 @@
 @media (max-height: 600px) and (orientation: portrait) {
   .chart-container {
     min-height: 100vh;
+    flex-direction: column;
   }
 
   .chart-section1,
@@ -290,4 +283,68 @@
   .placeholder-features li {
     color: #ecf0f1;
   }
+}
+
+.charts-grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.chart-col {
+  flex: 0 0 50%;
+  max-width: 50%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 991px) {
+  .chart-col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+.chart-logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.chart-logo-container img {
+  max-width: 100%;
+  height: auto;
+}
+
+.charts-grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.chart-col {
+  flex: 0 0 50%;
+  max-width: 50%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 991px) {
+  .chart-col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+.chart-logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.chart-logo-container img {
+  max-width: 100%;
+  height: auto;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import './ChartsSection.css';
+import logo from '../assets/logo.png';
 
 const ChartsSection = () => {
   const data = {
@@ -605,39 +606,25 @@ const ChartsSection = () => {
     ]
   };
 
-  const option = {
+  const commonOption = {
     tooltip: {
       trigger: 'item',
       triggerOn: 'mousemove'
     },
-    legend: {
-      top: '2%',
-      left: '3%',
-      orient: 'vertical',
-      data: [
-        {
-          name: 'ORDINARIAS',
-          icon: 'rectangle'
-        },
-        {
-          name: 'EXTRAORDINARIAS',
-          icon: 'rectangle'
-        }
-      ],
-      borderColor: '#fff',
-      textStyle: {
-        color: '#fff'
-      }
-    },
+    series: []
+  };
+
+  const optionOrdinarias = {
+    ...commonOption,
     series: [
       {
         type: 'tree',
         name: 'ORDINARIAS',
         data: [data],
-        top: '5%',
-        left: '7%',
-        bottom: '2%',
-        right: '60%',
+        top: '10%',
+        left: '15%',
+        bottom: '10%',
+        right: '25%',
         symbolSize: 7,
         label: {
           position: 'left',
@@ -657,17 +644,24 @@ const ChartsSection = () => {
           focus: 'descendant'
         },
         expandAndCollapse: true,
+        initialTreeDepth: 1,
         animationDuration: 550,
         animationDurationUpdate: 750
-      },
+      }
+    ]
+  };
+
+  const optionExtraordinarias = {
+    ...commonOption,
+    series: [
       {
         type: 'tree',
         name: 'EXTRAORDINARIAS',
         data: [data2],
-        top: '20%',
-        left: '60%',
-        bottom: '22%',
-        right: '18%',
+        top: '10%',
+        left: '15%',
+        bottom: '10%',
+        right: '25%',
         symbolSize: 7,
         label: {
           position: 'left',
@@ -687,6 +681,7 @@ const ChartsSection = () => {
         emphasis: {
           focus: 'descendant'
         },
+        initialTreeDepth: 1,
         animationDuration: 550,
         animationDurationUpdate: 750
       }
@@ -694,12 +689,28 @@ const ChartsSection = () => {
   };
 
   return (
-    <div className="chart-container" style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', borderRadius: '15px', padding: '20px' }}>
-      <ReactECharts
-        option={option}
-        style={{ height: '700px', width: '100%' }}
-        theme="light"
-      />
+    <div className="chart-container">
+      <div className="charts-background-box" style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', borderRadius: '15px', padding: '20px' }}>
+        <div className="charts-grid">
+          <div className="chart-col">
+            <ReactECharts
+              option={optionOrdinarias}
+              style={{ height: '700px', width: '100%' }}
+              theme="light"
+            />
+          </div>
+          <div className="chart-col">
+            <ReactECharts
+              option={optionExtraordinarias}
+              style={{ height: '700px', width: '100%' }}
+              theme="light"
+            />
+          </div>
+        </div>
+      </div>
+      <div className="chart-logo-container">
+        <img src={logo} alt="Logo Guanajuato" width={200} />
+      </div>
     </div>
   );
 };
