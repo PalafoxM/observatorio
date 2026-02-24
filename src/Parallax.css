@@ -86,44 +86,44 @@ body {
   .parallax__layer__6 img {
     width: 100%;
     left: 0%;
-    top: 19vh;
+    top: 65vh;
     height: 100%;
   }
 
   .parallax__layer__5 img {
-    width: 60%;
+    width: 90%;
     left: 0%;
     top: -15%;
   }
 
   .parallax__layer__4 img {
-    width: 60%;
+    width: 80%;
     left: 40%;
-    top: -18%;
+    top: -10%;
   }
 
   .parallax__layer__3 img {
-    width: 30%;
+    width: 50%;
     left: 30%;
-    top: 5%;
+    top: 0%;
   }
 
   .parallax__layer__2 img {
     width: 20%;
     left: 67%;
-    top: -5%;
+    top: 0%;
   }
 
   .parallax__layer__1 img {
-    width: 30%;
+    width: 45%;
     left: 0%;
-    top: -7%;
+    top: -5%;
   }
 
   .parallax__layer__0 img {
-    width: 30%;
+    width: 50%;
     left: 75%;
-    top: -12%;
+    top: -10%;
   }
 }
 
@@ -493,5 +493,40 @@ body {
     width: 20%;
     top: 15%;
     left: 75%;
+  }
+}
+
+/* Celestial Bodies */
+.sun {
+  width: 100px;
+  height: 100px;
+  background: #FFD700;
+  border-radius: 50%;
+  box-shadow: 0 0 60px #FFD700, 0 0 100px #FFA500;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.moon {
+  width: 80px;
+  height: 80px;
+  background: transparent;
+  border-radius: 50%;
+  box-shadow: 18px 18px 0 0 #FFF, 18px 18px 30px rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 767px) {
+  .sun {
+    width: 70px;
+    height: 70px;
+    box-shadow: 0 0 40px #FFD700, 0 0 70px #FFA500;
+  }
+
+  .moon {
+    width: 60px;
+    height: 60px;
+    box-shadow: 12px 12px 0 0 #FFF, 12px 12px 20px rgba(255, 255, 255, 0.4);
   }
 }

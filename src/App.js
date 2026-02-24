@@ -96,9 +96,27 @@ const Parallax = () => {
   const dynamicBgColor = `rgb(${r}, ${g}, ${b})`;
 
   return (
-    <div className="main-container" style={{ width: '100%', height: '100vh', overflow: 'hidden' }}>
+    <div className="main-container" style={{ width: '100%', height: '100vh', overflow: 'hidden', backgroundColor: dynamicBgColor, position: 'relative' }}>
       {isLoading && <LoadingScreen />}
       <RotatePrompt />
+
+      {/* Cuerpos celestes */}
+      <div className="sun" style={{
+        position: 'absolute',
+        left: '15%',
+        top: `${15 + scrollProgress * 40}%`,
+        opacity: Math.max(0, 1 - scrollProgress * 1.5),
+        zIndex: 0
+      }}></div>
+
+      <div className="moon" style={{
+        position: 'absolute',
+        left: '15%',
+        top: `${60 - scrollProgress * 40}%`,
+        opacity: Math.min(1, scrollProgress * 1.5),
+        zIndex: 0
+      }}></div>
+
       {/* Sección Parallax */}
       <div
         className="parallax"
@@ -106,7 +124,6 @@ const Parallax = () => {
         style={{
           opacity: isLoading ? 0 : 1,
           transition: 'opacity 0.5s ease-in',
-          backgroundColor: dynamicBgColor
         }}
       >
         {layers.map((layer) => (
