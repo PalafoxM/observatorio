@@ -338,6 +338,14 @@ const ChartsSection = () => {
   }, [data, data2, activeCategory]);
 
   const mapOption = useMemo(() => {
+    const enhancedData = mapData.map(d => {
+      const isHighlighted = selectedProject && selectedProject.municipiosAsignados?.includes(d.name);
+      return {
+        ...d,
+        selected: isHighlighted || false,
+      };
+    });
+
     return {
       title: {
         text: 'Inversión por Municipio',
@@ -371,6 +379,15 @@ const ChartsSection = () => {
           map: 'Guanajuato',
           roam: true,
           scaleLimit: { min: 1, max: 6 },
+          selectedMode: 'multiple',
+          select: {
+            itemStyle: {
+              areaColor: '#f1c40f',
+              borderColor: '#e67e22',
+              borderWidth: 2,
+            },
+            label: { show: true, color: '#333', fontWeight: 'bold' }
+          },
           itemStyle: {
             areaColor: '#e0ecf4',
             borderColor: '#ffffff',
@@ -380,11 +397,11 @@ const ChartsSection = () => {
             label: { show: true, color: '#333', fontWeight: 'bold' },
             itemStyle: { areaColor: '#f1c40f' },
           },
-          data: mapData,
+          data: enhancedData,
         },
       ],
     };
-  }, [mapData, maxVal]);
+  }, [mapData, maxVal, selectedProject]);
 
   return (
     <div className="dashboard-wrapper">
@@ -412,8 +429,7 @@ const ChartsSection = () => {
                         className={`accordion-proj-item ${selectedProject?.name === proj.name ? 'selected' : ''}`}
                         onClick={() => {
                           setSelectedProject(proj);
-                          const munData = mapData.find(m => m.name === proj.municipioAsignado);
-                          setClickedMunicipio(munData || null);
+                          setClickedMunicipio(null);
                         }}
                       >
                         {proj.name}
@@ -452,51 +468,61 @@ const ChartsSection = () => {
             <h3>Detalles</h3>
           </div>
           <div className="details-content">
-            {activeMunicipio ? (
+            {selectedProject ? (
+              <div className="project-detail-box">
+                <h5>{selectedProject.name}</h5>
+                <div className="detail-row">
+                  <span className="label">Monto:</span>
+                  <span className="value badge">${selectedProject.value.toLocaleString('es-MX')}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="label">Tipo:</span>
+                  <span className="value">{selectedProject.tipoProyecto}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="label">Motivo:</span>
+                  <span className="value">{selectedProject.motivo}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="label">Resultados:</span>
+                  <span className="value">{selectedProject.resultados}</span>
+                </div>
+                {selectedProject.municipiosAsignados && selectedProject.municipiosAsignados.length > 0 && (
+                  <div className="detail-row" style={{ marginTop: '15px' }}>
+                    <span className="label" style={{ display: 'block', marginBottom: '5px' }}>Municipios Involucrados:</span>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                      {selectedProject.municipiosAsignados.map(m => (
+                        <span key={m} style={{ background: '#e0ecf4', color: '#004481', padding: '4px 8px', borderRadius: '4px', fontSize: '0.85rem', border: '1px solid #c6dbef' }}>{m}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : activeMunicipio ? (
               <div className="details-municipio">
                 <h4>{activeMunicipio.name}</h4>
                 <p className="total-inv">
                   Inversión: <strong>${activeMunicipio.value?.toLocaleString('es-MX')}</strong>
                 </p>
                 <p className="total-proy">Proyectos: {activeMunicipio.events?.length || 0}</p>
-
-                {selectedProject && selectedProject.municipioAsignado === activeMunicipio.name ? (
-                  <div className="project-detail-box">
-                    <h5>{selectedProject.name}</h5>
-                    <div className="detail-row">
-                      <span className="label">Monto:</span>
-                      <span className="value badge">${selectedProject.value.toLocaleString('es-MX')}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span className="label">Tipo:</span>
-                      <span className="value">{selectedProject.tipoProyecto}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span className="label">Motivo:</span>
-                      <span className="value">{selectedProject.motivo}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span className="label">Resultados:</span>
-                      <span className="value">{selectedProject.resultados}</span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="municipio-events-list">
-                    <p style={{ marginTop: '15px', color: '#666', fontSize: '0.9rem' }}>
-                      Selecciona un proyecto del listado para ver sus detalles, o haz clic en los proyectos a continuación:
-                    </p>
-                    {activeMunicipio.events &&
-                      activeMunicipio.events.slice(0, 5).map((ev, idx) => (
-                        <div key={idx} className="small-proj-card" onClick={() => setSelectedProject(ev)}>
-                          <div className="spc-name">{ev.name}</div>
-                          <div className="spc-value">${ev.value.toLocaleString('es-MX')}</div>
-                        </div>
-                      ))}
-                    {activeMunicipio.events && activeMunicipio.events.length > 5 && (
-                      <div className="more-projects">...y {activeMunicipio.events.length - 5} más</div>
-                    )}
-                  </div>
-                )}
+                <div className="municipio-events-list">
+                  <p style={{ marginTop: '15px', color: '#666', fontSize: '0.9rem' }}>
+                    Selecciona un proyecto del listado para ver sus detalles, o haz clic en los proyectos a continuación:
+                  </p>
+                  {activeMunicipio.events &&
+                    activeMunicipio.events.slice(0, 5).map((ev, idx) => (
+                      <div key={idx} className="small-proj-card" onClick={() => {
+                        setSelectedProject(ev);
+                        setClickedMunicipio(null);
+                      }}>
+                        <div className="spc-name">{ev.name}</div>
+                        <div className="spc-value">${ev.value.toLocaleString('es-MX')}</div>
+                      </div>
+                    ))}
+                  {activeMunicipio.events && activeMunicipio.events.length > 5 && (
+                    <div className="more-projects">...y {activeMunicipio.events.length - 5} más</div>
+                  )}
+                </div>
               </div>
             ) : (
               <div className="empty-details">
