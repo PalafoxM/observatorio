@@ -688,31 +688,21 @@ const ChartsSection = () => {
       tooltip: {
         trigger: 'item',
         formatter: function (params) {
-          if (!params.value && params.value !== 0) return '<b style="color:#004481;">' + params.name + '</b><br/>Sin proyectos asignados directamente';
+          if (!params.value && params.value !== 0) return '<b style="color:#004481; font-size:14px;">' + params.name + '</b><br/><span style="color:#666; font-size:12px;">Sin proyectos asignados</span>';
 
-          let html = `<div style="max-width:320px; white-space:normal; font-family: sans-serif;">`;
-          html += `<div style="font-weight:bold; font-size:16px; margin-bottom:5px; border-bottom:1px solid #ccc; padding-bottom:5px; color:#004481;">${params.name}</div>`;
-          html += `<div style="font-size:14px; margin-bottom:10px; color:#333;">Inversión Total: <b style="color:#004481; font-size: 16px;">$${params.value.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</b></div>`;
-
-          if (params.data && params.data.events) {
-            html += `<div style="font-size:13px; font-weight:bold; margin-bottom:6px; color:#444;">Proyectos respaldados:</div>`;
-            params.data.events.forEach(ev => {
-              html += `<div style="font-size: 12px; margin-bottom: 8px; line-height: 1.3; border-left: 3px solid ${ev.sessionType === 'ORDINARIA' ? '#3498db' : '#e67e22'}; padding-left: 6px;">`;
-              html += `<strong style="color: #666; font-size: 11px;">[${ev.sessionName}]</strong><br/>`;
-              html += `<span style="color:#111;">${ev.name}</span> <br/><b style="color:#004481;">$${ev.value.toLocaleString('es-MX')}</b>`;
-              html += `</div>`;
-            });
-          }
+          let html = `<div style="font-family: sans-serif; text-align: center;">`;
+          html += `<div style="font-weight:bold; font-size:15px; margin-bottom:4px; padding-bottom:4px; border-bottom:1px solid #eee; color:#004481;">${params.name}</div>`;
+          html += `<div style="font-size:13px; color:#333;">Inversión: <b style="color:#004481; font-size: 15px;">$${params.value.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</b></div>`;
           html += `</div>`;
           return html;
         },
-        backgroundColor: 'rgba(255, 255, 255, 0.98)',
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
         borderColor: '#ddd',
         borderWidth: 1,
         textStyle: {
           color: '#333'
         },
-        extraCssText: 'box-shadow: 0 6px 15px rgba(0,0,0,0.15); border-radius: 8px; max-height: 400px; overflow-y: auto;'
+        extraCssText: 'box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-radius: 6px; padding: 10px 15px;'
       },
       visualMap: {
         left: 'right',

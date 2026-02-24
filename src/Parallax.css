@@ -4,12 +4,12 @@
 
 html,
 body {
-  background-color: black;
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   overflow-x: hidden;
+  /* background-color removido para permitir transición de App.js */
 }
 
 .parallax {
@@ -333,11 +333,15 @@ body {
 
 /* Cover section */
 .parallax__cover {
-  background-color: #2D112B;
-  background-image: url('./assets/IMG18.jpg');
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
+  /* Eliminar background-image y background-color fijos si queremos ver el color azul claro detrás */
+  /* Si la imagen IMG18.jpg debe seguir apareciendo pero queremos hacer blend, lo dejamos, pero tu sugerencia era el color base.
+     Dejaré el fondo original transparente temporalmente o con la transición de color en App.js */
+  /* background-color: #2D112B; */
+  /* background-image: url('./assets/IMG18.jpg'); */
+  /* background-repeat: no-repeat; */
+  /* background-position: center top; */
+  /* background-size: cover; */
+  background: transparent;
 
   position: absolute;
   top: 100%;

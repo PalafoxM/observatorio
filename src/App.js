@@ -15,6 +15,7 @@ import LoadingScreen from './components/LoadingScreen';
 const Parallax = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const layers = [
     { id: 0, src: Bufa, mobileDepth: 0 },
@@ -64,35 +65,50 @@ const Parallax = () => {
     checkIfMobile();
     window.addEventListener('resize', checkIfMobile);
 
-    const handleScroll = () => {
-      if (isMobile) return;
-
-      const scrollPosition = window.pageYOffset;
-      const layers = document.querySelectorAll('.parallax__layer');
-
-      layers.forEach(layer => {
-        const depth = isMobile
-          ? layer.getAttribute('data-mobile-depth') || 0
-          : layer.getAttribute('data-depth') || 0;
-        const movement = -(scrollPosition * depth);
-        const transform = `translate3d(0, ${movement}px, 0)`;
-        layer.style.transform = transform;
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', checkIfMobile);
     };
   }, [isMobile]);
 
+  const handleScroll = (e) => {
+    if (!isMobile) {
+      const layers = document.querySelectorAll('.parallax__layer');
+      layers.forEach(layer => {
+        const depth = layer.getAttribute('data-depth') || 0;
+        const movement = -(e.target.scrollTop * depth);
+        const transform = `translate3d(0, ${movement}px, 0)`;
+        layer.style.transform = transform;
+      });
+    }
+
+    // El evento scroll se captura desde el contenedor .parallax
+    // Aquí controlamos la transición de fondo (350px de tope para la noche máxima).
+    const scrollPosition = e.target.scrollTop;
+    const progress = Math.min(scrollPosition / 350, 1);
+    setScrollProgress(progress);
+  };
+
+  // Calcular color interpolado
+  // Dia: Azul cielo (rgb(135, 206, 235)) -> Noche: Negro claro/Oscuro (rgb(10, 15, 30))
+  const r = Math.round(135 - (135 - 10) * scrollProgress);
+  const g = Math.round(206 - (206 - 15) * scrollProgress);
+  const b = Math.round(235 - (235 - 30) * scrollProgress);
+  const dynamicBgColor = `rgb(${r}, ${g}, ${b})`;
+
   return (
-    <div className="main-container">
+    <div className="main-container" style={{ width: '100%', height: '100vh', overflow: 'hidden' }}>
       {isLoading && <LoadingScreen />}
       <RotatePrompt />
       {/* Sección Parallax */}
-      <div className="parallax" style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s ease-in' }}>
+      <div
+        className="parallax"
+        onScroll={handleScroll}
+        style={{
+          opacity: isLoading ? 0 : 1,
+          transition: 'opacity 0.5s ease-in',
+          backgroundColor: dynamicBgColor
+        }}
+      >
         {layers.map((layer) => (
           <div
             key={layer.id}
