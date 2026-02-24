@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
+import * as echarts from 'echarts';
 import './ChartsSection.css';
 import logo from '../assets/logo.png';
+import guanajuatoGeoJson from '../assets/edo_guanajuato.geo.json';
+
+// Registrar mapa globalmente
+echarts.registerMap('Guanajuato', guanajuatoGeoJson);
 
 const ChartsSection = () => {
+  const [hoveredMunicipio, setHoveredMunicipio] = useState(null);
+  const [clickedMunicipio, setClickedMunicipio] = useState(null);
+
+  const activeMunicipio = clickedMunicipio || hoveredMunicipio;
+
   const data = {
     "name": "Sesiones Ordinarias 2025",
     "children": [
@@ -606,110 +616,289 @@ const ChartsSection = () => {
     ]
   };
 
-  const commonOption = {
-    tooltip: {
-      trigger: 'item',
-      triggerOn: 'mousemove'
-    },
-    series: []
-  };
+  const { totalOrdinarias, totalExtraordinarias, totalEvents, mapData, maxVal } = useMemo(() => {
+    let tOrd = 0;
+    let tExt = 0;
+    let tEvt = 0;
+    const allEvents = [];
 
-  const optionOrdinarias = {
-    ...commonOption,
-    series: [
-      {
-        type: 'tree',
-        name: 'ORDINARIAS',
-        data: [data],
-        top: '10%',
-        left: '15%',
-        bottom: '10%',
-        right: '25%',
-        symbolSize: 7,
-        label: {
-          position: 'left',
-          verticalAlign: 'middle',
-          align: 'right',
-          color: '#fff'
-        },
-        leaves: {
-          label: {
-            position: 'right',
-            verticalAlign: 'middle',
-            align: 'left',
-            color: '#fff'
-          }
-        },
-        emphasis: {
-          focus: 'descendant'
-        },
-        expandAndCollapse: true,
-        initialTreeDepth: 1,
-        animationDuration: 550,
-        animationDurationUpdate: 750
-      }
-    ]
-  };
+    // Process ordinarias
+    data.children.forEach(session => {
+      session.children.forEach(event => {
+        tOrd += event.value;
+        tEvt++;
+        allEvents.push({ ...event, sessionType: 'ORDINARIA', sessionName: session.name });
+      });
+    });
 
-  const optionExtraordinarias = {
-    ...commonOption,
-    series: [
-      {
-        type: 'tree',
-        name: 'EXTRAORDINARIAS',
-        data: [data2],
-        top: '10%',
-        left: '15%',
-        bottom: '10%',
-        right: '25%',
-        symbolSize: 7,
-        label: {
-          position: 'left',
-          verticalAlign: 'middle',
-          align: 'right',
-          color: '#fff'
-        },
-        leaves: {
-          label: {
-            position: 'right',
-            verticalAlign: 'middle',
-            align: 'left',
-            color: '#fff'
-          }
-        },
-        expandAndCollapse: true,
-        emphasis: {
-          focus: 'descendant'
-        },
-        initialTreeDepth: 1,
-        animationDuration: 550,
-        animationDurationUpdate: 750
+    // Process extraordinarias
+    data2.children.forEach(session => {
+      session.children.forEach(event => {
+        tExt += event.value;
+        tEvt++;
+        allEvents.push({ ...event, sessionType: 'EXTRAORDINARIA', sessionName: session.name });
+      });
+    });
+
+    const getMunicipio = (name) => {
+      const n = name.toUpperCase();
+      if (n.includes('LEÓN') || n.includes('LEON')) return 'León';
+      if (n.includes('IRAPUATO')) return 'Irapuato';
+      if (n.includes('CELAYA')) return 'Celaya';
+      if (n.includes('SALAMANCA')) return 'Salamanca';
+      if (n.includes('SAN MIGUEL') || n.includes('SMA')) return 'San Miguel de Allende';
+      if (n.includes('SILAO')) return 'Silao de la Victoria';
+      if (n.includes('DOLORES')) return 'Dolores Hidalgo CIN';
+      if (n.includes('SAN LUIS DE LA PAZ')) return 'San Luis de la Paz';
+      if (n.includes('YURIRIA')) return 'Yuriria';
+      if (n.includes('VILLAGRÁN') || n.includes('VILLAGRAN')) return 'Villagrán';
+      if (n.includes('ACÁMBARO') || n.includes('ACAMBARO')) return 'Acámbaro';
+      if (n.includes('APASEO')) return 'Apaseo el Grande';
+      if (n.includes('CORONEO')) return 'Coroneo';
+      if (n.includes('GUANAJUATO')) return 'Guanajuato';
+      return null;
+    };
+
+    const mapDataMap = {};
+    allEvents.forEach(ev => {
+      const mun = getMunicipio(ev.name);
+      if (mun) {
+        if (!mapDataMap[mun]) {
+          mapDataMap[mun] = { name: mun, value: 0, events: [] };
+        }
+        mapDataMap[mun].value += ev.value;
+        mapDataMap[mun].events.push(ev);
       }
-    ]
-  };
+    });
+
+    const mData = Object.values(mapDataMap);
+    const mVal = mData.length > 0 ? Math.max(...mData.map(d => d.value)) : 1000000;
+
+    return { totalOrdinarias: tOrd, totalExtraordinarias: tExt, totalEvents: tEvt, mapData: mData, maxVal: mVal };
+  }, [data, data2]);
+
+  const mapOption = useMemo(() => {
+    return {
+      title: {
+        text: 'Beneficiarios por municipios',
+        left: 'center',
+        textStyle: { color: '#004481', fontSize: 22, fontFamily: 'Georgia, serif', fontWeight: 'bold' },
+        top: '20'
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: function (params) {
+          if (!params.value && params.value !== 0) return '<b style="color:#004481;">' + params.name + '</b><br/>Sin proyectos asignados directamente';
+
+          let html = `<div style="max-width:320px; white-space:normal; font-family: sans-serif;">`;
+          html += `<div style="font-weight:bold; font-size:16px; margin-bottom:5px; border-bottom:1px solid #ccc; padding-bottom:5px; color:#004481;">${params.name}</div>`;
+          html += `<div style="font-size:14px; margin-bottom:10px; color:#333;">Inversión Total: <b style="color:#004481; font-size: 16px;">$${params.value.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</b></div>`;
+
+          if (params.data && params.data.events) {
+            html += `<div style="font-size:13px; font-weight:bold; margin-bottom:6px; color:#444;">Proyectos respaldados:</div>`;
+            params.data.events.forEach(ev => {
+              html += `<div style="font-size: 12px; margin-bottom: 8px; line-height: 1.3; border-left: 3px solid ${ev.sessionType === 'ORDINARIA' ? '#3498db' : '#e67e22'}; padding-left: 6px;">`;
+              html += `<strong style="color: #666; font-size: 11px;">[${ev.sessionName}]</strong><br/>`;
+              html += `<span style="color:#111;">${ev.name}</span> <br/><b style="color:#004481;">$${ev.value.toLocaleString('es-MX')}</b>`;
+              html += `</div>`;
+            });
+          }
+          html += `</div>`;
+          return html;
+        },
+        backgroundColor: 'rgba(255, 255, 255, 0.98)',
+        borderColor: '#ddd',
+        borderWidth: 1,
+        textStyle: {
+          color: '#333'
+        },
+        extraCssText: 'box-shadow: 0 6px 15px rgba(0,0,0,0.15); border-radius: 8px; max-height: 400px; overflow-y: auto;'
+      },
+      visualMap: {
+        left: 'right',
+        bottom: '20',
+        min: 0,
+        max: maxVal,
+        inRange: {
+          color: ['#c6dbef', '#8ab4d9', '#2c7fb8', '#00417b']
+        },
+        text: ['Mayor inversión', 'Menor inversión'],
+        calculable: true,
+        textStyle: { color: '#333', fontSize: 11 },
+        itemHeight: 120
+      },
+      series: [
+        {
+          name: 'Guanajuato',
+          type: 'map',
+          map: 'Guanajuato',
+          roam: true,
+          scaleLimit: { min: 1, max: 6 },
+          itemStyle: {
+            areaColor: '#e0ecf4', // Azul tenue para destacar de fondo blanco
+            borderColor: '#ffffff',
+            borderWidth: 1.5
+          },
+          emphasis: {
+            label: {
+              show: true,
+              color: '#333',
+              fontWeight: 'bold',
+              fontSize: 12
+            },
+            itemStyle: {
+              areaColor: '#f1c40f',
+              shadowBlur: 10,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          },
+          label: {
+            show: false,
+            color: '#fff',
+            fontSize: 10
+          },
+          data: mapData
+        }
+      ]
+    };
+  }, [mapData, maxVal]);
+
+  const totalInversion = totalOrdinarias + totalExtraordinarias;
+  const fechaActual = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' });
 
   return (
-    <div className="chart-container">
-      <div className="charts-background-box" style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', borderRadius: '15px', padding: '20px' }}>
-        <div className="charts-grid">
-          <div className="chart-col">
+    <div className="dashboard-wrapper">
+      <div className="dashboard-container">
+
+        {/* Map Card */}
+        <div className="dashboard-card map-card">
+          <div className="echarts-wrapper">
             <ReactECharts
-              option={optionOrdinarias}
-              style={{ height: '700px', width: '100%' }}
+              option={mapOption}
+              style={{ height: '100%', minHeight: '550px', width: '100%' }}
               theme="light"
-            />
-          </div>
-          <div className="chart-col">
-            <ReactECharts
-              option={optionExtraordinarias}
-              style={{ height: '700px', width: '100%' }}
-              theme="light"
+              onEvents={{
+                'click': (params) => {
+                  if (params.componentType === 'series') {
+                    const mData = params.data || { name: params.name, value: 0, events: [] };
+                    setClickedMunicipio(prev => prev && prev.name === mData.name ? null : mData);
+                  }
+                },
+                'mouseover': (params) => {
+                  if (params.componentType === 'series') {
+                    const mData = params.data || { name: params.name, value: 0, events: [] };
+                    setHoveredMunicipio(mData);
+                  }
+                },
+                'mouseout': () => {
+                  setHoveredMunicipio(null);
+                }
+              }}
             />
           </div>
         </div>
-      </div>
-      <div className="chart-logo-container">
-        <img src={logo} alt="Logo Guanajuato" width={200} />
+
+        {/* Summary Card */}
+        <div className="dashboard-card summary-card">
+          <div className="watermark">
+            <img src={logo} alt="Marca de agua" />
+          </div>
+
+          {!activeMunicipio ? (
+            <>
+              <div className="summary-header">
+                <p className="top-label">Total de inversión</p>
+                <h2 className="main-number">${(totalInversion / 1000000).toFixed(1)}M</h2>
+                <p className="subtitle">
+                  ${totalInversion.toLocaleString('es-MX', { minimumFractionDigits: 2 })} (100%)
+                </p>
+                <p className="year-range">2025</p>
+              </div>
+
+              <div className="summary-columns">
+                <div className="summary-col">
+                  <p className="col-label">Sesiones Ordinarias</p>
+                  <h3 className="col-number">${(totalOrdinarias / 1000000).toFixed(1)}M</h3>
+                  <p className="col-sub">
+                    ${totalOrdinarias.toLocaleString('es-MX')} ({((totalOrdinarias / totalInversion) * 100).toFixed(2)}%)
+                  </p>
+                </div>
+                <div className="summary-col right-col">
+                  <p className="col-label">Sesiones Ext.</p>
+                  <h3 className="col-number">${(totalExtraordinarias / 1000000).toFixed(1)}M</h3>
+                  <p className="col-sub">
+                    ${totalExtraordinarias.toLocaleString('es-MX')} ({((totalExtraordinarias / totalInversion) * 100).toFixed(2)}%)
+                  </p>
+                </div>
+              </div>
+
+              <div className="summary-footer">
+                <p className="fecha-actualizacion">Fecha de actualización: <strong>{fechaActual}</strong></p>
+                <p className="eventos-total">El total de eventos 2025 está distribuido en <strong>{totalEvents} proyectos</strong>.</p>
+                <div className="footer-action">
+                  <span>Objetivo general</span>
+                  <button className="add-btn">+</button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="municipio-hover-view" style={{ padding: '40px 30px', zIndex: 2, position: 'relative', display: 'flex', flexDirection: 'column', height: '100%' }}>
+              <div style={{ borderBottom: '2px solid #eee', paddingBottom: '15px', marginBottom: '20px', position: 'relative' }}>
+                {clickedMunicipio && (
+                  <button
+                    onClick={() => setClickedMunicipio(null)}
+                    style={{ position: 'absolute', top: 0, right: 0, background: 'none', border: 'none', fontSize: '1.2rem', color: '#999', cursor: 'pointer' }}
+                    title="Cerrar fijación"
+                  >
+                    ✖
+                  </button>
+                )}
+                <h2 style={{ color: '#004481', margin: '0 0 10px 0', fontSize: '2.5rem', fontFamily: 'Georgia, serif' }}>
+                  {activeMunicipio.name}
+                </h2>
+                <p style={{ color: '#555', margin: '0 0 5px 0', fontSize: '1.2rem' }}>
+                  Inversión Total Municipal {clickedMunicipio && <span style={{ fontSize: '0.8rem', color: '#8ab4d9', marginLeft: '5px' }}>(Fijado)</span>}
+                </p>
+                <h3 style={{ fontSize: '2.8rem', color: '#222', margin: 0, fontFamily: 'Georgia, serif' }}>
+                  ${activeMunicipio.value ? activeMunicipio.value.toLocaleString('es-MX', { minimumFractionDigits: 2 }) : '0.00'}
+                </h3>
+              </div>
+
+              <div style={{ flexGrow: 1, overflowY: 'auto', paddingRight: '10px' }}>
+                {activeMunicipio.events && activeMunicipio.events.length > 0 ? (
+                  <>
+                    <h4 style={{ color: '#444', marginBottom: '15px', fontSize: '1.2rem' }}>Proyectos respaldados:</h4>
+                    {activeMunicipio.events.map((ev, idx) => (
+                      <div key={idx} style={{
+                        marginBottom: '15px',
+                        padding: '15px',
+                        backgroundColor: '#f8f9fa',
+                        borderLeft: `4px solid ${ev.sessionType === 'ORDINARIA' ? '#3498db' : '#e67e22'}`,
+                        borderRadius: '0 6px 6px 0',
+                        boxShadow: '0 2px 5px rgba(0,0,0,0.05)'
+                      }}>
+                        <div style={{ fontSize: '0.9rem', color: '#777', fontWeight: 'bold', marginBottom: '8px', letterSpacing: '0.5px' }}>
+                          [{ev.sessionName}]
+                        </div>
+                        <div style={{ color: '#222', fontSize: '1.1rem', marginBottom: '8px', lineHeight: '1.3' }}>
+                          {ev.name}
+                        </div>
+                        <div style={{ fontWeight: 'bold', color: '#004481', fontSize: '1.2rem' }}>
+                          ${ev.value.toLocaleString('es-MX')}
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  <div style={{ padding: '30px', backgroundColor: '#f8f9fa', borderRadius: '8px', color: '#777', textAlign: 'center', marginTop: '20px' }}>
+                    <p style={{ margin: 0, fontSize: '1.1rem' }}>Sin proyectos asignados directamente en este municipio.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+        </div>
       </div>
     </div>
   );
