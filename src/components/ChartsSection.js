@@ -180,7 +180,7 @@ const ChartsSection = () => {
         children: [
           { name: 'Proyecto Integral Viva León', value: 12877000.00, beneficiario: 'Municipio de León, Gto.', concepto: 'Eventos Especiales, Herramientas de promoción y difusión, Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'Multimotivo de viaje', motivo2: 'Deportivo, Cultural, MICE, Romance', municipios: ['León'] },
           { name: 'Proyecto Integral de promoción, comercialización y producto turístico de Irapuato', value: 1325000.00, beneficiario: 'Municipio de Irapuato, Gto.', concepto: 'Acciones de relaciones públicas y promoción, Eventos Especiales, Herramientas de promoción y difusión, Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, MICE, Gastronómico', municipios: ['Irapuato'] },
-          { name: 'Guanajuato, ruta del vino con identidad: turismo, cultura y desarrollo comunitario', value: 1066874.00, beneficiario: 'Uva y Vino de Guanajuato A.C.', concepto: 'Acciones de relaciones públicas y promoción, Alianzas Estratégicas, Eventos Especiales, Herramientas de promoción y difusión, Viajes de promoción, Viajes de Familiarización', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Wellness, Romance, Naturaleza, Gastronómico', municipios: ['Comonfort', 'Dolores Hidalgo', 'Guanajuato', 'León', 'San Felipe', 'San Luis de la Paz', 'San Miguel de Allende'] },
+          { name: 'Guanajuato, ruta del vino con identidad: turismo, cultura y desarrollo comunitario', value: 1066874.00, beneficiario: 'Uva y Vino de Guanajuato A.C.', concepto: 'Acciones de relaciones públicas y promoción, Alianzas Estratégicas, Eventos Especiales, Herramientas de promoción y difusión, Viajes de promoción, Viajes de Familiarización', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Wellness, Romance, Naturaleza, Gastronómico', municipios: ['Multidestino'] },
           { name: 'Publicidad en exteriores Aeropuerto Internacional de Querétaro AIQ', value: 414999.96, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Herramientas de promoción y difusión', motivo1: 'Multimotivo de viaje', motivo2: 'Deportivo, Cultural, Enológico, Destilados, Wellness, MICE, Romance, Naturaleza, Gastronómico', municipios: ['Todo el Estado'] },
           { name: 'Servicio integral de promoción y difusión turística del estado de Guanajuato mediante un módulo físico instalado en el Aeropuerto Internacional del Bajío (BJX)', value: 2976560.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Herramientas de promoción y difusión', motivo1: 'Multimotivo de viaje', motivo2: 'Deportivo, Cultural, Enológico, Destilados, Wellness, MICE, Romance, Naturaleza, Gastronómico', municipios: ['Todo el Estado'] },
           { name: '13° Encuentro de Cocina Tradicional Guanajuato ¡Sí Sabe!', value: 116000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Eventos Especiales', motivo1: 'Gastronómico', motivo2: 'Gastronómico', municipios: ['Guanajuato', 'Yuriria', 'Pénjamo', 'San Luis de la Paz', 'León'] },
@@ -196,7 +196,7 @@ const ChartsSection = () => {
       {
         name: 'QUINTA EXTRAORDINARIA',
         children: [
-          { name: 'Campaña de Promoción Asociación de Hoteles de Guanajuato', value: 347200.00, beneficiario: 'Fibra Visual S DE RL DE CV', concepto: 'Acciones de relaciones públicas y promoción, Herramientas de promoción y difusión, Viajes de Familiarización', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Celaya', 'Dolores Hidalgo', 'Guanajuato', 'Irapuato', 'León', 'Silao de la Victoria'] },
+          { name: 'Campaña de Promoción Asociación de Hoteles de Guanajuato', value: 347200.00, beneficiario: 'Fibra Visual S DE RL DE CV', concepto: 'Acciones de relaciones públicas y promoción, Herramientas de promoción y difusión, Viajes de Familiarización', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Multidestino'] },
           { name: '“Campaña de Promoción del Distintivo Empresarial – Celaya: Una Vía al Futuro”, a desarrollarse en el marco del Primer Congreso Ferroviario y de Logística Celaya 2025', value: 1231040.00, beneficiario: 'CONSEJO COORDINADOR EMPRESARIAL DE CELAYA', concepto: 'Herramientas de promoción y difusión, Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Celaya'] },
           { name: 'NOCHE MÍSTICA', value: 96850.00, beneficiario: 'MUNICIPIO DE TARANDACUAO', concepto: 'Eventos Especiales', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['Tarandacuao'] },
           { name: '7° Festival del Día de los Muertos Guanajuato', value: 2500000.00, beneficiario: 'Municipio de Guanajuato', concepto: 'Eventos Especiales', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Gastronómico', municipios: ['Guanajuato'] },
@@ -306,7 +306,7 @@ const ChartsSection = () => {
     // 3. Aplicar filtros de select a la lista de categoría
     let filtered = categoryFiltered;
 
-    if (filterMotivo !== 'Todos') {
+    if (filterMotivo !== 'Todos' && activeCategory !== 'Proyectos Integrales') {
       filtered = filtered.filter(e => {
         if (e.motivo === 'Todos' || e.motivo === 'Multimotivo de viaje') return true;
         return e.motivo.includes(filterMotivo) || e.motivo1 === filterMotivo;
@@ -315,8 +315,7 @@ const ChartsSection = () => {
 
     if (filterMunicipio !== 'Todos') {
       filtered = filtered.filter(e => {
-        if (e.municipios.includes('Todo el Estado') || e.municipios.includes('Multidestino')) return true;
-        return e.municipios.includes(filterMunicipio);
+        return e.municipios && e.municipios.includes(filterMunicipio);
       });
     }
 
@@ -326,10 +325,8 @@ const ChartsSection = () => {
     filtered.forEach((ev) => {
       let muns = ev.municipios || [];
 
-      if (muns.length === 0 || muns.includes('Todo el Estado') || muns.includes('Multidestino')) {
-        // Para proyectos estatales, distribuimos entre los principales municipios
-        const principalesMuns = ['León', 'Guanajuato', 'San Miguel de Allende', 'Celaya', 'Irapuato', 'Salamanca'];
-        muns = principalesMuns;
+      if (muns.length === 0) {
+        muns = ['Sin Municipio'];
       }
 
       const partialValue = ev.value / muns.length;
@@ -356,8 +353,17 @@ const ChartsSection = () => {
   }, [data, data2, activeCategory, filterMotivo, filterMunicipio]);
 
   const mapOption = useMemo(() => {
+    const isMultidestinoActive =
+      (selectedProject && selectedProject.municipios?.includes('Multidestino')) ||
+      (filterMunicipio === 'Multidestino');
+
     const enhancedData = mapData.map(d => {
-      const isHighlighted = selectedProject && selectedProject.municipios?.includes(d.name);
+      const isHighlighted =
+        isMultidestinoActive ||
+        (selectedProject && selectedProject.municipios?.includes(d.name)) ||
+        (clickedMunicipio && clickedMunicipio.name === d.name) ||
+        (filterMunicipio === d.name);
+
       return {
         ...d,
         selected: isHighlighted || false,
@@ -419,7 +425,7 @@ const ChartsSection = () => {
         },
       ],
     };
-  }, [mapData, maxVal, selectedProject]);
+  }, [mapData, maxVal, selectedProject, filterMunicipio, clickedMunicipio]);
 
   return (
     <div className="dashboard-wrapper">
@@ -443,23 +449,33 @@ const ChartsSection = () => {
 
       {/* Filtros adicionales */}
       <div className="filters-container" style={{ display: 'flex', gap: '20px', marginBottom: '20px', padding: '15px', background: '#f5f5f5', borderRadius: '8px' }}>
-        <div style={{ flex: 1 }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Filtrar por Motivo:</label>
-          <select
-            value={filterMotivo}
-            onChange={(e) => setFilterMotivo(e.target.value)}
-            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
-          >
-            {dynamicMotivos.map(motivo => (
-              <option key={motivo} value={motivo}>{motivo}</option>
-            ))}
-          </select>
-        </div>
+        {activeCategory !== 'Proyectos Integrales' && (
+          <div style={{ flex: 1 }}>
+            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Filtrar por Motivo:</label>
+            <select
+              value={filterMotivo}
+              onChange={(e) => {
+                setFilterMotivo(e.target.value);
+                setClickedMunicipio(null);
+                setSelectedProject(null);
+              }}
+              style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+            >
+              {dynamicMotivos.map(motivo => (
+                <option key={motivo} value={motivo}>{motivo}</option>
+              ))}
+            </select>
+          </div>
+        )}
         <div style={{ flex: 1 }}>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Filtrar por Municipio:</label>
           <select
             value={filterMunicipio}
-            onChange={(e) => setFilterMunicipio(e.target.value)}
+            onChange={(e) => {
+              setFilterMunicipio(e.target.value);
+              setClickedMunicipio(null);
+              setSelectedProject(null);
+            }}
             style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
           >
             {dynamicMunicipios.map(municipio => (
