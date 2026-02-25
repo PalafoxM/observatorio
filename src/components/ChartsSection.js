@@ -18,6 +18,14 @@ const ChartsSection = () => {
 
   const activeMunicipio = clickedMunicipio || hoveredMunicipio;
 
+  const handleCategoryChange = (cat) => {
+    setActiveCategory(cat);
+    setFilterMotivo('Todos');
+    setFilterMunicipio('Todos');
+    setSelectedProject(null);
+    setClickedMunicipio(null);
+  };
+
   // ==================== DATOS COMPLETOS DEL EXCEL ====================
   const data = {
     name: 'Sesiones Ordinarias 2025',
@@ -217,35 +225,7 @@ const ChartsSection = () => {
   };
   // ==================== FIN DATOS COMPLETOS ====================
 
-  // Lista de municipios únicos para el filtro
-  const municipiosUnicos = useMemo(() => {
-    const municipiosSet = new Set();
-    const processMunicipios = (sessionData) => {
-      sessionData.children.forEach(session => {
-        session.children.forEach(event => {
-          if (event.municipios) {
-            event.municipios.forEach(m => municipiosSet.add(m));
-          }
-        });
-      });
-    };
-    processMunicipios(data);
-    processMunicipios(data2);
-    return ['Todos', ...Array.from(municipiosSet).sort()];
-  }, []);
-
-  // Lista de motivos únicos para el filtro
-  const motivosUnicos = useMemo(() => {
-    const motivosSet = new Set();
-    const todosMotivos = [
-      'Cultural', 'Deportivo', 'Enológico', 'Gastronómico', 'MICE',
-      'Wellness', 'Romance', 'Naturaleza', 'Destilados', 'Multimotivo de viaje', 'Todos'
-    ];
-    todosMotivos.forEach(m => motivosSet.add(m));
-    return ['Todos', ...Array.from(motivosSet).sort()];
-  }, []);
-
-  const { mapData, maxVal, filteredProjects, allEvents } = useMemo(() => {
+  const { mapData, maxVal, filteredEvents, categoryCounts, dynamicMotivos, dynamicMunicipios } = useMemo(() => {
     let tEvt = 0;
     const eventsList = [];
 
@@ -296,12 +276,35 @@ const ChartsSection = () => {
     processSession(data, 'ORDINARIA');
     processSession(data2, 'EXTRAORDINARIA');
 
-    // Aplicar filtros
-    let filtered = eventsList;
+    // Conteo por categorías (antes de filtros)
+    const categoryCounts = {
+      'Proyectos Integrales': eventsList.filter(e => e.tipoProyecto === 'Proyectos Integrales').length,
+      'Proyectos Específicos': eventsList.filter(e => e.tipoProyecto === 'Proyectos Específicos').length,
+    };
 
-    if (activeCategory) {
-      filtered = filtered.filter(e => e.tipoProyecto === activeCategory);
-    }
+    // 1. Filtrar por activeCategory
+    const categoryFiltered = activeCategory ? eventsList.filter(e => e.tipoProyecto === activeCategory) : eventsList;
+
+    // 2. Calcular opciones dinámicas (motivos y municipios basados solo en la categoría activa)
+    const mSet = new Set();
+    const motSet = new Set();
+    categoryFiltered.forEach(e => {
+      if (e.motivo1 && e.motivo1 !== 'Todos' && e.motivo1 !== 'Multimotivo de viaje') {
+        motSet.add(e.motivo1);
+      }
+      if (e.motivo && e.motivo !== 'Todos' && e.motivo !== 'Multimotivo de viaje') {
+        e.motivo.split(',').forEach(m => motSet.add(m.trim()));
+      }
+      if (e.municipios) {
+        e.municipios.forEach(m => mSet.add(m));
+      }
+    });
+
+    const dynamicMotivos = ['Todos', 'Multimotivo de viaje', ...Array.from(motSet)].sort();
+    const dynamicMunicipios = ['Todos', ...Array.from(mSet)].sort();
+
+    // 3. Aplicar filtros de select a la lista de categoría
+    let filtered = categoryFiltered;
 
     if (filterMotivo !== 'Todos') {
       filtered = filtered.filter(e => {
@@ -342,16 +345,13 @@ const ChartsSection = () => {
     const mData = Object.values(mapDataMap);
     const mVal = mData.length > 0 ? Math.max(...mData.map(d => d.value)) : 1000000;
 
-    const categorized = {
-      'Proyectos Integrales': filtered.filter(e => e.tipoProyecto === 'Proyectos Integrales'),
-      'Proyectos Específicos': filtered.filter(e => e.tipoProyecto === 'Proyectos Específicos'),
-    };
-
     return {
       mapData: mData,
       maxVal: mVal,
-      filteredProjects: categorized,
-      allEvents: filtered,
+      filteredEvents: filtered,
+      categoryCounts,
+      dynamicMotivos,
+      dynamicMunicipios
     };
   }, [data, data2, activeCategory, filterMotivo, filterMunicipio]);
 
@@ -423,6 +423,24 @@ const ChartsSection = () => {
 
   return (
     <div className="dashboard-wrapper">
+      {/* Tarjetas Superiores */}
+      <div className="top-category-cards">
+        <div
+          className={`top-card ${activeCategory === 'Proyectos Integrales' ? 'active' : ''}`}
+          onClick={() => handleCategoryChange('Proyectos Integrales')}
+        >
+          <div className="top-card-title">Proyectos Integrales</div>
+          <div className="top-card-count">{categoryCounts['Proyectos Integrales'] || 0} proyectos</div>
+        </div>
+        <div
+          className={`top-card ${activeCategory === 'Proyectos Específicos' ? 'active' : ''}`}
+          onClick={() => handleCategoryChange('Proyectos Específicos')}
+        >
+          <div className="top-card-title">Proyectos Específicos</div>
+          <div className="top-card-count">{categoryCounts['Proyectos Específicos'] || 0} proyectos</div>
+        </div>
+      </div>
+
       {/* Filtros adicionales */}
       <div className="filters-container" style={{ display: 'flex', gap: '20px', marginBottom: '20px', padding: '15px', background: '#f5f5f5', borderRadius: '8px' }}>
         <div style={{ flex: 1 }}>
@@ -432,7 +450,7 @@ const ChartsSection = () => {
             onChange={(e) => setFilterMotivo(e.target.value)}
             style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
           >
-            {motivosUnicos.map(motivo => (
+            {dynamicMotivos.map(motivo => (
               <option key={motivo} value={motivo}>{motivo}</option>
             ))}
           </select>
@@ -444,7 +462,7 @@ const ChartsSection = () => {
             onChange={(e) => setFilterMunicipio(e.target.value)}
             style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
           >
-            {municipiosUnicos.map(municipio => (
+            {dynamicMunicipios.map(municipio => (
               <option key={municipio} value={municipio}>{municipio}</option>
             ))}
           </select>
@@ -452,43 +470,35 @@ const ChartsSection = () => {
       </div>
 
       <div className="dashboard-container-3col">
-        {/* Left Sidebar - Accordion Select */}
+        {/* Left Sidebar - List Select */}
         <div className="sidebar-card">
           <div className="sidebar-header">
-            <h3>Categorías de Proyectos</h3>
-            <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '5px' }}>
-              Total: {allEvents.length} proyectos
+            <h3>{activeCategory || 'Categoría no seleccionada'}</h3>
+            <p style={{ fontSize: '0.85rem', color: '#eee', marginTop: '5px' }}>
+              Mostrando {filteredEvents.length} resultados filtrados
             </p>
           </div>
           <div className="sidebar-content">
-            {Object.keys(filteredProjects).map(category => (
-              <div key={category} className="accordion-item">
+            <div className="accordion-list">
+              {filteredEvents.map((proj, idx) => (
                 <div
-                  className={`accordion-title ${activeCategory === category ? 'active' : ''}`}
-                  onClick={() => setActiveCategory(activeCategory === category ? null : category)}
+                  key={idx}
+                  className={`accordion-proj-item ${selectedProject?.name === proj.name ? 'selected' : ''}`}
+                  onClick={() => {
+                    setSelectedProject(proj);
+                    setClickedMunicipio(null);
+                  }}
                 >
-                  {category} ({filteredProjects[category].length})
-                  <span className="accordion-icon">{activeCategory === category ? '▲' : '▼'}</span>
+                  <div style={{ fontWeight: 'bold' }}>{proj.name}</div>
+                  <div style={{ fontSize: '0.8rem', color: '#666' }}>${proj.value.toLocaleString('es-MX')}</div>
                 </div>
-                {activeCategory === category && (
-                  <div className="accordion-list">
-                    {filteredProjects[category].map((proj, idx) => (
-                      <div
-                        key={idx}
-                        className={`accordion-proj-item ${selectedProject?.name === proj.name ? 'selected' : ''}`}
-                        onClick={() => {
-                          setSelectedProject(proj);
-                          setClickedMunicipio(null);
-                        }}
-                      >
-                        <div style={{ fontWeight: 'bold' }}>{proj.name}</div>
-                        <div style={{ fontSize: '0.8rem', color: '#666' }}>${proj.value.toLocaleString('es-MX')}</div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+              ))}
+              {filteredEvents.length === 0 && (
+                <div style={{ padding: '20px', textAlign: 'center', color: '#777' }}>
+                  No se encontraron proyectos para esta selección.
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -563,7 +573,7 @@ const ChartsSection = () => {
             ) : activeMunicipio ? (
               <div className="details-municipio">
                 <h4>{activeMunicipio.name}</h4>
-                <p className="total-proy">Inversión Total: ${activeMunicipio.value.toLocaleString('es-MX')}</p>
+                <p className="total-proy">Inversión Total: ${(activeMunicipio.value || 0).toLocaleString('es-MX')}</p>
                 <p className="total-proy">Proyectos: {activeMunicipio.events?.length || 0}</p>
 
                 <div className="municipio-events-list">

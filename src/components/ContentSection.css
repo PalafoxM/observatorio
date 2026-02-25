@@ -24,14 +24,14 @@
   left: 5%;
   transform: none;
   /* Removed center transform for easier positioning */
-  max-width: 250px;
-  width: 20%;
+  max-width: 350px;
+  width: 30%;
 }
 
 .content-box1 img {
   width: 100%;
   height: auto;
-  max-width: 150px;
+  max-width: 260px;
 }
 
 /* Main Center Content Section */
@@ -40,26 +40,43 @@
   left: 50%;
   transform: translate(-50%, -50%);
   /* Keep centered */
-  width: 80%;
-  max-width: 600px;
+  width: 85%;
+  max-width: 700px;
 
-  /* Glassmorphism */
-  color: white;
-  background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(6px);
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  /* Premium Glassmorphism */
+  background: rgba(0, 44, 91, 0.85);
+  /* Deep navy blue tint */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  color: #ffffff;
 }
 
 .content-box h3 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: 2.4rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 700;
+  color: #f1c40f;
+  /* Gold accent for the title */
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.5px;
+}
+
+.content-box h3 p {
+  margin: 0;
 }
 
 .content-box {
-  font-size: 1.1rem;
-  line-height: 1.6;
+  font-size: 1.2rem;
+  line-height: 1.7;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 /* Bottom Left Logo Section */
@@ -122,7 +139,7 @@
   .content-section1 {
     top: 20px;
     left: 20px;
-    width: 30%;
+    width: 40%;
   }
 
   .content-section3 {
@@ -174,7 +191,7 @@
   /* Make logos smaller in landscape to save space */
   .content-section1,
   .content-section3 {
-    width: 15%;
+    width: 25%;
     max-width: 100px;
   }
 }

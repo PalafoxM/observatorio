@@ -8,28 +8,28 @@ const ContentSection = () => {
     <>
       <div className="content-section1">
         <div className="content-box1">
-          <img src={logo} width={250} height={250} title='COFOTUR' />
+          <img src={logo2} width={550} height={550} title='COFOTUR' />
         </div>
       </div>
 
       {/* Sección 2: Agregamos el botón "Entrar" aquí */}
       <div className="content-section2">
         <div className="content-box">
-          <h3><p>Objetivo del Programa</p> </h3>
-          Fortalecer el posicionamiento turístico de Guanajuato a nivel estatal, nacional e internacional mediante acciones de promoción alineadas con la estrategia de la SECTURI.
+          <h3><p>Consulta de Proyectos Apoyados 2025</p> </h3>
+          Este espacio tiene como propósito brindar información clara y accesible sobre la aplicación de los recursos provenientes del Impuesto por Servicios de Hospedaje,
+          destinado a la promoción turística del estado durante el año 2025.<br />
+          Aquí podrás consultar el nombre del beneficiario, el proyecto Apoyado y el monto.
 
         </div>
       </div>
 
       <div className="content-section3">
         <div className="content-box3">
-          <img src={logo2} width={180} height={75} title='COFOTUR' />
+          <img src={logo} width={180} height={75} title='COFOTUR' />
         </div>
       </div>
 
-      <a className="btn-entrar" href='https://secturnet.guanajuato.gob.mx/cofotu/' >
-        Entrar
-      </a>
+
 
     </>
   );
