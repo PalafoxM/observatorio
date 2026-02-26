@@ -40,30 +40,33 @@
   left: 50%;
   transform: translate(-50%, -50%);
   /* Keep centered */
-  width: 85%;
-  max-width: 700px;
+  width: 75%;
+  max-width: 550px;
+  /* Reduced from 700px to make it smaller */
 
   /* Premium Glassmorphism */
-  background: rgba(0, 44, 91, 0.85);
-  /* Deep navy blue tint */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 24px;
-  padding: 3rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  background: rgba(0, 44, 91, 0.75);
+  /* Slightly more transparent */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+  /* Reduced padding */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   color: #ffffff;
 }
 
 .content-box h3 {
-  font-size: 2.4rem;
+  font-size: 1.8rem;
+  /* Reduced from 2.4rem */
   margin-top: 0;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   color: #f1c40f;
   /* Gold accent for the title */
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   letter-spacing: 0.5px;
 }
 
@@ -72,11 +75,12 @@
 }
 
 .content-box {
-  font-size: 1.2rem;
-  line-height: 1.7;
-  font-weight: 400;
+  font-size: 1.05rem;
+  /* Reduced from 1.2rem */
+  line-height: 1.6;
+  font-weight: 300;
   letter-spacing: 0.3px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* Bottom Left Logo Section */

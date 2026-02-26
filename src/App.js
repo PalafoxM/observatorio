@@ -3,6 +3,7 @@ import './Parallax.css';
 import ContentSection from './components/ContentSection';
 import ChartsSection from './components/ChartsSection';
 //import Teatro from './assets/teareo_full.webp';
+//import Teatro from './assets/teatro5.png';
 import Teatro from './assets/TEATRO_JUAREZ.png';
 //import Pipila from './assets/pipila.png';
 import Pipila from './assets/pipila_color.webp';
@@ -103,7 +104,7 @@ const Parallax = () => {
       {/* Cuerpos celestes */}
       <div className="sun" style={{
         position: 'absolute',
-        left: '15%',
+        left: '50%',
         top: `${15 + scrollProgress * 40}%`,
         opacity: Math.max(0, 1 - scrollProgress * 1.5),
         zIndex: 0
@@ -111,7 +112,7 @@ const Parallax = () => {
 
       <div className="moon" style={{
         position: 'absolute',
-        left: '15%',
+        left: '50%',
         top: `${60 - scrollProgress * 40}%`,
         opacity: Math.min(1, scrollProgress * 1.5),
         zIndex: 0

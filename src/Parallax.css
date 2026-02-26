@@ -98,8 +98,8 @@ body {
 
   .parallax__layer__4 img {
     width: 80%;
-    left: 40%;
-    top: -10%;
+    left: 10%;
+    top: 40%;
   }
 
   .parallax__layer__3 img {
@@ -498,11 +498,11 @@ body {
 
 /* Celestial Bodies */
 .sun {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   background: #FFD700;
   border-radius: 50%;
-  box-shadow: 0 0 60px #FFD700, 0 0 100px #FFA500;
+  box-shadow: 0 0 50px #FFD700, 0 0 80px #FFA500;
   pointer-events: none;
   transform: translate(-50%, -50%);
 }

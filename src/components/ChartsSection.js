@@ -354,21 +354,44 @@ const ChartsSection = () => {
 
   const mapOption = useMemo(() => {
     const isMultidestinoActive =
-      (selectedProject && selectedProject.municipios?.includes('Multidestino')) ||
-      (filterMunicipio === 'Multidestino');
+      (selectedProject && (selectedProject.municipios?.includes('Multidestino') || selectedProject.municipios?.includes('Todo el Estado'))) ||
+      (filterMunicipio === 'Multidestino') ||
+      (filterMunicipio === 'Todo el Estado');
 
-    const enhancedData = mapData.map(d => {
+    const normalizeMun = (mun) => {
+      if (mun === 'Dolores Hidalgo') return 'Dolores Hidalgo CIN';
+      if (mun === 'Silao') return 'Silao de la Victoria';
+      if (mun === 'Purisima del Rincón') return 'Purísima del Rincón';
+      return mun;
+    };
+
+    let enhancedData = mapData.map(d => {
+      const geoName = normalizeMun(d.name);
       const isHighlighted =
         isMultidestinoActive ||
         (selectedProject && selectedProject.municipios?.includes(d.name)) ||
-        (clickedMunicipio && clickedMunicipio.name === d.name) ||
+        (clickedMunicipio && clickedMunicipio.name === geoName) ||
         (filterMunicipio === d.name);
 
       return {
         ...d,
+        name: geoName,
+        originalName: d.name,
         selected: isHighlighted || false,
       };
     });
+
+    if (isMultidestinoActive) {
+      guanajuatoGeoJson.features.forEach(f => {
+        const geoName = f.properties.name;
+        const existing = enhancedData.find(d => d.name === geoName);
+        if (!existing) {
+          enhancedData.push({ name: geoName, originalName: geoName, value: 0, events: [], selected: true });
+        } else {
+          existing.selected = true;
+        }
+      });
+    }
 
     return {
       title: {
@@ -380,8 +403,9 @@ const ChartsSection = () => {
       tooltip: {
         trigger: 'item',
         formatter: function (params) {
-          if (!params.value && params.value !== 0) return '<b>' + params.name + '</b><br/>Sin proyectos';
-          return `<b>${params.name}</b><br/>Inversión: $${params.value.toLocaleString('es-MX', { minimumFractionDigits: 2 })}`;
+          const munName = params.data?.originalName || params.name;
+          if (!params.value && params.value !== 0) return '<b>' + munName + '</b><br/>Sin proyectos';
+          return `<b>${munName}</b><br/>Inversión: $${params.value.toLocaleString('es-MX', { minimumFractionDigits: 2 })}`;
         },
       },
       visualMap: {
@@ -436,14 +460,14 @@ const ChartsSection = () => {
           onClick={() => handleCategoryChange('Proyectos Integrales')}
         >
           <div className="top-card-title">Proyectos Integrales</div>
-          <div className="top-card-count">{categoryCounts['Proyectos Integrales'] || 0} proyectos</div>
+          <div className="top-card-count">12 proyectos</div>
         </div>
         <div
           className={`top-card ${activeCategory === 'Proyectos Específicos' ? 'active' : ''}`}
           onClick={() => handleCategoryChange('Proyectos Específicos')}
         >
           <div className="top-card-title">Proyectos Específicos</div>
-          <div className="top-card-count">{categoryCounts['Proyectos Específicos'] || 0} proyectos</div>
+          <div className="top-card-count">119 proyectos</div>
         </div>
       </div>
 
@@ -491,7 +515,7 @@ const ChartsSection = () => {
           <div className="sidebar-header">
             <h3>{activeCategory || 'Categoría no seleccionada'}</h3>
             <p style={{ fontSize: '0.85rem', color: '#eee', marginTop: '5px' }}>
-              Mostrando {filteredEvents.length} resultados filtrados
+              Resultados filtrados
             </p>
           </div>
           <div className="sidebar-content">
@@ -528,7 +552,7 @@ const ChartsSection = () => {
               onEvents={{
                 click: params => {
                   if (params.componentType === 'series') {
-                    const mData = params.data || { name: params.name, value: 0, events: [] };
+                    const mData = params.data || { name: params.name, originalName: params.name, value: 0, events: [] };
                     setClickedMunicipio(prev => (prev && prev.name === mData.name ? null : mData));
                     setSelectedProject(null);
                   }
@@ -588,7 +612,7 @@ const ChartsSection = () => {
               </div>
             ) : activeMunicipio ? (
               <div className="details-municipio">
-                <h4>{activeMunicipio.name}</h4>
+                <h4>{activeMunicipio.originalName || activeMunicipio.name}</h4>
                 <p className="total-proy">Inversión Total: ${(activeMunicipio.value || 0).toLocaleString('es-MX')}</p>
                 <p className="total-proy">Proyectos: {activeMunicipio.events?.length || 0}</p>
 
