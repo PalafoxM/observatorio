@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
 import * as echarts from 'echarts';
 import './ChartsSection.css';
@@ -15,6 +15,15 @@ const ChartsSection = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [filterMotivo, setFilterMotivo] = useState('Todos');
   const [filterMunicipio, setFilterMunicipio] = useState('Todos');
+
+  const [showMapAnimation, setShowMapAnimation] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShowMapAnimation(prev => !prev);
+    }, 4000); // 4 seconds interval to mimic the transition Example
+    return () => clearInterval(interval);
+  }, []);
 
   const activeMunicipio = clickedMunicipio || hoveredMunicipio;
 
@@ -33,18 +42,18 @@ const ChartsSection = () => {
       {
         name: 'PRIMERA ORDINARIA',
         children: [
-          { name: 'Forever Wedding Summit', value: 486939.44, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Acciones de relaciones públicas y promoción', motivo1: 'Romance', motivo2: 'Romance', municipios: ['Dolores Hidalgo', 'Guanajuato', 'León', 'San Miguel de Allende'] },
-          { name: 'Congreso Nacional de la Industria de Reuniones', value: 728346.30, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Celaya', 'Guanajuato', 'Irapuato', 'León', 'San Miguel de Allende', 'Silao'] },
+          { name: 'Forever Wedding Summit', value: 486939.44, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Acciones de relaciones públicas y promoción', motivo1: 'Romance', motivo2: 'Romance', municipios: ['Multidestino'] },
+          { name: 'Congreso Nacional de la Industria de Reuniones', value: 728346.30, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Multidestino'] },
           { name: 'Meeting Place León', value: 2936419.50, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Eventos Especiales', motivo1: 'MICE', motivo2: 'MICE', municipios: ['León'] },
-          { name: 'Congreso MPI', value: 117594.48, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Celaya', 'Guanajuato', 'Irapuato', 'León', 'San Miguel de Allende', 'Silao'] },
-          { name: 'Congreso De Bodas y Eventos Sustentables LAT', value: 321219.20, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'Romance', motivo2: 'Romance', municipios: ['Dolores Hidalgo', 'Guanajuato', 'León', 'San Miguel de Allende'] },
-          { name: 'PCMA Advisory Client Roadshow', value: 941824.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Eventos Especiales', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Celaya', 'Guanajuato', 'Irapuato', 'León', 'San Miguel de Allende', 'Silao'] },
+          { name: 'Congreso MPI', value: 117594.48, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Multidestino'] },
+          { name: 'Congreso De Bodas y Eventos Sustentables LAT', value: 321219.20, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'Romance', motivo2: 'Romance', municipios: ['Multidestino'] },
+          { name: 'PCMA Advisory Client Roadshow', value: 941824.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Eventos Especiales', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Multidestino'] },
           { name: 'Neextt Unique Hotels & Destinations SMA 2025', value: 458200.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Acciones de relaciones públicas y promoción', motivo1: 'Todos', motivo2: 'Todos', municipios: ['San Miguel de Allende'] },
           { name: 'Plan de Medios SECTURI 2025', value: 3882868.72, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Herramientas de promoción y difusión', motivo1: 'Todos', motivo2: 'Todos', municipios: ['Todo el Estado'] },
           { name: 'Alianza comercial Expedia 2025', value: 2000000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Alianzas Estratégicas', motivo1: 'Todos', motivo2: 'Todos', municipios: ['Todo el Estado'] },
           { name: 'Alianza comercial Planet IFE 2025', value: 2691199.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Alianzas Estratégicas', motivo1: 'Todos', motivo2: 'Todos', municipios: ['Todo el Estado'] },
-          { name: 'Festival Endémico 2025', value: 4000000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Eventos Especiales', motivo1: 'Gastronómico', motivo2: 'Gastronómico', municipios: ['Guanajuato', 'León', 'San Miguel de Allende'] },
-          { name: '13° Encuentro de Cocina Tradicional Guanajuato ¡Sí Sabe!', value: 3205500.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Eventos Especiales', motivo1: 'Gastronómico', motivo2: 'Gastronómico', municipios: ['Guanajuato', 'Yuriria', 'Pénjamo', 'San Luis de la Paz', 'León'] },
+          { name: 'Festival Endémico 2025', value: 4000000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Eventos Especiales', motivo1: 'Gastronómico', motivo2: 'Gastronómico', municipios: ['Multidestino'] },
+          { name: '13° Encuentro de Cocina Tradicional Guanajuato ¡Sí Sabe!', value: 3205500.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Eventos Especiales', motivo1: 'Gastronómico', motivo2: 'Gastronómico', municipios: ['Multidestino'] },
         ],
       },
       {
@@ -73,9 +82,9 @@ const ChartsSection = () => {
           { name: 'Expo Guanajuato Provee 5ta edición', value: 100000.00, beneficiario: 'Jessica Teresita Villafaña Aguilera', concepto: 'Eventos Especiales', motivo1: 'MICE', motivo2: 'MICE', municipios: ['León'] },
           { name: 'México Assembly Wire Expo', value: 400000.00, beneficiario: 'Electrical Wire Expo S de RL de CV', concepto: 'Eventos Especiales', motivo1: 'MICE', motivo2: 'MICE', municipios: ['León'] },
           { name: 'Participación en el 49 Tianguis Turístico de México de Baja California', value: 8806944.48, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Viajes de promoción', motivo1: 'Todos', motivo2: 'Todos', municipios: ['Todo el Estado'] },
-          { name: 'IBTM AMÉRICAS', value: 2251086.66, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Celaya', 'Guanajuato', 'Irapuato', 'León', 'San Miguel de Allende', 'Silao de la Victoria'] },
+          { name: 'IBTM AMÉRICAS', value: 2251086.66, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Multidestino'] },
           { name: 'Socios comerciales (CONEXSTUR y PRIMERA PLUS)', value: 800000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Alianzas Estratégicas', motivo1: 'Todos', motivo2: 'Todos', municipios: ['Todo el Estado'] },
-          { name: 'Participación en el Tianguis Nacional de Pueblos Mágicos', value: 800000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Viajes de promoción', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['Comonfort', 'Dolores Hidalgo', 'Purísima del Rincón', 'Salvatierra', 'San Luis de la Paz', 'Yuriria'] },
+          { name: 'Participación en el Tianguis Nacional de Pueblos Mágicos', value: 800000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Viajes de promoción', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['Multidestino'] },
           { name: 'Caravana de Identidad y Pertenencia', value: 1500000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Herramientas de promoción y difusión', motivo1: 'Todos', motivo2: 'Todos', municipios: ['Todo el Estado'] },
         ],
       },
@@ -100,13 +109,13 @@ const ChartsSection = () => {
           { name: 'Viva Guanajuato; sabor, música y folclor 2025', value: 800000.00, beneficiario: 'Rocío Castillo Lulet', concepto: 'Eventos Especiales', motivo1: 'Gastronómico', motivo2: 'Gastronómico', municipios: ['Guanajuato'] },
           { name: 'FESTIVAL PRIDE GUANAJUATO', value: 150000.00, beneficiario: 'ESTEBAN SAAVEDRA SILVA', concepto: 'Eventos Especiales', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['Guanajuato'] },
           { name: 'VENDIMIA BRAVA 2025', value: 300000.00, beneficiario: 'MOTO AUSTRIA SA DE CV', concepto: 'Eventos Especiales', motivo1: 'Enológico', motivo2: 'Enológico', municipios: ['San Miguel de Allende'] },
-          { name: 'Fiexpo Latin America', value: 278300.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Guanajuato', 'León', 'San Miguel de Allende'] },
+          { name: 'Fiexpo Latin America', value: 278300.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Multidestino'] },
         ],
       },
       {
         name: 'CUARTA ORDINARIA',
         children: [
-          { name: 'Promoción de experiencias de turismo de naturaleza en el Estado de Guanajuato', value: 2091997.80, beneficiario: 'TURISMO DE NATURALEZA Y AVENTURA DE GUANAJUATO AC', concepto: 'Herramientas de promoción y difusión', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Naturaleza, Gastronómico', municipios: ['Tierra Blanca', 'Victoria', 'San Luis de la Paz', 'San Miguel de Allende', 'Purísima del Rincón', 'León', 'San Felipe', 'Silao', 'Guanajuato', 'Irapuato', 'Salvatierra', 'Tarandacuao'] },
+          { name: 'Promoción de experiencias de turismo de naturaleza en el Estado de Guanajuato', value: 2091997.80, beneficiario: 'TURISMO DE NATURALEZA Y AVENTURA DE GUANAJUATO AC', concepto: 'Herramientas de promoción y difusión', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Naturaleza, Gastronómico', municipios: ['Multidestino'] },
           { name: 'YURIRIA, Estrategia Integral de Promoción', value: 1716000.00, beneficiario: 'MUNICIPIO DE YURIRIA', concepto: 'Eventos Especiales, Herramientas de promoción y difusión, Viajes de Familiarización, Viajes de promoción', motivo1: 'Multimotivo de viaje', motivo2: 'Deportivo, Cultural, Naturaleza, Gastronómico', municipios: ['Yuriria'] },
           { name: 'Ultimate Urban Enduro', value: 200000.00, beneficiario: 'Javier García Gómez', concepto: 'Eventos Especiales', motivo1: 'Deportivo', motivo2: 'Deportivo', municipios: ['Guanajuato'] },
           { name: '5° Torneo Internacional Veritas 2025', value: 400000.00, beneficiario: 'Luis Ernesto Turcios Guzmán', concepto: 'Eventos Especiales', motivo1: 'Deportivo', motivo2: 'Deportivo', municipios: ['Guanajuato'] },
@@ -118,7 +127,7 @@ const ChartsSection = () => {
           { name: 'ETSKUNI', value: 70000.00, beneficiario: 'MUNICIPIO DE TARANDACUAO GTO', concepto: 'Eventos Especiales', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['Tarandacuao'] },
           { name: 'LEYENDAS GTO', value: 1000000.00, beneficiario: '5 HT', concepto: 'Eventos Especiales', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['León'] },
           { name: 'THE LEGACY Congreso Internacional de Danza Jazz 2a Edición', value: 200000.00, beneficiario: 'MARIA MERCEDES MEZA GONZALEZ', concepto: 'Eventos Especiales', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['León'] },
-          { name: 'TASTE! Concurso y Reality Internacional en Diseño de Coctelería de Autor', value: 300000.00, beneficiario: 'Juan Francisco Velázquez Martínez', concepto: 'Herramientas de promoción y difusión', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Enológico, Destilados', municipios: ['Irapuato', 'León', 'Pénjamo', 'San Luis de la Paz', 'Valle de Santiago', 'Yuriria'] },
+          { name: 'TASTE! Concurso y Reality Internacional en Diseño de Coctelería de Autor', value: 300000.00, beneficiario: 'Juan Francisco Velázquez Martínez', concepto: 'Herramientas de promoción y difusión', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Enológico, Destilados', municipios: ['Multidestino'] },
           { name: 'SAN MIGUEL Y SUS SABORES', value: 772637.68, beneficiario: 'MUNICIPIO DE SAN MIGUEL DE ALLENDE, GUANAJUATO', concepto: 'Eventos Especiales', motivo1: 'Gastronómico', motivo2: 'Gastronómico', municipios: ['San Miguel de Allende'] },
           { name: 'MICHEFEST, VILLAGRÁN 2025', value: 500000.00, beneficiario: 'MUNICIPIO DE VILLAGRÁN GTO', concepto: 'Eventos Especiales', motivo1: 'Gastronómico', motivo2: 'Gastronómico', municipios: ['Villagrán'] },
           { name: 'Shaker Room 2025', value: 120000.00, beneficiario: 'Sergio Arturo Ignacio Martinez Barco', concepto: 'Eventos Especiales', motivo1: 'Multimotivo de viaje', motivo2: 'Enológico, Destilados', municipios: ['León'] },
@@ -131,7 +140,7 @@ const ChartsSection = () => {
           { name: 'Concierto de Carmina Burana con la Sinfónica de Minería', value: 500000.00, beneficiario: 'Fundación Universidad Nacional Autónoma de México Capítulo Guanajuato', concepto: 'Eventos Especiales', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['San Miguel de Allende'] },
           { name: 'Festival De La Salud Saberes Ancestrales', value: 293270.00, beneficiario: 'Pedro Arturo Villegas Rangel', concepto: 'Eventos Especiales', motivo1: 'Wellness', motivo2: 'Wellness', municipios: ['Tarandacuao'] },
           { name: 'Promoción y Difusión Turística del Estado de Guanajuato mediante Estrategia de Relaciones Públicas para el Fortalecimiento de la Oferta e Integración Municipal a través de FAM Trips Nacionales.', value: 2759548.99, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Viajes de Familiarización', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['Todo el Estado'] },
-          { name: 'MEETING PLACE GUANAJUATO', value: 3290146.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Eventos Especiales', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Celaya', 'Guanajuato', 'Irapuato', 'León', 'San Miguel de Allende', 'Silao de la Victoria'] },
+          { name: 'MEETING PLACE GUANAJUATO', value: 3290146.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Eventos Especiales', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Multidestino'] },
           { name: 'Alianza comercial Mexitours 2025', value: 300000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Alianzas Estratégicas', motivo1: 'Todos', motivo2: 'Todos', municipios: ['Todo el Estado'] },
         ],
       },
@@ -170,7 +179,7 @@ const ChartsSection = () => {
           { name: 'Proyecto Integral de Promoción de Destino San Luis de La Paz 2025', value: 967360.00, beneficiario: 'Municipio de San Luis de la Paz', concepto: 'Eventos Especiales, Viajes de promoción, Acciones de relaciones públicas, Fams y herramientas de promoción', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Destilados, Wellness, Romance, Naturaleza, Gastronómico', municipios: ['San Luis de la Paz'] },
           { name: 'Guia México Desconocido 2025 - Edición Especial Guanajuato', value: 1160000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Herramientas de promoción y difusión', motivo1: 'Todos', motivo2: 'Todos', municipios: ['Todo el Estado'] },
           { name: 'Roadshow Guanajuato por Estados Unidos y Colombia 2025', value: 6485099.17, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Acciones de relaciones públicas y promoción', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Enológico, Destilados, Wellness, MICE, Romance, Naturaleza, Gastronómico', municipios: ['Todo el Estado'] },
-          { name: 'Fiexpo Latin America', value: 650000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Guanajuato', 'León', 'San Miguel de Allende'] },
+          { name: 'Fiexpo Latin America', value: 650000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Multidestino'] },
           { name: 'Alianza comercial CATAI VIAJES 2025', value: 1296021.32, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Alianzas Estratégicas', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Enológico, Destilados, Wellness, Romance, Naturaleza, Gastronómico', municipios: ['Todo el Estado'] },
           { name: 'Alianza comercial Planet IFE 2025', value: 1131872.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Alianzas Estratégicas', motivo1: 'Todos', motivo2: 'Todos', municipios: ['Todo el Estado'] },
         ],
@@ -183,14 +192,14 @@ const ChartsSection = () => {
           { name: 'Guanajuato, ruta del vino con identidad: turismo, cultura y desarrollo comunitario', value: 1066874.00, beneficiario: 'Uva y Vino de Guanajuato A.C.', concepto: 'Acciones de relaciones públicas y promoción, Alianzas Estratégicas, Eventos Especiales, Herramientas de promoción y difusión, Viajes de promoción, Viajes de Familiarización', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Wellness, Romance, Naturaleza, Gastronómico', municipios: ['Multidestino'] },
           { name: 'Publicidad en exteriores Aeropuerto Internacional de Querétaro AIQ', value: 414999.96, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Herramientas de promoción y difusión', motivo1: 'Multimotivo de viaje', motivo2: 'Deportivo, Cultural, Enológico, Destilados, Wellness, MICE, Romance, Naturaleza, Gastronómico', municipios: ['Todo el Estado'] },
           { name: 'Servicio integral de promoción y difusión turística del estado de Guanajuato mediante un módulo físico instalado en el Aeropuerto Internacional del Bajío (BJX)', value: 2976560.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Herramientas de promoción y difusión', motivo1: 'Multimotivo de viaje', motivo2: 'Deportivo, Cultural, Enológico, Destilados, Wellness, MICE, Romance, Naturaleza, Gastronómico', municipios: ['Todo el Estado'] },
-          { name: '13° Encuentro de Cocina Tradicional Guanajuato ¡Sí Sabe!', value: 116000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Eventos Especiales', motivo1: 'Gastronómico', motivo2: 'Gastronómico', municipios: ['Guanajuato', 'Yuriria', 'Pénjamo', 'San Luis de la Paz', 'León'] },
+          { name: '13° Encuentro de Cocina Tradicional Guanajuato ¡Sí Sabe!', value: 116000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Eventos Especiales', motivo1: 'Gastronómico', motivo2: 'Gastronómico', municipios: ['Multidestino'] },
         ],
       },
       {
         name: 'TERCERA EXTRAORDINARIA',
         children: [
           { name: 'Festival de Verano Vive León 2025', value: 1000000.00, beneficiario: 'Patronato de la Feria Estatal de León y Parque Ecológico', concepto: 'Eventos Especiales', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['León'] },
-          { name: 'WORLD MEETINGS FORUM GLOBAL CARIBE', value: 473018.36, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Celaya', 'Guanajuato', 'Irapuato', 'León', 'San Miguel de Allende'] },
+          { name: 'WORLD MEETINGS FORUM GLOBAL CARIBE', value: 473018.36, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Multidestino'] },
         ],
       },
       {
@@ -201,14 +210,14 @@ const ChartsSection = () => {
           { name: 'NOCHE MÍSTICA', value: 96850.00, beneficiario: 'MUNICIPIO DE TARANDACUAO', concepto: 'Eventos Especiales', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['Tarandacuao'] },
           { name: '7° Festival del Día de los Muertos Guanajuato', value: 2500000.00, beneficiario: 'Municipio de Guanajuato', concepto: 'Eventos Especiales', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Gastronómico', municipios: ['Guanajuato'] },
           { name: 'XVIII Muestra Internacional de Arte Efímero "El Tapete de la Muerte"', value: 600000.00, beneficiario: 'Pedro Chacon Díaz', concepto: 'Eventos Especiales', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['Guanajuato'] },
-          { name: 'Turismo educativo y enoturismo en Guanajuato: una estrategia de atracción internacional', value: 296700.00, beneficiario: 'Daniela Moreno Berra', concepto: 'Herramientas de promoción y difusión', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['Dolores Hidalgo', 'Guanajuato', 'León', 'San Miguel de Allende'] },
+          { name: 'Turismo educativo y enoturismo en Guanajuato: una estrategia de atracción internacional', value: 296700.00, beneficiario: 'Daniela Moreno Berra', concepto: 'Herramientas de promoción y difusión', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['Multidestino'] },
           { name: 'HERRAMIENTAS DE PROMOCIÓN Y DIFUSIÓN', value: 155469.00, beneficiario: 'ASOCIACI0N MEXICANA DE HOTELES Y ESTABLECIMIENTOS DE HOSPEDAJE DE SAN MIGUEL DE ALLENDE GTO AC', concepto: 'Herramientas de promoción y difusión', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Enológico, Wellness, MICE, Romance, Gastronómico', municipios: ['San Miguel de Allende'] },
           { name: '4to. Festival de Paseo por Apaseo, Tierra de Sabor y Tradición', value: 200000.00, beneficiario: 'MUNICIPIO DE APASEO EL GRANDE GUANAJUATO', concepto: 'Eventos Especiales', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Gastronómico', municipios: ['Apaseo el Grande'] },
           { name: 'GREEN JOBS FOR YOUTH ACADEMY', value: 200000.00, beneficiario: 'INTERNATIONAL SKILLS HUB', concepto: 'Eventos Especiales', motivo1: 'MICE', motivo2: 'MICE', municipios: ['León'] },
           { name: 'Foro de Construcción 5.0', value: 700000.00, beneficiario: 'COLEGIO ESTATAL DE INGENIEROS CIVILES DE GUANAJUATO, A.C.', concepto: 'Eventos Especiales', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Irapuato'] },
-          { name: '4ta Cumbre Nacional de Marchas LGBT+', value: 350000.00, beneficiario: 'Julio César Ceja Guzmán', concepto: 'Eventos Especiales', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['León', 'Guanajuato', 'Purisima del Rincón'] },
+          { name: '4ta Cumbre Nacional de Marchas LGBT+', value: 350000.00, beneficiario: 'Julio César Ceja Guzmán', concepto: 'Eventos Especiales', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['Multidestino'] },
           { name: 'Proyecto Integral de promoción, comercialización y producto turístico de Irapuato', value: 2445093.00, beneficiario: 'Municipio de Irapuato, Gto.', concepto: 'Acciones de relaciones públicas y promoción, Eventos Especiales, Herramientas de promoción y difusión, Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, MICE, Gastronómico', municipios: ['Irapuato'] },
-          { name: '7ma. Edición Vinum Guanajuato 2025', value: 1999840.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Eventos Especiales', motivo1: 'Enológico', motivo2: 'Enológico', municipios: ['Comonfort', 'Dolores Hidalgo', 'León', 'San Felipe', 'San Francisco del Rincón', 'San Miguel de Allende'] },
+          { name: '7ma. Edición Vinum Guanajuato 2025', value: 1999840.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Eventos Especiales', motivo1: 'Enológico', motivo2: 'Enológico', municipios: ['Multidestino'] },
           { name: 'Guanajuato Inexplorado', value: 2598400.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Herramientas de promoción y difusión', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Enológico, Destilados, Wellness, Naturaleza, Gastronómico', municipios: ['Todo el Estado'] },
           { name: 'FOOD AND TRAVEL MÉXICO, CAMPAÑA DIGITAL', value: 835200.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Herramientas de promoción y difusión', motivo1: 'Multimotivo de viaje', motivo2: 'Enológico, Gastronómico', municipios: ['San Miguel de Allende'] },
         ],
@@ -358,7 +367,7 @@ const ChartsSection = () => {
       (filterMunicipio === 'Multidestino') ||
       (filterMunicipio === 'Todo el Estado');
 
-    const normalizeMun = (mun) => {
+    const normalizeMunGeo = (mun) => {
       if (mun === 'Dolores Hidalgo') return 'Dolores Hidalgo CIN';
       if (mun === 'Silao') return 'Silao de la Victoria';
       if (mun === 'Purisima del Rincón') return 'Purísima del Rincón';
@@ -366,7 +375,7 @@ const ChartsSection = () => {
     };
 
     let enhancedData = mapData.map(d => {
-      const geoName = normalizeMun(d.name);
+      const geoName = normalizeMunGeo(d.name);
       const isHighlighted =
         isMultidestinoActive ||
         (selectedProject && selectedProject.municipios?.includes(d.name)) ||
@@ -450,6 +459,90 @@ const ChartsSection = () => {
       ],
     };
   }, [mapData, maxVal, selectedProject, filterMunicipio, clickedMunicipio]);
+
+  // --- Resumen Animado (Mapa / Barras) ---
+  const normalizeMunAnimated = (mun) => {
+    if (mun === 'Dolores Hidalgo') return 'Dolores Hidalgo CIN';
+    if (mun === 'Silao') return 'Silao de la Victoria';
+    if (mun === 'Purisima del Rincón') return 'Purísima del Rincón';
+    return mun;
+  };
+
+  const summaryData = useMemo(() => {
+    return mapData
+      .filter(d => d.name !== 'Sin Municipio' && d.name !== 'Multidestino' && d.name !== 'Todo el Estado')
+      .map(d => ({
+        name: normalizeMunAnimated(d.name),
+        value: d.value
+      }))
+      .sort((a, b) => a.value - b.value);
+  }, [mapData]);
+
+  const summaryMapOption = useMemo(() => {
+    return {
+      title: { text: 'Inversión por Municipio - Resumen Dinámico', left: 'center', textStyle: { color: '#004481' }, top: 10 },
+      tooltip: {
+        trigger: 'item',
+        formatter: params => `<b>${params.name}</b><br/>Inversión: $${params.value ? params.value.toLocaleString('es-MX', { minimumFractionDigits: 2 }) : 0}`
+      },
+      visualMap: {
+        left: 'right',
+        bottom: 20,
+        min: 0,
+        max: maxVal || 1000000,
+        inRange: { color: ['#c6dbef', '#8ab4d9', '#2c7fb8', '#00417b'] },
+        text: ['Alto', 'Bajo'],
+        calculable: true,
+        itemHeight: 80
+      },
+      series: [{
+        id: 'inversion',
+        type: 'map',
+        roam: true,
+        map: 'Guanajuato',
+        animationDurationUpdate: 1500,
+        universalTransition: true,
+        data: summaryData
+      }]
+    };
+  }, [summaryData, maxVal]);
+
+  const summaryBarOption = useMemo(() => {
+    return {
+      title: { text: 'Inversión por Municipio - Resumen Dinámico', left: 'center', textStyle: { color: '#004481' }, top: 10 },
+      tooltip: {
+        trigger: 'axis',
+        formatter: params => {
+          const val = params[0].value;
+          return `<b>${params[0].name}</b><br/>Inversión: $${val ? val.toLocaleString('es-MX', { minimumFractionDigits: 2 }) : 0}`;
+        }
+      },
+      xAxis: {
+        type: 'value',
+        axisLabel: { formatter: value => '$' + (value / 1000000).toFixed(1) + 'M' }
+      },
+      grid: { left: '20%', right: '10%', bottom: '10%', top: '15%' },
+      yAxis: {
+        type: 'category',
+        axisLabel: { rotate: 0, fontSize: 10 },
+        data: summaryData.map(item => item.name)
+      },
+      visualMap: {
+        show: false, // Hide visualmap on bar chart but keep mapping
+        min: 0,
+        max: maxVal || 1000000,
+        inRange: { color: ['#c6dbef', '#8ab4d9', '#2c7fb8', '#00417b'] }
+      },
+      animationDurationUpdate: 1500,
+      series: [{
+        type: 'bar',
+        id: 'inversion',
+        data: summaryData.map(item => item.value),
+        universalTransition: true,
+        itemStyle: { borderRadius: [0, 4, 4, 0] }
+      }]
+    };
+  }, [summaryData, maxVal]);
 
   return (
     <div className="dashboard-wrapper">
@@ -646,6 +739,28 @@ const ChartsSection = () => {
             )}
           </div>
         </div>
+      </div>
+
+      {/* Dynamic Summary Section */}
+      <div className="summary-animated-container" style={{
+        marginTop: '30px',
+        padding: '20px',
+        background: '#fff',
+        borderRadius: '12px',
+        boxShadow: '0 4px 15px rgba(0,0,0,0.08)',
+        height: '600px',
+        maxWidth: '1400px',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        position: 'relative',
+        zIndex: 10
+      }}>
+        <ReactECharts
+          option={showMapAnimation ? summaryMapOption : summaryBarOption}
+          style={{ height: '100%', width: '100%' }}
+          notMerge={false}
+          lazyUpdate={true}
+        />
       </div>
     </div>
   );
