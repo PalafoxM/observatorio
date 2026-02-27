@@ -1,3 +1,7 @@
+* {
+  cursor: url('./assets/raton1.png'), auto !important;
+}
+
 .app-container {
   position: relative;
   height: 100vh;
