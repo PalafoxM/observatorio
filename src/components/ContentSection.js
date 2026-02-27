@@ -15,7 +15,7 @@ const ContentSection = () => {
       {/* Sección 2: Agregamos el botón "Entrar" aquí */}
       <div className="content-section2">
         <div className="content-box">
-          <h3><p>Consulta de Proyectos Apoyados 2025</p> </h3>
+          <h3 style={{ color: '#F05B5B' }}><p>Consulta de Proyectos Apoyados 2025</p> </h3>
           Este espacio tiene como propósito brindar información clara y accesible sobre la aplicación de los recursos provenientes del Impuesto por Servicios de Hospedaje,
           destinados a la promoción turística del estado durante el año 2025.<br />
           Aquí podrás consultar el nombre del beneficiario, el proyecto apoyado y el monto.

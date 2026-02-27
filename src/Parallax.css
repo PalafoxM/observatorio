@@ -530,3 +530,51 @@ body {
     box-shadow: 0 0 20px #ffffff, 0 0 40px rgba(255, 255, 255, 0.4);
   }
 }
+
+/* Shooting Stars */
+.shooting-star {
+  position: absolute;
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  border-radius: 999px;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 1));
+  animation: shootingStarAnim 1.5s ease-in forwards;
+  pointer-events: none;
+  /* Rotamos aquí el elemento principal para que la animación solo necesite moverse en su propio eje X */
+  transform: rotate(35deg);
+}
+
+.shooting-star::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  /* Lo ponemos justo en la punta que avanza */
+  transform: translateY(-50%);
+  width: 12px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px white, 0 0 20px white;
+}
+
+@keyframes shootingStarAnim {
+  0% {
+    transform: rotate(35deg) translateX(0);
+    opacity: 1;
+    width: 0;
+  }
+
+  30% {
+    width: 150px;
+    opacity: 1;
+  }
+
+  100% {
+    /* Moverlo hacia adelante */
+    transform: rotate(35deg) translateX(1000px);
+    opacity: 0;
+    width: 0;
+  }
+}

@@ -17,6 +17,7 @@ const Parallax = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [shootingStars, setShootingStars] = useState([]);
 
   const layers = [
     { id: 0, src: Bufa, mobileDepth: 0 },
@@ -71,6 +72,43 @@ const Parallax = () => {
     };
   }, [isMobile]);
 
+  useEffect(() => {
+    // Estrella fugaz inicial al cargar
+    const initialStars = [
+      { id: 'init-1', x: '80%', y: '10%' }
+    ];
+
+    // Mostramos las iniciales con un pequeño retraso
+    setTimeout(() => {
+      setShootingStars(initialStars);
+    }, 1000);
+
+    // Limpiamos las iniciales
+    setTimeout(() => {
+      setShootingStars(prev => prev.filter(s => !s.id.toString().startsWith('init')));
+    }, 3000);
+
+    // Generador de estrellas aleatorias
+    const interval = setInterval(() => {
+      // 40% de probabilidad de que salga una estrella cada 3.5 segundos
+      if (Math.random() > 0.6) {
+        const newStar = {
+          id: Date.now(),
+          x: `${Math.floor(Math.random() * 80) + 20}%`, // 20% a 100% ancho
+          y: `${Math.floor(Math.random() * 30)}%`, // 0% a 30% alto
+        };
+        setShootingStars(prev => [...prev, newStar]);
+
+        // La eliminamos después de que termine la animación
+        setTimeout(() => {
+          setShootingStars(prev => prev.filter(s => s.id !== newStar.id));
+        }, 2000);
+      }
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleScroll = (e) => {
     if (!isMobile) {
       const layers = document.querySelectorAll('.parallax__layer');
@@ -110,6 +148,18 @@ const Parallax = () => {
     }}>
       {isLoading && <LoadingScreen />}
       <RotatePrompt />
+
+      {/* Estrellas Fugaces */}
+      {shootingStars.map(star => (
+        <div
+          key={star.id}
+          className="shooting-star"
+          style={{
+            left: star.x,
+            top: star.y
+          }}
+        ></div>
+      ))}
 
       {/* Cuerpos celestes */}
       <div className="moon" style={{
