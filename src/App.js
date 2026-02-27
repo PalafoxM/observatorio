@@ -5,6 +5,7 @@ import ChartsSection from './components/ChartsSection';
 //import Teatro from './assets/teareo_full.webp';
 //import Teatro from './assets/teatro5.png';
 import Teatro from './assets/TEATRO_JUAREZ.png';
+import bannerBg from './assets/fondo.jpg';
 //import Pipila from './assets/pipila.png';
 import Pipila from './assets/pipila_color.webp';
 import Bufa from './assets/bufa.png';
@@ -32,7 +33,6 @@ const Parallax = () => {
   /* Preload Images */
   useEffect(() => {
     const preloadImages = async () => {
-      const bannerBg = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/105988/banner-background.jpg';
 
       const allImagesToPreload = [
         ...layers.map(layer => layer.src),
