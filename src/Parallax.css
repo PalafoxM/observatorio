@@ -510,9 +510,9 @@ body {
 .moon {
   width: 80px;
   height: 80px;
-  background: transparent;
+  background: #fdfdfd;
   border-radius: 50%;
-  box-shadow: 18px 18px 0 0 #FFF, 18px 18px 30px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 30px #ffffff, 0 0 60px rgba(255, 255, 255, 0.4);
   pointer-events: none;
   transform: translate(-50%, -50%);
 }
@@ -527,6 +527,6 @@ body {
   .moon {
     width: 60px;
     height: 60px;
-    box-shadow: 12px 12px 0 0 #FFF, 12px 12px 20px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 20px #ffffff, 0 0 40px rgba(255, 255, 255, 0.4);
   }
 }

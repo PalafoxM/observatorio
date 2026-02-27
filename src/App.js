@@ -97,20 +97,32 @@ const Parallax = () => {
   const dynamicBgColor = `rgb(${r}, ${g}, ${b})`;
 
   return (
-    <div className="main-container" style={{ width: '100%', height: '100vh', overflow: 'hidden', backgroundColor: dynamicBgColor, position: 'relative' }}>
+    <div className="main-container" style={{
+      width: '100%',
+      height: '100vh',
+      overflow: 'hidden',
+      backgroundColor: dynamicBgColor,
+      backgroundImage: `url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/105988/banner-background.jpg')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundBlendMode: 'multiply',
+      position: 'relative'
+    }}>
       {isLoading && <LoadingScreen />}
       <RotatePrompt />
 
       {/* Cuerpos celestes */}
-      <div className="sun" style={{
+      <div className="moon" style={{
         position: 'absolute',
         left: '50%',
         top: `${15 + scrollProgress * 40}%`,
-        opacity: Math.max(0, 1 - scrollProgress * 1.5),
+        opacity: Math.min(1, 0.5 + scrollProgress * 1.5), // Empieza visible, y se aclara
         zIndex: 0
       }}></div>
 
+      {/* Ocultamos la segunda luna original, ya que la primera ya bajará como si fuera el sol original */}
       <div className="moon" style={{
+        display: 'none',
         position: 'absolute',
         left: '50%',
         top: `${60 - scrollProgress * 40}%`,

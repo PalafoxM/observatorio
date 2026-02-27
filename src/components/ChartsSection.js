@@ -720,7 +720,7 @@ const ChartsSection = () => {
             ) : activeMunicipio ? (
               <div className="details-municipio">
                 <h4>{activeMunicipio.originalName || activeMunicipio.name}</h4>
-                <p className="total-proy">Inversión Total: ${(activeMunicipio.value || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                <p className="total-proy">Monto Total Apoyado: ${(activeMunicipio.value || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                 <p className="total-proy">Proyectos: {activeMunicipio.events?.length || 0}</p>
 
 
