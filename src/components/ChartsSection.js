@@ -607,9 +607,22 @@ const ChartsSection = () => {
           <select
             value={filterMunicipio}
             onChange={(e) => {
-              setFilterMunicipio(e.target.value);
-              setClickedMunicipio(null);
+              const val = e.target.value;
+              setFilterMunicipio(val);
               setSelectedProject(null);
+              // Si selecciona un municipio específico (distinto a Todos, Todo el Estado, Multidestino), lo activamos en el panel lateral.
+              if (val !== 'Todos' && val !== 'Todo el Estado' && val !== 'Multidestino') {
+                // Buscamos la data calculada de ese municipio en `mapData`
+                const mapNode = mapData.find(d => d.name === val || d.originalName === val);
+                if (mapNode) {
+                  setClickedMunicipio(mapNode);
+                } else {
+                  // Si por alguna razón no existe aún en mapData, simulamos el objeto
+                  setClickedMunicipio({ name: val, originalName: val, value: 0, events: [] });
+                }
+              } else {
+                setClickedMunicipio(null);
+              }
             }}
             style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
           >
