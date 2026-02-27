@@ -32,24 +32,27 @@ const Parallax = () => {
   /* Preload Images */
   useEffect(() => {
     const preloadImages = async () => {
-      const promises = layers.map(layer => {
-        return new Promise((resolve, reject) => {
+      const bannerBg = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/105988/banner-background.jpg';
+
+      const allImagesToPreload = [
+        ...layers.map(layer => layer.src),
+        bannerBg
+      ];
+
+      const promises = allImagesToPreload.map(src => {
+        return new Promise((resolve) => {
           const img = new Image();
-          img.src = layer.src;
+          img.src = src;
+          // Continúa incluso si falla para no trabar la pantalla
           img.onload = resolve;
-          img.onerror = resolve; // Continue even if one fails
+          img.onerror = resolve;
         });
       });
 
-      // Also preload the cover image if possible, though it's CSS
-      // We'll just wait for the layers for now
-
       try {
         await Promise.all(promises);
-        // Add a small delay for smoothness
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 500);
+        // Quitamos el retraso artificial largo para acelerar la entrada
+        setIsLoading(false);
       } catch (error) {
         console.error("Error loading images", error);
         setIsLoading(false);
