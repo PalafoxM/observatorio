@@ -309,8 +309,25 @@ const ChartsSection = () => {
       }
     });
 
-    const dynamicMotivos = ['Todos', 'Multimotivo de viaje', ...Array.from(motSet)].sort();
-    const dynamicMunicipios = ['Todos', ...Array.from(mSet)].sort();
+    const dynamicMotivos = ['Todos', 'Multimotivo de viaje', ...Array.from(motSet)].sort((a, b) => {
+      const special = ['Multimotivo de viaje', 'Todos'];
+      const aIdx = special.indexOf(a);
+      const bIdx = special.indexOf(b);
+      if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
+      if (aIdx !== -1) return 1;
+      if (bIdx !== -1) return -1;
+      return a.localeCompare(b);
+    });
+
+    const dynamicMunicipios = ['Todos', ...Array.from(mSet)].sort((a, b) => {
+      const special = ['Todo el Estado', 'Multidestino', 'Todos'];
+      const aIdx = special.indexOf(a);
+      const bIdx = special.indexOf(b);
+      if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
+      if (aIdx !== -1) return 1;
+      if (bIdx !== -1) return -1;
+      return a.localeCompare(b);
+    });
 
     // 3. Aplicar filtros de select a la lista de categoría
     let filtered = categoryFiltered;
@@ -414,7 +431,7 @@ const ChartsSection = () => {
         formatter: function (params) {
           const munName = params.data?.originalName || params.name;
           if (!params.value && params.value !== 0) return '<b>' + munName + '</b><br/>Sin proyectos';
-          return `<b>${munName}</b><br/>Inversión: $${params.value.toLocaleString('es-MX', { minimumFractionDigits: 2 })}`;
+          return `<b>${munName}</b><br/>Inversión: $${params.value.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         },
       },
       visualMap: {
@@ -483,7 +500,7 @@ const ChartsSection = () => {
       title: { text: 'Inversión por Municipio - Resumen Dinámico', left: 'center', textStyle: { color: '#004481' }, top: 10 },
       tooltip: {
         trigger: 'item',
-        formatter: params => `<b>${params.name}</b><br/>Inversión: $${params.value ? params.value.toLocaleString('es-MX', { minimumFractionDigits: 2 }) : 0}`
+        formatter: params => `<b>${params.name}</b><br/>Inversión: $${params.value ? params.value.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}`
       },
       visualMap: {
         left: 'right',
@@ -514,7 +531,7 @@ const ChartsSection = () => {
         trigger: 'axis',
         formatter: params => {
           const val = params[0].value;
-          return `<b>${params[0].name}</b><br/>Inversión: $${val ? val.toLocaleString('es-MX', { minimumFractionDigits: 2 }) : 0}`;
+          return `<b>${params[0].name}</b><br/>Inversión: $${val ? val.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}`;
         }
       },
       xAxis: {
@@ -560,7 +577,7 @@ const ChartsSection = () => {
           onClick={() => handleCategoryChange('Proyectos Específicos')}
         >
           <div className="top-card-title">Proyectos Específicos</div>
-          <div className="top-card-count">119 proyectos</div>
+          <div className="top-card-count">118 proyectos</div>
         </div>
       </div>
 
@@ -623,7 +640,7 @@ const ChartsSection = () => {
                   }}
                 >
                   <div style={{ fontWeight: 'bold' }}>{proj.name}</div>
-                  <div style={{ fontSize: '0.8rem', color: '#666' }}>${proj.value.toLocaleString('es-MX')}</div>
+                  <div style={{ fontSize: '0.8rem', color: '#666' }}>${proj.value.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                 </div>
               ))}
               {filteredEvents.length === 0 && (
@@ -666,7 +683,7 @@ const ChartsSection = () => {
                 <h5>{selectedProject.name}</h5>
                 <div className="detail-row">
                   <span className="label">Monto:</span>
-                  <span className="value badge">${selectedProject.value.toLocaleString('es-MX')}</span>
+                  <span className="value badge">${selectedProject.value.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 </div>
                 <div className="detail-row">
                   <span className="label">Tipo:</span>
@@ -685,13 +702,10 @@ const ChartsSection = () => {
                   <span className="value">{selectedProject.motivo}</span>
                 </div>
                 <div className="detail-row">
-                  <span className="label">Sesión:</span>
-                  <span className="value">{selectedProject.sessionName} ({selectedProject.sessionType})</span>
+                  <span className="label">Sesión en la que se aprobó:</span>
+                  <span className="value">{selectedProject.sessionName}</span>
                 </div>
-                <div className="detail-row">
-                  <span className="label">Resultados:</span>
-                  <span className="value">{selectedProject.resultados}</span>
-                </div>
+
                 {selectedProject.municipios && selectedProject.municipios.length > 0 && (
                   <div className="detail-row" style={{ marginTop: '15px' }}>
                     <span className="label" style={{ display: 'block', marginBottom: '5px' }}>Municipios Involucrados:</span>
@@ -706,28 +720,10 @@ const ChartsSection = () => {
             ) : activeMunicipio ? (
               <div className="details-municipio">
                 <h4>{activeMunicipio.originalName || activeMunicipio.name}</h4>
-                <p className="total-proy">Inversión Total: ${(activeMunicipio.value || 0).toLocaleString('es-MX')}</p>
+                <p className="total-proy">Inversión Total: ${(activeMunicipio.value || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                 <p className="total-proy">Proyectos: {activeMunicipio.events?.length || 0}</p>
 
-                <div className="municipio-events-list">
-                  <p style={{ marginTop: '15px', color: '#666', fontSize: '0.9rem' }}>
-                    Proyectos en este municipio:
-                  </p>
-                  {activeMunicipio.events &&
-                    activeMunicipio.events.slice(0, 8).map((ev, idx) => (
-                      <div key={idx} className="small-proj-card" onClick={() => {
-                        setSelectedProject(ev);
-                        setClickedMunicipio(null);
-                      }}>
-                        <div className="spc-name">{ev.name}</div>
-                        <div className="spc-value">${ev.value.toLocaleString('es-MX')}</div>
-                        <div style={{ fontSize: '0.75rem', color: '#666' }}>{ev.motivo}</div>
-                      </div>
-                    ))}
-                  {activeMunicipio.events && activeMunicipio.events.length > 8 && (
-                    <div className="more-projects">...y {activeMunicipio.events.length - 8} más</div>
-                  )}
-                </div>
+
               </div>
             ) : (
               <div className="empty-details">

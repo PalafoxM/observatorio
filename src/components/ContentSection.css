@@ -83,12 +83,12 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* Bottom Left Logo Section */
+/* Top Right Logo Section */
 .content-section3 {
-  bottom: 5%;
-  left: 5%;
-  top: auto;
-  /* Override previous top */
+  top: 5%;
+  right: 5%;
+  bottom: auto;
+  left: auto;
   transform: none;
   max-width: 250px;
   width: 25%;
@@ -147,8 +147,10 @@
   }
 
   .content-section3 {
-    bottom: 20px;
-    left: 20px;
+    top: 20px;
+    right: 20px;
+    bottom: auto;
+    left: auto;
     width: 35%;
   }
 

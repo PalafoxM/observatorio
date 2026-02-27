@@ -17,8 +17,8 @@ const ContentSection = () => {
         <div className="content-box">
           <h3><p>Consulta de Proyectos Apoyados 2025</p> </h3>
           Este espacio tiene como propósito brindar información clara y accesible sobre la aplicación de los recursos provenientes del Impuesto por Servicios de Hospedaje,
-          destinado a la promoción turística del estado durante el año 2025.<br />
-          Aquí podrás consultar el nombre del beneficiario, el proyecto Apoyado y el monto.
+          destinados a la promoción turística del estado durante el año 2025.<br />
+          Aquí podrás consultar el nombre del beneficiario, el proyecto apoyado y el monto.
 
         </div>
       </div>
