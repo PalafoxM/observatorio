@@ -8,6 +8,7 @@
   box-sizing: border-box;
   background-color: #f4f7fa;
   min-height: 100vh;
+  cursor: default !important;
 }
 
 

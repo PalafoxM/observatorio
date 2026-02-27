@@ -9,7 +9,7 @@ body {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
-  cursor: url('./assets/puntero.png'), auto !important;
+  cursor: url('../public/raton1_32.png'), auto !important;
   /* background-color removido para permitir transición de App.js */
 }
 
