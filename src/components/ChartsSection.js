@@ -259,7 +259,7 @@ const ChartsSection = () => {
         session.children.forEach(event => {
           tEvt++;
           const cleanName = event.name.replace(/\n/g, '').trim();
-          const isIntegral = proyectosIntegrales.includes(cleanName);
+          const isIntegral = proyectosIntegrales.some(p => p.toLowerCase() === cleanName.toLowerCase());
 
           // Determinar el motivo principal para filtros
           let motivoPrincipal = event.motivo1;
