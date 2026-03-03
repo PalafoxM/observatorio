@@ -41,6 +41,7 @@ const ChartsSection = () => {
     children: [
       {
         name: 'Primera Ordinaria',
+        fecha: 'Miércoles, 5 de marzo de 2025',
         children: [
           { name: 'Forever Wedding Summit', value: 486939.44, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Acciones de relaciones públicas y promoción', motivo1: 'Romance', motivo2: 'Romance', municipios: ['Multidestino'] },
           { name: 'Congreso Nacional de la Industria de Reuniones', value: 728346.30, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Multidestino'] },
@@ -58,6 +59,7 @@ const ChartsSection = () => {
       },
       {
         name: 'Segunda Ordinaria',
+        fecha: 'Lunes, 24 de marzo de 2025',
         children: [
           { name: 'Red Bull Guanajuato Cerro Abajo', value: 1200000.00, beneficiario: 'Javier García Gómez', concepto: 'Eventos Especiales', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Wellness, Romance, Gastronómico', municipios: ['Guanajuato'] },
           { name: 'La Carrera Panamericana 2025', value: 700000.00, beneficiario: 'Promostage SA de CV', concepto: 'Eventos Especiales', motivo1: 'Deportivo', motivo2: 'Deportivo', municipios: ['Guanajuato'] },
@@ -90,6 +92,7 @@ const ChartsSection = () => {
       },
       {
         name: 'Tercera Ordinaria',
+        fecha: 'Martes, 27 de mayo de 2025',
         children: [
           { name: 'Foro Wellness Yourself', value: 150000.00, beneficiario: 'Laura Robledo Romero', concepto: 'Eventos Especiales', motivo1: 'Wellness', motivo2: 'Wellness', municipios: ['León'] },
           { name: 'Festival el Caballo y su Mundo', value: 150000.00, beneficiario: 'Promociones en Publicidad Masiva S.A. de C.V.', concepto: 'Eventos Especiales', motivo1: 'Deportivo', motivo2: 'Deportivo', municipios: ['León'] },
@@ -114,6 +117,7 @@ const ChartsSection = () => {
       },
       {
         name: 'Cuarta Ordinaria',
+        fecha: 'Lunes, 11 de agosto de 2025',
         children: [
           { name: 'Promoción de experiencias de turismo de naturaleza en el Estado de Guanajuato', value: 2091997.80, beneficiario: 'Turismo de Naturaleza y Aventura de Guanajuato AC', concepto: 'Herramientas de promoción y difusión', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Naturaleza, Gastronómico', municipios: ['Multidestino'] },
           { name: 'Yuriria, Estrategia Integral de Promoción', value: 1716000.00, beneficiario: 'Municipio de Yuriria', concepto: 'Eventos Especiales, Herramientas de promoción y difusión, Viajes de Familiarización, Viajes de promoción', motivo1: 'Multimotivo de viaje', motivo2: 'Deportivo, Cultural, Naturaleza, Gastronómico', municipios: ['Yuriria'] },
@@ -146,6 +150,7 @@ const ChartsSection = () => {
       },
       {
         name: 'Quinta Ordinaria',
+        fecha: 'Miércoles, 5 de noviembre de 2025',
         children: [
           { name: 'Proyecto Integral de Promoción Turística: Silao el destino emergente para el Turismo de Reuniones', value: 325000.00, beneficiario: 'Municipio de Silao de la Victoria', concepto: 'Acciones de relaciones públicas y promoción, Eventos Especiales, Herramientas de promoción y difusión, Impulso y Fortalecimiento al Segmento de Turismo de Reuniones, Viajes de Familiarización, Viajes de promoción', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Destilados, Wellness, MICE, Romance', municipios: ['Silao'] },
           { name: 'Proyecto Integral de Promoción de Destino Salamanca Otoño/Invierno 2025', value: 1114873.02, beneficiario: 'Municipio de Salamanca', concepto: 'Acciones de relaciones públicas y promoción, Herramientas de promoción y difusión, Impulso y Fortalecimiento al Segmento de Turismo de Reuniones, Viajes de Familiarización, Viajes de promoción', motivo1: 'Todos', motivo2: 'Todos', municipios: ['Salamanca'] },
@@ -172,6 +177,7 @@ const ChartsSection = () => {
     children: [
       {
         name: 'Primera Extraordinaria',
+        fecha: 'Miércoles, 9 de abril de 2025',
         children: [
           { name: 'Visita Dolores 2025', value: 2358286.00, beneficiario: 'Consejo Ciudadano de Promocion Turistica de Dolores Hidalgo, Cuna de la Independencia Nacional, GTO', concepto: 'Herramientas de promoción y Difusión. Acciones de Relaciones Públicas y Promoción. Alianzas estratégicas. Viajes de Promoción. Viajes de Familiarización.', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, Enológico, Romance, Gastronómico', municipios: ['Dolores Hidalgo'] },
           { name: 'Proyecto Integral de Promoción del Destino Guanajuato Capital', value: 6484440.00, beneficiario: 'Operadora Turística Pozuelos, S.A. de C.V.', concepto: 'Acciones de relaciones públicas y promoción. Alianzas estratégicas. Eventos especiales. Herramientas de promoción y difusión. Impulso y fortalecimiento al segmento de turismo de reuniones. Viajes de familiarización. Viajes de promoción.', motivo1: 'Multimotivo de viaje', motivo2: 'Deportivo, Cultural, Enológico, Wellness, MICE, Romance, Naturaleza, Gastronómico', municipios: ['Guanajuato'] },
@@ -186,6 +192,7 @@ const ChartsSection = () => {
       },
       {
         name: 'Segunda Extraordinaria',
+        fecha: 'Lunes, 23 de junio de 2025',
         children: [
           { name: 'Proyecto Integral Viva León', value: 12750000.00, beneficiario: 'Municipio de León', concepto: 'Eventos Especiales, Herramientas de promoción, Viajes de promoción e Impulso y fortalecimiento al segmento de Turismo de Reuniones', motivo1: 'Multimotivo de viaje', motivo2: 'Deportivo, Cultural, MICE, Romance', municipios: ['León'] },
           { name: 'Proyecto Integral de promoción, comercialización y producto turístico de Irapuato', value: 1325000.00, beneficiario: 'Municipio de Irapuato', concepto: 'Acciones de relaciones públicas y promoción, Eventos Especiales, Herramientas de promoción y difusión, Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'Multimotivo de viaje', motivo2: 'Cultural, MICE, Gastronómico', municipios: ['Irapuato'] },
@@ -197,6 +204,7 @@ const ChartsSection = () => {
       },
       {
         name: 'Tercera Extraordinaria',
+        fecha: 'Jueves, 10 de julio de 2025',
         children: [
           { name: 'Festival de Verano Vive León 2025', value: 1000000.00, beneficiario: 'Patronato de la Feria Estatal de León y Parque Ecológico', concepto: 'Eventos Especiales', motivo1: 'Cultural', motivo2: 'Cultural', municipios: ['León'] },
           { name: 'World Meetings Forum Global Caribe', value: 473018.36, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Multidestino'] },
@@ -204,6 +212,7 @@ const ChartsSection = () => {
       },
       {
         name: 'Quinta Extraordinaria',
+        fecha: 'Martes, 30 de septiembre de 2025',
         children: [
           { name: 'Campaña de Promoción Asociación de Hoteles de Guanajuato', value: 347200.00, beneficiario: 'Fibra Visual S. de R.L. de C.V.', concepto: 'Acciones de relaciones públicas y promoción, Herramientas de promoción y difusión, Viajes de Familiarización', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Multidestino'] },
           { name: '“Campaña de Promoción del Distintivo Empresarial – Celaya: Una Vía al Futuro”, a desarrollarse en el marco del Primer Congreso Ferroviario y de Logística Celaya 2025', value: 1231040.00, beneficiario: 'Consejo Coordinador Empresarial de Celaya', concepto: 'Herramientas de promoción y difusión, Impulso y Fortalecimiento al Segmento de Turismo de Reuniones', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Celaya'] },
@@ -224,6 +233,7 @@ const ChartsSection = () => {
       },
       {
         name: 'Sexta Extraordinaria',
+        fecha: 'Jueves, 4 de diciembre de 2025',
         children: [
           { name: 'Promoción y difusión de la oferta turística del estado de Guanajuato en espacios del metro, autobús y aeropuerto en Madrid, España.', value: 2433587.50, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Herramientas de promoción y difusión', motivo1: 'MICE', motivo2: 'MICE', municipios: ['Todo el Estado'] },
           { name: 'Promoción y difusión de la oferta turística del estado de Guanajuato, a través de branding en pared en IFEMA en el marco de la Feria Internacional de Turismo (FITUR).', value: 700000.00, beneficiario: 'Secretaría de Turismo e Identidad', concepto: 'Herramientas de promoción y difusión', motivo1: 'Multimotivo de viaje', motivo2: 'Deportivo, Cultural, Enológico, Destilados, Wellness, MICE, Romance, Naturaleza, Gastronómico', municipios: ['Todo el Estado'] },
@@ -272,6 +282,7 @@ const ChartsSection = () => {
             name: cleanName,
             sessionType: type,
             sessionName: session.name,
+            fechaSesion: session.fecha,
             tipoProyecto: isIntegral ? 'Proyectos Integrales' : 'Proyectos Específicos',
             motivo: event.motivo2 || event.motivo1,
             motivoPrincipal: motivoPrincipal,
@@ -719,6 +730,12 @@ const ChartsSection = () => {
                   <span className="label">Sesión en la que se aprobó:</span>
                   <span className="value">{selectedProject.sessionName}</span>
                 </div>
+                {selectedProject.fechaSesion && (
+                  <div className="detail-row">
+                    <span className="label">Fecha de aprobación:</span>
+                    <span className="value">{selectedProject.fechaSesion}</span>
+                  </div>
+                )}
 
                 {selectedProject.municipios && selectedProject.municipios.length > 0 && (
                   <div className="detail-row" style={{ marginTop: '15px' }}>
