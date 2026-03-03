@@ -15,6 +15,7 @@ const ChartsSection = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [filterMotivo, setFilterMotivo] = useState('Todos');
   const [filterMunicipio, setFilterMunicipio] = useState('Todos');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const [showMapAnimation, setShowMapAnimation] = useState(true);
 
@@ -33,6 +34,7 @@ const ChartsSection = () => {
     setFilterMunicipio('Todos');
     setSelectedProject(null);
     setClickedMunicipio(null);
+    setSearchQuery('');
   };
 
   // ==================== DATOS COMPLETOS DEL EXCEL ====================
@@ -573,6 +575,10 @@ const ChartsSection = () => {
     };
   }, [summaryData, maxVal]);
 
+  const displayedEvents = filteredEvents.filter(proj =>
+    proj.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="dashboard-wrapper">
       {/* Tarjetas Superiores */}
@@ -649,13 +655,29 @@ const ChartsSection = () => {
         <div className="sidebar-card">
           <div className="sidebar-header">
             <h3>{activeCategory || 'Categoría no seleccionada'}</h3>
-            <p style={{ fontSize: '0.85rem', color: '#eee', marginTop: '5px' }}>
+            <p style={{ fontSize: '0.85rem', color: '#eee', marginTop: '5px', marginBottom: '10px' }}>
               Resultados filtrados
             </p>
+            <input
+              type="text"
+              placeholder="Buscar proyecto..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '6px 10px',
+                borderRadius: '4px',
+                border: 'none',
+                boxSizing: 'border-box',
+                color: '#333',
+                fontSize: '0.9rem',
+                outline: 'none'
+              }}
+            />
           </div>
           <div className="sidebar-content">
             <div className="accordion-list">
-              {filteredEvents.map((proj, idx) => (
+              {displayedEvents.map((proj, idx) => (
                 <div
                   key={idx}
                   className={`accordion-proj-item ${selectedProject?.name === proj.name ? 'selected' : ''}`}
@@ -668,9 +690,9 @@ const ChartsSection = () => {
                   <div style={{ fontSize: '0.8rem', color: '#666' }}>${proj.value.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                 </div>
               ))}
-              {filteredEvents.length === 0 && (
+              {displayedEvents.length === 0 && (
                 <div style={{ padding: '20px', textAlign: 'center', color: '#777' }}>
-                  No se encontraron proyectos para esta selección.
+                  No se encontraron proyectos para esta búsqueda o selección.
                 </div>
               )}
             </div>
