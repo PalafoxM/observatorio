@@ -5,11 +5,11 @@ import ChartsSection from './components/ChartsSection';
 //import Teatro from './assets/teareo_full.webp';
 //import Teatro from './assets/teatro5.png';
 import Teatro from './assets/TEATRO_JUAREZ.png';
-import bannerBg from './assets/fondo.jpg';
+import bannerBg from './assets/fondo2.png';
 //import Pipila from './assets/pipila.png';
-import Pipila from './assets/pipila_color.webp';
-import Bufa from './assets/bufa.png';
-import Casas from './assets/casas_color2.webp';
+import templo from './assets/Recurso8.png';
+import Bufa from './assets/Recurso4.png';
+import piso from './assets/Recurso.png';
 import Casas2 from './assets/casa_color2.webp';
 import RotatePrompt from './components/RotatePrompt';
 import LoadingScreen from './components/LoadingScreen';
@@ -22,11 +22,9 @@ const Parallax = () => {
 
   const layers = [
     { id: 0, src: Bufa, mobileDepth: 0 },
-    { id: 1, src: Bufa, mobileDepth: 0 },
-    { id: 2, src: Pipila, mobileDepth: 0.1 },
-    { id: 3, src: Casas, mobileDepth: 0.2 },
+    { id: 1, src: templo, mobileDepth: 0.1 },
+    { id: 2, src: piso, mobileDepth: 0.2 },
     { id: 4, src: Casas2, mobileDepth: 0.3 },
-    { id: 5, src: Casas, mobileDepth: 0.4 },
     { id: 6, src: Teatro, mobileDepth: 0 }
   ];
 

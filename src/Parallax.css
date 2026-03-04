@@ -110,21 +110,21 @@ body {
   }
 
   .parallax__layer__2 img {
-    width: 20%;
-    left: 67%;
-    top: 0%;
+    width: 100%;
+    left: -1%;
+    top: 78%;
   }
 
   .parallax__layer__1 img {
-    width: 45%;
+    width: 100%;
     left: 0%;
-    top: -5%;
+    top: 0%;
   }
 
   .parallax__layer__0 img {
-    width: 50%;
-    left: 75%;
-    top: -10%;
+    width: 100%;
+    left: 0%;
+    top: 0%;
   }
 }
 
@@ -168,8 +168,8 @@ body {
   }
 
   .parallax__layer__0 img {
-    width: 35%;
-    left: 30%;
+    width: 10%;
+    left: 0%;
     top: -10%;
   }
 }
