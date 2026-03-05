@@ -454,7 +454,7 @@ const ChartsSection = () => {
         min: 0,
         max: maxVal,
         inRange: {
-          color: ['#c6dbef', '#8ab4d9', '#2c7fb8', '#00417b'],
+          color: ['#ced4da', '#4fb3e8', '#f8a964'], // Light gray to blue/orange based on value
         },
         calculable: true,
         textStyle: { color: '#333', fontSize: 10 },
@@ -466,6 +466,7 @@ const ChartsSection = () => {
           type: 'map',
           map: 'Guanajuato',
           roam: true,
+          aspectScale: 1.0, // Correct proportions
           scaleLimit: { min: 1, max: 6 },
           selectedMode: 'multiple',
           select: {
@@ -477,7 +478,7 @@ const ChartsSection = () => {
             label: { show: true, color: '#333', fontWeight: 'bold' }
           },
           itemStyle: {
-            areaColor: '#e0ecf4',
+            areaColor: '#ced4da', // Light gray default
             borderColor: '#ffffff',
             borderWidth: 1,
           },
@@ -521,7 +522,7 @@ const ChartsSection = () => {
         bottom: 20,
         min: 0,
         max: maxVal || 1000000,
-        inRange: { color: ['#c6dbef', '#8ab4d9', '#2c7fb8', '#00417b'] },
+        inRange: { color: ['#ced4da', '#4fb3e8', '#f8a964'] },
         text: ['Alto', 'Bajo'],
         calculable: true,
         itemHeight: 80
@@ -531,6 +532,7 @@ const ChartsSection = () => {
         type: 'map',
         roam: true,
         map: 'Guanajuato',
+        aspectScale: 1.0, // Correct proportions
         animationDurationUpdate: 1500,
         universalTransition: true,
         data: summaryData
@@ -562,7 +564,7 @@ const ChartsSection = () => {
         show: false, // Hide visualmap on bar chart but keep mapping
         min: 0,
         max: maxVal || 1000000,
-        inRange: { color: ['#c6dbef', '#8ab4d9', '#2c7fb8', '#00417b'] }
+        inRange: { color: ['#ced4da', '#4fb3e8', '#f8a964'] }
       },
       animationDurationUpdate: 1500,
       series: [{

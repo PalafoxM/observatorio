@@ -4,13 +4,13 @@ import ContentSection from './components/ContentSection';
 import ChartsSection from './components/ChartsSection';
 //import Teatro from './assets/teareo_full.webp';
 //import Teatro from './assets/teatro5.png';
-import Teatro from './assets/TEATRO_JUAREZ.png';
+import Teatro from './assets/Recurso_7.png';
 import bannerBg from './assets/fondo2.png';
 //import Pipila from './assets/pipila.png';
 import templo from './assets/Recurso8.png';
 import Bufa from './assets/Recurso4.png';
 import piso from './assets/Recurso.png';
-import Casas2 from './assets/casa_color2.webp';
+
 import RotatePrompt from './components/RotatePrompt';
 import LoadingScreen from './components/LoadingScreen';
 
@@ -18,13 +18,11 @@ const Parallax = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [shootingStars, setShootingStars] = useState([]);
 
   const layers = [
     { id: 0, src: Bufa, mobileDepth: 0 },
     { id: 1, src: templo, mobileDepth: 0.1 },
     { id: 2, src: piso, mobileDepth: 0.2 },
-    { id: 4, src: Casas2, mobileDepth: 0.3 },
     { id: 6, src: Teatro, mobileDepth: 0 }
   ];
 
@@ -73,43 +71,6 @@ const Parallax = () => {
     };
   }, [isMobile]);
 
-  useEffect(() => {
-    // Estrella fugaz inicial al cargar
-    const initialStars = [
-      { id: 'init-1', x: '80%', y: '10%' }
-    ];
-
-    // Mostramos las iniciales con un pequeño retraso
-    setTimeout(() => {
-      setShootingStars(initialStars);
-    }, 1000);
-
-    // Limpiamos las iniciales
-    setTimeout(() => {
-      setShootingStars(prev => prev.filter(s => !s.id.toString().startsWith('init')));
-    }, 3000);
-
-    // Generador de estrellas aleatorias
-    const interval = setInterval(() => {
-      // 40% de probabilidad de que salga una estrella cada 3.5 segundos
-      if (Math.random() > 0.6) {
-        const newStar = {
-          id: Date.now(),
-          x: `${Math.floor(Math.random() * 80) + 20}%`, // 20% a 100% ancho
-          y: `${Math.floor(Math.random() * 30)}%`, // 0% a 30% alto
-        };
-        setShootingStars(prev => [...prev, newStar]);
-
-        // La eliminamos después de que termine la animación
-        setTimeout(() => {
-          setShootingStars(prev => prev.filter(s => s.id !== newStar.id));
-        }, 2000);
-      }
-    }, 3500);
-
-    return () => clearInterval(interval);
-  }, []);
-
   const handleScroll = (e) => {
     if (!isMobile) {
       const layers = document.querySelectorAll('.parallax__layer');
@@ -139,47 +100,17 @@ const Parallax = () => {
     <div className="main-container" style={{
       width: '100%',
       height: '100vh',
+      top: '-20%',
       overflow: 'hidden',
       backgroundColor: dynamicBgColor,
-      backgroundImage: `url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/105988/banner-background.jpg')`,
+      backgroundImage: `url(${bannerBg})`,
       backgroundSize: 'cover',
-      backgroundPosition: 'center',
+      backgroundPosition: 'center 30%', // Shifted to lower the sky image
       backgroundBlendMode: 'multiply',
       position: 'relative'
     }}>
       {isLoading && <LoadingScreen />}
       <RotatePrompt />
-
-      {/* Estrellas Fugaces */}
-      {shootingStars.map(star => (
-        <div
-          key={star.id}
-          className="shooting-star"
-          style={{
-            left: star.x,
-            top: star.y
-          }}
-        ></div>
-      ))}
-
-      {/* Cuerpos celestes */}
-      <div className="moon" style={{
-        position: 'absolute',
-        left: '50%',
-        top: `${15 + scrollProgress * 40}%`,
-        opacity: Math.min(1, 0.5 + scrollProgress * 1.5), // Empieza visible, y se aclara
-        zIndex: 0
-      }}></div>
-
-      {/* Ocultamos la segunda luna original, ya que la primera ya bajará como si fuera el sol original */}
-      <div className="moon" style={{
-        display: 'none',
-        position: 'absolute',
-        left: '50%',
-        top: `${60 - scrollProgress * 40}%`,
-        opacity: Math.min(1, scrollProgress * 1.5),
-        zIndex: 0
-      }}></div>
 
       {/* Sección Parallax */}
       <div

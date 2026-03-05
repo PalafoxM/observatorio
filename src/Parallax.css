@@ -87,31 +87,13 @@ body {
   .parallax__layer__6 img {
     width: 100%;
     left: 0%;
-    top: 65vh;
-    height: 100%;
-  }
+    top: 30%;
 
-  .parallax__layer__5 img {
-    width: 90%;
-    left: 0%;
-    top: -15%;
-  }
-
-  .parallax__layer__4 img {
-    width: 80%;
-    left: 10%;
-    top: 40%;
-  }
-
-  .parallax__layer__3 img {
-    width: 50%;
-    left: 30%;
-    top: 0%;
   }
 
   .parallax__layer__2 img {
     width: 100%;
-    left: -1%;
+    left: 0%;
     top: 78%;
   }
 
