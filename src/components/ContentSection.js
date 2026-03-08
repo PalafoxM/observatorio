@@ -1,16 +1,10 @@
 import React from 'react';
 import './ContentSection.css';
 import logo from '../assets/new_logo.png'
-import logo2 from '../assets/logo.png'
 
 const ContentSection = () => {
   return (
     <>
-      <div className="content-section1">
-        <div className="content-box1">
-          <img src={logo2} width={550} height={550} title='COFOTUR' />
-        </div>
-      </div>
 
       {/* Sección 2: Agregamos el botón "Entrar" aquí */}
       <div className="content-section2">
@@ -27,11 +21,7 @@ const ContentSection = () => {
         </div>
       </div>
 
-      <div className="content-section3">
-        <div className="content-box3">
-          <img src={logo} width={180} height={75} title='COFOTUR' />
-        </div>
-      </div>
+
 
 
 

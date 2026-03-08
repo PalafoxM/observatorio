@@ -818,6 +818,11 @@ const ChartsSection = () => {
           lazyUpdate={true}
         />
       </div>
+
+      {/* Logo al final de los mapas */}
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px', marginBottom: '40px' }}>
+        <img src={logo} width={550} height={550} title='COFOTUR' style={{ maxWidth: '100%', height: 'auto' }} />
+      </div>
     </div>
   );
 };

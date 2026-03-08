@@ -26,6 +26,7 @@
   /* Removed center transform for easier positioning */
   max-width: 350px;
   width: 30%;
+  align-items: center;
 }
 
 .content-box1 img {
