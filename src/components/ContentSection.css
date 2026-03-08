@@ -45,7 +45,7 @@
   /* Reduced from 700px to make it smaller */
 
   /* Premium Glassmorphism */
-  background: rgba(0, 44, 91, 0.75);
+  background: rgba(0, 0, 0, 0.1);
   /* Slightly more transparent */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);

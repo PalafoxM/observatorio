@@ -26,7 +26,6 @@ const ChartsSection = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const activeMunicipio = clickedMunicipio || hoveredMunicipio;
 
   const handleCategoryChange = (cat) => {
     setActiveCategory(cat);
@@ -392,6 +391,12 @@ const ChartsSection = () => {
     };
   }, [data, data2, activeCategory, filterMotivo, filterMunicipio]);
 
+  const activeMunicipio = useMemo(() => {
+    let baseMun = clickedMunicipio || hoveredMunicipio;
+    if (!baseMun) return null;
+    return mapData.find(d => d.name === baseMun.name || d.originalName === baseMun.originalName) || baseMun;
+  }, [clickedMunicipio, hoveredMunicipio, mapData]);
+
   const mapOption = useMemo(() => {
     const isMultidestinoActive =
       (selectedProject && (selectedProject.municipios?.includes('Multidestino') || selectedProject.municipios?.includes('Todo el Estado'))) ||
@@ -630,7 +635,7 @@ const ChartsSection = () => {
               setFilterMunicipio(val);
               setSelectedProject(null);
               // Si selecciona un municipio específico (distinto a Todos, Todo el Estado, Multidestino), lo activamos en el panel lateral.
-              if (val !== 'Todos' && val !== 'Todo el Estado' && val !== 'Multidestino') {
+              if (val !== 'Todos') {
                 // Buscamos la data calculada de ese municipio en `mapData`
                 const mapNode = mapData.find(d => d.name === val || d.originalName === val);
                 if (mapNode) {
