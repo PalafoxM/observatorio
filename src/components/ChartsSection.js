@@ -450,20 +450,8 @@ const ChartsSection = () => {
         formatter: function (params) {
           const munName = params.data?.originalName || params.name;
           if (!params.value && params.value !== 0) return '<b>' + munName + '</b><br/>Sin proyectos';
-          return `<b>${munName}</b><br/>Inversión: $${params.value.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+          return `<b>${munName}</b>`;
         },
-      },
-      visualMap: {
-        left: 'right',
-        bottom: '10',
-        min: 0,
-        max: maxVal,
-        inRange: {
-          color: ['#ced4da', '#4fb3e8', '#f8a964'], // Light gray to blue/orange based on value
-        },
-        calculable: true,
-        textStyle: { color: '#333', fontSize: 10 },
-        itemHeight: 80,
       },
       series: [
         {
@@ -476,14 +464,14 @@ const ChartsSection = () => {
           selectedMode: 'multiple',
           select: {
             itemStyle: {
-              areaColor: '#f1c40f',
-              borderColor: '#e67e22',
+              areaColor: '#4fb3e8',
+              borderColor: '#ffffff',
               borderWidth: 2,
             },
             label: { show: true, color: '#333', fontWeight: 'bold' }
           },
           itemStyle: {
-            areaColor: '#ced4da', // Light gray default
+            areaColor: '#f8a964', // Orange default
             borderColor: '#ffffff',
             borderWidth: 1,
           },
@@ -520,17 +508,7 @@ const ChartsSection = () => {
       title: { text: 'Inversión por Municipio - Resumen Dinámico', left: 'center', textStyle: { color: '#004481' }, top: 10 },
       tooltip: {
         trigger: 'item',
-        formatter: params => `<b>${params.name}</b><br/>Inversión: $${params.value ? params.value.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}`
-      },
-      visualMap: {
-        left: 'right',
-        bottom: 20,
-        min: 0,
-        max: maxVal || 1000000,
-        inRange: { color: ['#ced4da', '#4fb3e8', '#f8a964'] },
-        text: ['Alto', 'Bajo'],
-        calculable: true,
-        itemHeight: 80
+        formatter: params => `<b>${params.name}</b>`
       },
       series: [{
         id: 'inversion',
@@ -540,6 +518,11 @@ const ChartsSection = () => {
         aspectScale: 1.0, // Correct proportions
         animationDurationUpdate: 1500,
         universalTransition: true,
+        itemStyle: {
+          areaColor: '#f8a964',
+          borderColor: '#ffffff',
+          borderWidth: 1,
+        },
         data: summaryData
       }]
     };
@@ -551,13 +534,12 @@ const ChartsSection = () => {
       tooltip: {
         trigger: 'axis',
         formatter: params => {
-          const val = params[0].value;
-          return `<b>${params[0].name}</b><br/>Inversión: $${val ? val.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}`;
+          return `<b>${params[0].name}</b>`;
         }
       },
       xAxis: {
         type: 'value',
-        axisLabel: { formatter: value => '$' + (value / 1000000).toFixed(1) + 'M' }
+        axisLabel: { formatter: value => '' }
       },
       grid: { left: '20%', right: '10%', bottom: '10%', top: '15%' },
       yAxis: {
@@ -565,19 +547,13 @@ const ChartsSection = () => {
         axisLabel: { rotate: 0, fontSize: 10 },
         data: summaryData.map(item => item.name)
       },
-      visualMap: {
-        show: false, // Hide visualmap on bar chart but keep mapping
-        min: 0,
-        max: maxVal || 1000000,
-        inRange: { color: ['#ced4da', '#4fb3e8', '#f8a964'] }
-      },
       animationDurationUpdate: 1500,
       series: [{
         type: 'bar',
         id: 'inversion',
         data: summaryData.map(item => item.value),
         universalTransition: true,
-        itemStyle: { borderRadius: [0, 4, 4, 0] }
+        itemStyle: { borderRadius: [0, 4, 4, 0], color: '#f8a964' }
       }]
     };
   }, [summaryData, maxVal]);
@@ -717,7 +693,15 @@ const ChartsSection = () => {
                 click: params => {
                   if (params.componentType === 'series') {
                     const mData = params.data || { name: params.name, originalName: params.name, value: 0, events: [] };
-                    setClickedMunicipio(prev => (prev && prev.name === mData.name ? null : mData));
+                    setClickedMunicipio(prev => {
+                      const isUnselecting = prev && prev.name === mData.name;
+                      const nextMData = isUnselecting ? null : mData;
+
+                      const selectedName = nextMData ? (nextMData.originalName || nextMData.name) : 'Todos';
+                      setFilterMunicipio(selectedName);
+
+                      return nextMData;
+                    });
                     setSelectedProject(null);
                   }
                 },
@@ -786,11 +770,27 @@ const ChartsSection = () => {
 
               </div>
             ) : (
-              <div className="empty-details">
-                <p>Selecciona un municipio en el mapa o un proyecto en el menú lateral para ver los detalles completos.</p>
-                <p style={{ marginTop: '10px', fontSize: '0.9rem', color: '#666' }}>
-                  Usa los filtros superiores para acotar la búsqueda por motivo o municipio.
-                </p>
+              <div className="empty-details" style={{ flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', textAlign: 'left', padding: '20px 10px' }}>
+                <div style={{ marginBottom: '20px', width: '100%' }}>
+                  <h4 style={{ color: '#004481', marginTop: 0, marginBottom: '10px', fontSize: '1.2rem', fontWeight: 'bold' }}>Proyectos Integrales</h4>
+                  <p className="total-proy" style={{ marginBottom: '5px', color: '#333' }}>Monto Total Apoyado:</p>
+                  <p style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#f8a964', margin: '0 0 10px 0' }}>$34,958,166.02</p>
+                  <p className="total-proy" style={{ margin: 0 }}>Proyectos: <strong style={{ color: '#333' }}>12</strong></p>
+                </div>
+
+                <div style={{ marginBottom: '20px', width: '100%' }}>
+                  <h4 style={{ color: '#004481', marginTop: 0, marginBottom: '10px', fontSize: '1.2rem', fontWeight: 'bold' }}>Proyectos Específicos</h4>
+                  <p className="total-proy" style={{ marginBottom: '5px', color: '#333' }}>Monto Total Apoyado:</p>
+                  <p style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#f8a964', margin: '0 0 10px 0' }}>$111,410,029.56</p>
+                  <p className="total-proy" style={{ margin: 0 }}>Proyectos: <strong style={{ color: '#333' }}>118</strong></p>
+                </div>
+
+                <div style={{ marginTop: 'auto', borderTop: '1px solid #eee', paddingTop: '15px', width: '100%' }}>
+                  <p style={{ fontSize: '0.9rem', color: '#666', fontStyle: 'normal', margin: '0 0 10px 0' }}>Selecciona un municipio en el mapa o un proyecto en el menú lateral para ver los detalles completos.</p>
+                  <p style={{ fontSize: '0.85rem', color: '#888', fontStyle: 'italic', margin: 0 }}>
+                    Usa los filtros superiores para acotar la búsqueda por motivo o municipio.
+                  </p>
+                </div>
               </div>
             )}
           </div>
