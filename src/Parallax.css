@@ -100,7 +100,7 @@ body {
   .parallax__layer__1 img {
     width: 100%;
     left: 0%;
-    top: 5%;
+    top: 9%;
   }
 
   .parallax__layer__0 img {
@@ -126,33 +126,33 @@ body {
   }
 
   .parallax__layer__4 img {
-    width: 35%;
+    width: 100%;
     left: 35%;
     top: 8%;
   }
 
   .parallax__layer__3 img {
-    width: 35%;
+    width: 100%;
     left: 0%;
     top: 8%;
   }
 
   .parallax__layer__2 img {
-    width: 12%;
-    left: 65%;
-    top: 10%;
+    width: 100%;
+    left: 0%;
+    top: 70%;
   }
 
   .parallax__layer__1 img {
-    width: 30%;
-    left: 70%;
-    top: -5%;
+    width: 100%;
+    left: 0%;
+    top: 10%;
   }
 
   .parallax__layer__0 img {
-    width: 10%;
+    width: 100%;
     left: 0%;
-    top: -10%;
+    top: 10%;
   }
 }
 
@@ -461,58 +461,26 @@ body {
   }
 
   .parallax__layer__2 img {
-    width: 15%;
-    top: 20%;
-    left: 70%;
+    width: 100%;
+    top: 90%;
+    left: 0%;
   }
 
   .parallax__layer__1 img {
-    width: 25%;
+    width: 100%;
     top: 10%;
-    left: 5%;
+    left: 0%;
   }
 
   .parallax__layer__0 img {
-    width: 20%;
+    width: 100%;
     top: 15%;
-    left: 75%;
+    left: 0%;
   }
 }
 
-/* Celestial Bodies */
-.sun {
-  width: 80px;
-  height: 80px;
-  background: #FFD700;
-  border-radius: 50%;
-  box-shadow: 0 0 50px #FFD700, 0 0 80px #FFA500;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-}
 
-.moon {
-  width: 80px;
-  height: 80px;
-  background: #fdfdfd;
-  border-radius: 50%;
-  box-shadow: 0 0 30px #ffffff, 0 0 60px rgba(255, 255, 255, 0.4);
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-}
 
-@media (max-width: 767px) {
-  .sun {
-    width: 70px;
-    height: 70px;
-    box-shadow: 0 0 40px #FFD700, 0 0 70px #FFA500;
-  }
-
-  .moon {
-    width: 60px;
-    height: 60px;
-    box-shadow: 0 0 20px #ffffff, 0 0 40px rgba(255, 255, 255, 0.4);
-  }
-}
 
 /* Shooting Stars */
 .shooting-star {

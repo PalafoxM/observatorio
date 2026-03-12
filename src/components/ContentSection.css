@@ -40,33 +40,52 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* Keep centered */
-  width: 75%;
-  max-width: 550px;
-  /* Reduced from 700px to make it smaller */
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
 
   /* Premium Glassmorphism */
-  background: rgba(0, 0, 0, 0.1);
-  /* Slightly more transparent */
+  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 20px;
-  padding: 2rem 2.5rem;
-  /* Reduced padding */
+  padding: 2rem;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   color: #ffffff;
 }
 
+/* Custom Scrollbar for Content Section */
+.content-section2::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content-section2::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.content-section2::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+.content-section2::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.content-box {
+  width: 100%;
+}
+
 .content-box h3 {
   font-size: 1.8rem;
-  /* Reduced from 2.4rem */
   margin-top: 0;
   margin-bottom: 1.2rem;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   font-weight: 600;
   color: #f1c40f;
-  /* Gold accent for the title */
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   letter-spacing: 0.5px;
 }
@@ -77,7 +96,6 @@
 
 .content-box {
   font-size: 1.05rem;
-  /* Reduced from 1.2rem */
   line-height: 1.6;
   font-weight: 300;
   letter-spacing: 0.3px;
@@ -134,7 +152,7 @@
 /* Tablet & Mobile Landscape */
 @media (max-width: 1024px) {
   .content-section2 {
-    width: 70%;
+    width: 80%;
     padding: 1.5rem;
   }
 }
@@ -144,35 +162,42 @@
   .content-section1 {
     top: 20px;
     left: 20px;
-    width: 40%;
+    width: 30%;
+    max-width: 120px;
   }
 
   .content-section3 {
     top: 20px;
     right: 20px;
-    bottom: auto;
-    left: auto;
-    width: 35%;
+    width: 25%;
+    max-width: 100px;
   }
 
   .content-section2 {
-    width: 85%;
-    padding: 1.2rem;
+    width: 95%;
+    max-width: none;
+    padding: 1.5rem 1rem;
+    max-height: 75vh;
   }
 
   .content-box h3 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   .content-box {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .btn-entrar {
     bottom: 20px;
-    right: 20px;
+    right: 50%;
+    transform: translateX(50%);
     padding: 10px 20px;
     font-size: 1rem;
+  }
+
+  .btn-entrar:hover {
+    transform: translate(50%, -2px);
   }
 }
 
@@ -180,9 +205,9 @@
 @media (max-height: 500px) and (orientation: landscape) {
   .content-section2 {
     top: 55%;
-    /* Slightly lower to clear top logos if needed */
     padding: 0.8rem;
-    max-width: 500px;
+    max-width: 90%;
+    max-height: 85vh;
   }
 
   .content-box h3 {
