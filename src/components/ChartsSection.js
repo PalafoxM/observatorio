@@ -4,6 +4,7 @@ import * as echarts from 'echarts';
 import './ChartsSection.css';
 import logo from '../assets/logo.png';
 import guanajuatoGeoJson from '../assets/edo_guanajuato.geo.json';
+import mapaImage from '../assets/mapa.png';
 
 // Registrar mapa globalmente
 echarts.registerMap('Guanajuato', guanajuatoGeoJson);
@@ -397,12 +398,12 @@ const ChartsSection = () => {
     return mapData.find(d => d.name === baseMun.name || d.originalName === baseMun.originalName) || baseMun;
   }, [clickedMunicipio, hoveredMunicipio, mapData]);
 
-  const mapOption = useMemo(() => {
-    const isMultidestinoActive =
-      (selectedProject && (selectedProject.municipios?.includes('Multidestino') || selectedProject.municipios?.includes('Todo el Estado'))) ||
-      (filterMunicipio === 'Multidestino') ||
-      (filterMunicipio === 'Todo el Estado');
+  const isMultidestinoActive = 
+    (selectedProject && (selectedProject.municipios?.includes('Multidestino') || selectedProject.municipios?.includes('Todo el Estado'))) ||
+    (filterMunicipio === 'Multidestino') ||
+    (filterMunicipio === 'Todo el Estado');
 
+  const mapOption = useMemo(() => {
     const normalizeMunGeo = (mun) => {
       if (mun === 'Dolores Hidalgo') return 'Dolores Hidalgo CIN';
       if (mun === 'Silao') return 'Silao de la Victoria';
@@ -483,7 +484,7 @@ const ChartsSection = () => {
         },
       ],
     };
-  }, [mapData, maxVal, selectedProject, filterMunicipio, clickedMunicipio]);
+  }, [mapData, maxVal, selectedProject, filterMunicipio, clickedMunicipio, isMultidestinoActive]);
 
   // --- Resumen Animado (Mapa / Barras) ---
   const normalizeMunAnimated = (mun) => {
@@ -684,7 +685,10 @@ const ChartsSection = () => {
 
         {/* Center Map */}
         <div className="map-card-center">
-          <div className="echarts-wrapper">
+          <div className="echarts-wrapper" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {isMultidestinoActive ? (
+              <img src={mapaImage} alt="Mapa Guanajuato" style={{ width: '100%', maxHeight: '500px', objectFit: 'contain' }} />
+            ) : (
             <ReactECharts
               option={mapOption}
               style={{ height: '100%', minHeight: '500px', width: '100%' }}
@@ -707,6 +711,7 @@ const ChartsSection = () => {
                 },
               }}
             />
+            )}
           </div>
         </div>
 

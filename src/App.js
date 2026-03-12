@@ -6,10 +6,11 @@ import ChartsSection from './components/ChartsSection';
 //import Teatro from './assets/teatro5.png';
 import Teatro from './assets/Recurso_7.png';
 import bannerBg from './assets/fondo2.png';
-//import Pipila from './assets/pipila.png';
+import Pipila from './assets/pipila.png';
 import templo from './assets/Recurso8.png';
 import Bufa from './assets/Recurso4.png';
 import piso from './assets/Recurso.png';
+import cara from './assets/cara.png';
 
 import RotatePrompt from './components/RotatePrompt';
 import LoadingScreen from './components/LoadingScreen';
@@ -20,9 +21,11 @@ const Parallax = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const layers = [
+    { id: 'cara', src: Pipila, mobileDepth: 0, depth: -0.05 },
     { id: 0, src: Bufa, mobileDepth: 0 },
     { id: 1, src: templo, mobileDepth: 0.1 },
     { id: 2, src: piso, mobileDepth: 0.2 },
+    { id: 'pipila', src: cara, mobileDepth: 0.1 },
     { id: 6, src: Teatro, mobileDepth: 0 }
   ];
 
@@ -125,7 +128,7 @@ const Parallax = () => {
           <div
             key={layer.id}
             className={`parallax__layer parallax__layer__${layer.id}`}
-            data-depth={layer.id * 0.1}
+            data-depth={layer.depth !== undefined ? layer.depth : layer.id * 0.1}
             data-mobile-depth={layer.mobileDepth}
           >
             <img src={layer.src} alt={`Parallax layer ${layer.id}`} />

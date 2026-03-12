@@ -1,15 +1,14 @@
 import React from 'react';
 import './ContentSection.css';
 import logo from '../assets/new_logo.png'
-import leftElement from '../assets/Recurso 5.png'
-import rightElement from '../assets/Recurso 6.png'
+import cara from '../assets/cara.png'
 
 const ContentSection = () => {
   return (
     <>
       <div className="content-section1">
         <div className="content-box1">
-          {/* <img src={leftElement} alt="Elemento Izquierdo" /> */}
+          {/*    <img src={cara} width={50} height={50} alt="Elemento Izquierdo" /> */}
         </div>
       </div>
 
@@ -25,12 +24,6 @@ const ContentSection = () => {
           destinados a la promoción turística del estado durante el año 2025.<br />
           Aquí podrás consultar el nombre del beneficiario, el proyecto apoyado y el monto.
 
-        </div>
-      </div>
-
-      <div className="content-section3">
-        <div className="content-box3">
-          {/*           <img src={rightElement} alt="Elemento Derecho" /> */}
         </div>
       </div>
 
