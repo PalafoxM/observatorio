@@ -104,6 +104,7 @@ const Parallax = () => {
       width: '100%',
       height: '100vh',
       top: '-20%',
+      left: '-10px',
       overflow: 'hidden',
       backgroundColor: dynamicBgColor,
       backgroundImage: `url(${bannerBg})`,

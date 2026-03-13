@@ -4,7 +4,7 @@ import * as echarts from 'echarts';
 import './ChartsSection.css';
 import logo from '../assets/logo.png';
 import guanajuatoGeoJson from '../assets/edo_guanajuato.geo.json';
-import mapaImage from '../assets/mapa.png';
+import mapaImage from '../assets/mapa2.png';
 
 // Registrar mapa globalmente
 echarts.registerMap('Guanajuato', guanajuatoGeoJson);
@@ -398,7 +398,7 @@ const ChartsSection = () => {
     return mapData.find(d => d.name === baseMun.name || d.originalName === baseMun.originalName) || baseMun;
   }, [clickedMunicipio, hoveredMunicipio, mapData]);
 
-  const isMultidestinoActive = 
+  const isMultidestinoActive =
     (selectedProject && (selectedProject.municipios?.includes('Multidestino') || selectedProject.municipios?.includes('Todo el Estado'))) ||
     (filterMunicipio === 'Multidestino') ||
     (filterMunicipio === 'Todo el Estado');
@@ -689,28 +689,28 @@ const ChartsSection = () => {
             {isMultidestinoActive ? (
               <img src={mapaImage} alt="Mapa Guanajuato" style={{ width: '100%', maxHeight: '500px', objectFit: 'contain' }} />
             ) : (
-            <ReactECharts
-              option={mapOption}
-              style={{ height: '100%', minHeight: '500px', width: '100%' }}
-              theme="light"
-              onEvents={{
-                click: params => {
-                  if (params.componentType === 'series') {
-                    const mData = params.data || { name: params.name, originalName: params.name, value: 0, events: [] };
-                    setClickedMunicipio(prev => {
-                      const isUnselecting = prev && prev.name === mData.name;
-                      const nextMData = isUnselecting ? null : mData;
+              <ReactECharts
+                option={mapOption}
+                style={{ height: '100%', minHeight: '500px', width: '100%' }}
+                theme="light"
+                onEvents={{
+                  click: params => {
+                    if (params.componentType === 'series') {
+                      const mData = params.data || { name: params.name, originalName: params.name, value: 0, events: [] };
+                      setClickedMunicipio(prev => {
+                        const isUnselecting = prev && prev.name === mData.name;
+                        const nextMData = isUnselecting ? null : mData;
 
-                      const selectedName = nextMData ? (nextMData.originalName || nextMData.name) : 'Todos';
-                      setFilterMunicipio(selectedName);
+                        const selectedName = nextMData ? (nextMData.originalName || nextMData.name) : 'Todos';
+                        setFilterMunicipio(selectedName);
 
-                      return nextMData;
-                    });
-                    setSelectedProject(null);
-                  }
-                },
-              }}
-            />
+                        return nextMData;
+                      });
+                      setSelectedProject(null);
+                    }
+                  },
+                }}
+              />
             )}
           </div>
         </div>
