@@ -28,12 +28,25 @@ const ChartsSection = () => {
   };
 
   const projectTypeDescription = activeCategory === 'Proyectos Integrales'
-    ? 'Son proyectos que buscan promover un destino turístico de manera completa, a través de un plan de trabajo que incluye distintas acciones como campañas, eventos, difusión, alianzas, viajes de promoción, herramientas de promoción y acciones de relaciones públicas durante un periodo determinado.'
-    : 'Son proyectos enfocados en acciones puntuales, como la realización de un evento o una campaña, para promover una actividad, producto o experiencia turística en un tiempo definido.';
+    ? '<strong>Descripción: </strong>Promueven un destino turístico de forma integral, a través de un plan de trabajo con acciones como campañas, eventos y difusión durante un periodo determinado.'
+    : '<strong>Descripción: </strong>Se enfocan en acciones concretas, como eventos o campañas, para promover una actividad o experiencia turística en un tiempo definido.';
 
   const projectTypeTitle = activeCategory === 'Proyectos Integrales'
     ? 'Proyectos integrales de promoción de destino'
     : 'Proyectos específicos de promoción';
+
+  const projectGlossaryItems = [
+    {
+      title: 'Proyectos integrales de promoción de destino',
+      description: 'Son proyectos que buscan promover un destino turístico de manera completa, a través de un plan de trabajo que incluye distintas acciones como campañas, eventos, difusión, alianzas, viajes de promoción, herramientas de promoción y acciones de relaciones públicas durante un periodo determinado.',
+      example: 'Promoción anual de un destino turístico'
+    },
+    {
+      title: 'Proyectos específicos de promoción',
+      description: 'Son proyectos enfocados en acciones puntuales, como la realización de un evento o una campaña, para promover una actividad, producto o experiencia turística en un tiempo definido.',
+      example: 'Un festival, congreso o campaña digital para atraer visitantes'
+    }
+  ];
 
   const glossaryItems = [
     {
@@ -622,7 +635,7 @@ const ChartsSection = () => {
 
       <div className="project-type-description">
         <h4>{projectTypeTitle}</h4>
-        <p>{projectTypeDescription}</p>
+        <p dangerouslySetInnerHTML={{ __html: projectTypeDescription }} />
       </div>
 
       {/* Filtros adicionales */}
@@ -744,8 +757,8 @@ const ChartsSection = () => {
                 <img src={mapaImage} alt="Mapa Guanajuato" style={{ width: '100%', maxHeight: '500px', objectFit: 'contain' }} />
               </div>
             ) : (
-            <ReactECharts
-              option={mapOption}
+              <ReactECharts
+                option={mapOption}
                 style={{ height: '100%', minHeight: '500px', width: '100%' }}
                 theme="light"
                 onEvents={{
@@ -865,8 +878,28 @@ const ChartsSection = () => {
         />
         <div className="glossary-header">
           <span className="glossary-kicker">Glosario</span>
-          <h3>Motivo de viaje</h3>
+          <h3>Conceptos clave</h3>
           <p>
+            Consulta las definiciones de los tipos de proyecto y de los motivos de viaje utilizados en esta visualización.
+          </p>
+        </div>
+
+        <div className="glossary-section">
+          <h4 className="glossary-section-title">Tipos de proyecto</h4>
+          <div className="glossary-grid glossary-grid-projects">
+            {projectGlossaryItems.map((item) => (
+              <article key={item.title} className="glossary-item glossary-item-project">
+                <h4>{item.title}</h4>
+                <p>{item.description}</p>
+                <p className="glossary-example"><strong>Ejemplo:</strong> {item.example}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="glossary-section">
+          <h4 className="glossary-section-title">Motivo de viaje</h4>
+          <p className="glossary-section-copy">
             Son las razones por las que las personas visitan Guanajuato. En el estado se han identificado nueve motivos principales.
           </p>
         </div>

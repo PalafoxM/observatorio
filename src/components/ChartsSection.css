@@ -451,10 +451,30 @@
   line-height: 1.65;
 }
 
+.glossary-section {
+  margin-bottom: 20px;
+}
+
+.glossary-section-title {
+  margin: 0 0 10px 0;
+  color: #004481;
+  font-size: 1.15rem;
+}
+
+.glossary-section-copy {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.65;
+}
+
 .glossary-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
+}
+
+.glossary-grid-projects {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .glossary-item {
@@ -490,6 +510,13 @@
   font-size: 0.95rem;
 }
 
+.glossary-example {
+  margin-top: 12px !important;
+  padding-top: 12px;
+  border-top: 1px solid #e6edf5;
+  color: #004481 !important;
+}
+
 @media (max-width: 1024px) {
   .dashboard-container-3col {
     flex-direction: column;
@@ -511,6 +538,10 @@
 
   .glossary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .glossary-grid-projects {
+    grid-template-columns: 1fr;
   }
 }
 
