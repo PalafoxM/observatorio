@@ -729,10 +729,23 @@ const ChartsSection = () => {
         <div className="map-card-center">
           <div className="echarts-wrapper" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {isMultidestinoActive ? (
-              <img src={mapaImage} alt="Mapa Guanajuato" style={{ width: '100%', maxHeight: '500px', objectFit: 'contain' }} />
+              <div className="static-map-wrapper">
+                <button
+                  type="button"
+                  className="back-to-dynamic-map"
+                  onClick={() => {
+                    setFilterMunicipio('Todos');
+                    setClickedMunicipio(null);
+                    setSelectedProject(null);
+                  }}
+                >
+                  Atras
+                </button>
+                <img src={mapaImage} alt="Mapa Guanajuato" style={{ width: '100%', maxHeight: '500px', objectFit: 'contain' }} />
+              </div>
             ) : (
-              <ReactECharts
-                option={mapOption}
+            <ReactECharts
+              option={mapOption}
                 style={{ height: '100%', minHeight: '500px', width: '100%' }}
                 theme="light"
                 onEvents={{
