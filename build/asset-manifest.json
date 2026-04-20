@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/cofotur/static/css/main.e1baedb4.css",
+    "main.js": "/cofotur/static/js/main.614b7320.js",
+    "static/js/453.97b4d6b3.chunk.js": "/cofotur/static/js/453.97b4d6b3.chunk.js",
+    "static/media/Recurso.png": "/cofotur/static/media/Recurso.51e5d357acbcfeeae2a4.png",
+    "static/media/mapa.png": "/cofotur/static/media/mapa.4e507f23282204eae82d.png",
+    "static/media/fondo2.png": "/cofotur/static/media/fondo2.331a171b003e8bef59e9.png",
+    "static/media/Recurso4.png": "/cofotur/static/media/Recurso4.8c2f9dea69d545a96acd.png",
+    "static/media/Recurso8.png": "/cofotur/static/media/Recurso8.ee7b95c955cc0de13d17.png",
+    "static/media/pipila.png": "/cofotur/static/media/pipila.806518fe56ac266ad7fb.png",
+    "static/media/Recurso_7.png": "/cofotur/static/media/Recurso_7.041ae46330e6ce6fa286.png",
+    "static/media/cara.png": "/cofotur/static/media/cara.41c9893f1dc76d715f70.png",
+    "static/media/logo.png": "/cofotur/static/media/logo.4c3a110c4f8278c8aae3.png",
+    "static/media/new_logo.png": "/cofotur/static/media/new_logo.f2ee153974a64adc13c4.png",
+    "index.html": "/cofotur/index.html",
+    "main.e1baedb4.css.map": "/cofotur/static/css/main.e1baedb4.css.map",
+    "main.614b7320.js.map": "/cofotur/static/js/main.614b7320.js.map",
+    "453.97b4d6b3.chunk.js.map": "/cofotur/static/js/453.97b4d6b3.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e1baedb4.css",
+    "static/js/main.614b7320.js"
+  ]
+}

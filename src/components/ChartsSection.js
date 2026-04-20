@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import * as echarts from 'echarts';
 import './ChartsSection.css';
@@ -18,16 +18,6 @@ const ChartsSection = () => {
   const [filterMunicipio, setFilterMunicipio] = useState('Todos');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [showMapAnimation, setShowMapAnimation] = useState(true);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setShowMapAnimation(prev => !prev);
-    }, 4000); // 4 seconds interval to mimic the transition Example
-    return () => clearInterval(interval);
-  }, []);
-
-
   const handleCategoryChange = (cat) => {
     setActiveCategory(cat);
     setFilterMotivo('Todos');
@@ -36,6 +26,53 @@ const ChartsSection = () => {
     setClickedMunicipio(null);
     setSearchQuery('');
   };
+
+  const projectTypeDescription = activeCategory === 'Proyectos Integrales'
+    ? 'Son proyectos que buscan promover un destino turístico de manera completa, a través de un plan de trabajo que incluye distintas acciones como campañas, eventos, difusión, alianzas, viajes de promoción, herramientas de promoción y acciones de relaciones públicas durante un periodo determinado.'
+    : 'Son proyectos enfocados en acciones puntuales, como la realización de un evento o una campaña, para promover una actividad, producto o experiencia turística en un tiempo definido.';
+
+  const projectTypeTitle = activeCategory === 'Proyectos Integrales'
+    ? 'Proyectos integrales de promoción de destino'
+    : 'Proyectos específicos de promoción';
+
+  const glossaryItems = [
+    {
+      title: 'Turismo cultural',
+      description: 'Proyectos que motivan a conocer y disfrutar la cultura de un lugar, como sus tradiciones, historia, arte y forma de vida.'
+    },
+    {
+      title: 'Turismo deportivo',
+      description: 'Proyectos que promueven la participación o asistencia a eventos deportivos.'
+    },
+    {
+      title: 'Turismo de destilados',
+      description: 'Proyectos que impulsan visitas a zonas donde se producen bebidas destiladas, combinando experiencias gastronómicas y culturales.'
+    },
+    {
+      title: 'Enoturismo',
+      description: 'Proyectos que fomentan visitas a regiones vinícolas para conocer la producción del vino y disfrutar experiencias gastronómicas y culturales.'
+    },
+    {
+      title: 'Turismo gastronómico',
+      description: 'Proyectos que promueven la comida local, como platillos típicos, productos, eventos y experiencias culinarias.'
+    },
+    {
+      title: 'Turismo MICE',
+      description: 'Proyectos relacionados con la organización y promoción de reuniones, congresos, convenciones, exposiciones y eventos de negocios.'
+    },
+    {
+      title: 'Turismo de naturaleza',
+      description: 'Proyectos que promueven el contacto con la naturaleza y el cuidado de los recursos naturales.'
+    },
+    {
+      title: 'Turismo de romance',
+      description: 'Proyectos enfocados en celebraciones como bodas, lunas de miel, aniversarios y otros momentos especiales en pareja.'
+    },
+    {
+      title: 'Turismo de bienestar',
+      description: 'Proyectos que impulsan el descanso, la salud y la relajación, a través de experiencias y servicios de bienestar.'
+    }
+  ];
 
   // ==================== DATOS COMPLETOS DEL EXCEL ====================
   const data = {
@@ -583,6 +620,11 @@ const ChartsSection = () => {
         </div>
       </div>
 
+      <div className="project-type-description">
+        <h4>{projectTypeTitle}</h4>
+        <p>{projectTypeDescription}</p>
+      </div>
+
       {/* Filtros adicionales */}
       <div className="filters-container" style={{ display: 'flex', gap: '20px', marginBottom: '20px', padding: '15px', background: '#f5f5f5', borderRadius: '8px' }}>
         {activeCategory !== 'Proyectos Integrales' && (
@@ -802,26 +844,28 @@ const ChartsSection = () => {
         </div>
       </div>
 
-      {/* Dynamic Summary Section */}
-      <div className="summary-animated-container" style={{
-        marginTop: '30px',
-        padding: '20px',
-        background: '#fff',
-        borderRadius: '12px',
-        boxShadow: '0 4px 15px rgba(0,0,0,0.08)',
-        height: '600px',
-        maxWidth: '1400px',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        position: 'relative',
-        zIndex: 10
-      }}>
-        <ReactECharts
-          option={showMapAnimation ? summaryMapOption : summaryBarOption}
-          style={{ height: '100%', width: '100%' }}
-          notMerge={false}
-          lazyUpdate={true}
+      <div className="glossary-container">
+        <div
+          aria-hidden="true"
+          style={{ display: 'none' }}
+          data-summary-ready={Boolean(summaryMapOption && summaryBarOption)}
         />
+        <div className="glossary-header">
+          <span className="glossary-kicker">Glosario</span>
+          <h3>Motivo de viaje</h3>
+          <p>
+            Son las razones por las que las personas visitan Guanajuato. En el estado se han identificado nueve motivos principales.
+          </p>
+        </div>
+
+        <div className="glossary-grid">
+          {glossaryItems.map((item) => (
+            <article key={item.title} className="glossary-item">
+              <h4>{item.title}</h4>
+              <p>{item.description}</p>
+            </article>
+          ))}
+        </div>
       </div>
 
       {/* Logo al final de los mapas */}
