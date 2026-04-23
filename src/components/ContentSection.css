@@ -42,8 +42,7 @@
   transform: translate(-50%, -50%);
   width: 90%;
   max-width: 600px;
-  max-height: 80vh;
-  overflow-y: auto;
+  overflow: hidden;
 
   /* Premium Glassmorphism */
   background: rgba(0, 0, 0, 0.4);
@@ -56,24 +55,7 @@
   color: #ffffff;
 }
 
-/* Custom Scrollbar for Content Section */
-.content-section2::-webkit-scrollbar {
-  width: 8px;
-}
 
-.content-section2::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-}
-
-.content-section2::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
-}
-
-.content-section2::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
-}
 
 .content-box {
   width: 100%;
@@ -177,7 +159,7 @@
     width: 95%;
     max-width: none;
     padding: 1.5rem 1rem;
-    max-height: 75vh;
+    overflow: hidden;
   }
 
   .content-box h3 {
@@ -207,7 +189,7 @@
     top: 55%;
     padding: 0.8rem;
     max-width: 90%;
-    max-height: 85vh;
+    overflow: hidden;
   }
 
   .content-box h3 {

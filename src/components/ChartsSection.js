@@ -28,7 +28,7 @@ const ChartsSection = () => {
   };
 
   const projectTypeDescription = activeCategory === 'Proyectos Integrales'
-    ? '<strong>Descripción: </strong>Promueven un destino turístico de forma integral, a través de un plan de trabajo con acciones como campañas, eventos y difusión durante un periodo determinado.'
+    ? '<strong>Descripción: </strong>Promueven un destino turístico de forma integral, a través de un plan de trabajo con acciones como campañas, eventos y difusión durante un periodo de hasta por un año.'
     : '<strong>Descripción: </strong>Se enfocan en acciones concretas, como eventos o campañas, para promover una actividad o experiencia turística en un tiempo definido.';
 
   const projectTypeTitle = activeCategory === 'Proyectos Integrales'
@@ -38,7 +38,7 @@ const ChartsSection = () => {
   const projectGlossaryItems = [
     {
       title: 'Proyectos integrales de promoción de destino',
-      description: 'Son proyectos que buscan promover un destino turístico de manera completa, a través de un plan de trabajo que incluye distintas acciones como campañas, eventos, difusión, alianzas, viajes de promoción, herramientas de promoción y acciones de relaciones públicas durante un periodo determinado.',
+      description: 'Son proyectos que buscan promover un destino turístico de manera completa, a través de un plan de trabajo que incluye distintas acciones como campañas, eventos, difusión, alianzas, viajes de promoción, herramientas de promoción y acciones de relaciones públicas durante un periodo de hasta por un año.',
       example: 'Promoción anual de un destino turístico'
     },
     {
@@ -879,9 +879,7 @@ const ChartsSection = () => {
         <div className="glossary-header">
           <span className="glossary-kicker">Glosario</span>
           <h3>Conceptos clave</h3>
-          <p>
-            Consulta las definiciones de los tipos de proyecto y de los motivos de viaje utilizados en esta visualización.
-          </p>
+
         </div>
 
         <div className="glossary-section">

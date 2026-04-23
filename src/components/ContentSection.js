@@ -20,13 +20,16 @@ const ContentSection = () => {
             <img src={logo} width={150} height={50} title='COFOTUR' />
           </div>
           <h3 style={{ color: '#fff' }}><p>Proyectos Apoyados 2025</p> </h3>
-          ¿Sabías que cuando te hospedas en un hotel en Guanajuato, el 4% de lo que pagas se destina al Impuesto por Servicios de Hospedaje? Este recurso, aportado por turistas locales y foráneos, es utilizado para impulsar la promoción turística del estado a través de la Secretaría de Turismo e Identidad.
-          En este espacio ponemos a tu disposición información clara y accesible sobre cómo se utilizan estos recursos, los cuales son asignados por las y los consejeros del Consejo del Fondo para la Promoción Turística (COFOTUR).
-          Aquí podrás conocer qué personas y empresas recibieron apoyo, qué proyectos se impulsaron y los montos asignados durante el ejercicio 2025. También podrás consultar la información por motivo de viaje y por municipio beneficiado, para ver cómo se distribuyen estos recursos.
+          <h4 style={{ color: '#fff' }}><p>Así se usan los impuestos para promover el turismo</p> </h4>
+          <div style={{ textAlign: 'justify' }}>
+            <p>¿Sabías que cuando te hospedas en un hotel en Guanajuato, el 4% de lo que pagas se destina al Impuesto por Servicios de Hospedaje? Este recurso, aportado por turistas locales y foráneos, es utilizado para impulsar la promoción turística del estado a través de la Secretaría de Turismo e Identidad.</p>
+            <p>En este espacio ponemos a tu disposición información clara y accesible sobre cómo se utilizan estos recursos, los cuales son asignados por las y los consejeros del Consejo del Fondo para la Promoción Turística (COFOTUR).</p>
+            <p>Aquí podrás conocer qué personas y empresas recibieron apoyo, qué proyectos se impulsaron y los montos asignados durante el ejercicio 2025. También podrás consultar la información por motivo de viaje y por municipio beneficiado, para ver cómo se distribuyen estos recursos.</p>
+          </div>
 
 
         </div>
-      </div>
+      </div >
 
     </>
   );
